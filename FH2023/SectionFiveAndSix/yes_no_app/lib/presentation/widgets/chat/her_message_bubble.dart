@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:yes_no_app/domain/entitiy/message.dart';
 
 class HerMessageBubble extends StatelessWidget {
-  const HerMessageBubble({super.key});
+  const HerMessageBubble({
+    super.key,
+    required this.message,
+  });
+
+  final Message message;
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +21,11 @@ class HerMessageBubble extends StatelessWidget {
             color: colors.secondary,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
             child: Text(
-              'Merhba dünya',
-              style: TextStyle(
+              message.text,
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
@@ -28,7 +34,7 @@ class HerMessageBubble extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        _ImageBuble(),
+        _ImageBuble(message.imageUrl!),
         const SizedBox(
           height: 10,
         )
@@ -38,6 +44,10 @@ class HerMessageBubble extends StatelessWidget {
 }
 
 class _ImageBuble extends StatelessWidget {
+  final String imageUrl;
+
+  const _ImageBuble(this.imageUrl);
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -45,7 +55,7 @@ class _ImageBuble extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-        "https://www.galvanizeaction.org/wp-content/uploads/2022/06/Wow-gif.gif",
+        imageUrl,
         width: size.width * 0.6,
         height: 150,
         fit: BoxFit.cover,
