@@ -57,4 +57,10 @@ const appMenuItems = <MenuItem>[
     link: "/tutorial",
     icon: Icons.car_rental_outlined,
   ),
+  MenuItem(
+    title: "InfiniteScroll ve Kaydırma",
+    subTitle: "Listeleri yenilemek için çekin",
+    link: "/infinite",
+    icon: Icons.list_alt_rounded,
+  ),
 ];

@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   go_router: ^12.1.1
+  animate_do: ^3.1.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -19,5 +20,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-assets:
-  - assets/images/
+  assets:
+    - assets/images/
