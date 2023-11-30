@@ -1,7 +1,13 @@
+import 'package:bases_web/locator.dart';
+import 'package:bases_web/services/navigator_service.dart';
+import 'package:bases_web/ui/layout/main_layout_page.dart';
+import 'package:bases_web/ui/router/route_generator.dart';
 import 'package:flutter/material.dart';
-import 'package:bases_web/ui/pages/counter_page.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  setupLocator();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,14 +15,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Route App',
-      initialRoute: '/stateful',
-      routes: {
-        '/stateful': (_) => const CounterPage(),
-        //'/provider': (_) => const CounterProviderPage(),
-        //'/abc123': (_) => const CounterProviderPage(),
-      },
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Route App',
+        initialRoute: '/stateful',
+        onGenerateRoute: RouteGenerator.generateRoute,
+        navigatorKey: locator<NavigationService>().navigatorKey,
+        builder: (_, child) {
+          return MainLayoutPage(
+            child: child ?? Container(),
+          );
+        });
   }
 }
