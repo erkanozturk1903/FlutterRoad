@@ -1,4 +1,4 @@
-import 'package:admin_dashboard/ui/layout/buttons/link_text.dart';
+import 'package:admin_dashboard/ui/buttons/link_text.dart';
 import 'package:flutter/material.dart';
 
 class LinksBar extends StatelessWidget {

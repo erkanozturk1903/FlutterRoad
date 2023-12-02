@@ -5,17 +5,15 @@ class BacgroundTwitter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
+      decoration: buildBoxDecoration(),
       child: Container(
-        decoration: buildBoxDecoration(),
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.0),
-            child: Center(
-              child: Image(
-                image: AssetImage('twitter-white-logo.png'),
-              ),
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.0),
+          child: Center(
+            child: Image(
+              image: AssetImage('twitter-white-logo.png'),
             ),
           ),
         ),

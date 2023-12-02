@@ -73,11 +73,10 @@ class _DesktopBody extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height * 0.95,
-      color: Colors.red,
       child: Row(
         children: [
           //Background
-          BacgroundTwitter(),
+          const Expanded(child: BacgroundTwitter()),
 
           //View Container
           Container(
