@@ -6,6 +6,7 @@ import 'package:admin_dashboard/services/local_storage.dart';
 import 'package:admin_dashboard/services/navigation_service.dart';
 import 'package:admin_dashboard/ui/layout/auth/auth_layout.dart';
 import 'package:admin_dashboard/ui/layout/dashboard/dashboard_layout.dart';
+import 'package:admin_dashboard/ui/layout/splash/splash_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
 
         if (authProvider.authStatus == AuthStatus.checking)
           return Center(
-            child: Text('checking'),
+            child: SplashLayout(),
           );
 
         if (authProvider.authStatus == AuthStatus.authenticated) {

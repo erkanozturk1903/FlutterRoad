@@ -1,9 +1,15 @@
 // ignore_for_file: unnecessary_this, prefer_const_constructors
 
+import 'package:admin_dashboard/router/router.dart';
 import 'package:admin_dashboard/services/local_storage.dart';
+import 'package:admin_dashboard/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 
-enum AuthStatus { checking, authenticated, notAuthenticated }
+enum AuthStatus {
+  checking,
+  authenticated,
+  notAuthenticated,
+}
 
 class AuthProvider extends ChangeNotifier {
   String? _token;
@@ -15,14 +21,14 @@ class AuthProvider extends ChangeNotifier {
 
   login(String email, String password) {
     //TODO: HTTP IStek
-    this._token = 'işsfdkşsakfdşaskfşksfşkasf';
+    this._token = 'adjkfhadfyiu12y3hjasd.ajskhdaks.kjshdkjas';
     LocalStorage.prefs.setString('token', this._token!);
 
-    print('JWT yi saklayın: $_token');
-
     //TODO: Kontrol paneline git
-
+    authStatus = AuthStatus.authenticated;
     notifyListeners();
+
+    NavigationService.replaceTo(Flurorouter.dashboardRoute);
   }
 
   Future<bool> isAuthenticated() async {

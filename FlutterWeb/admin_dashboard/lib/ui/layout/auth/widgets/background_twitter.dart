@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BacgroundTwitter extends StatelessWidget {
-  const BacgroundTwitter({super.key});
+class BackgroundTwitter extends StatelessWidget {
+  const BackgroundTwitter({super.key});
 
   @override
   Widget build(BuildContext context) {
