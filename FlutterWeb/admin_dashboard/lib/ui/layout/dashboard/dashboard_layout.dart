@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/ui/shared/sidedar.dart';
+import 'package:admin_dashboard/ui/shared/navbar.dart';
 import 'package:flutter/material.dart';
 
 class DashboardLayout extends StatelessWidget {
@@ -11,13 +12,24 @@ class DashboardLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: const Color(0xffEDF1F2),
         body: Row(
           children: [
-            Sidebar(),
+            if (size.width >= 700) const Sidebar(),
             Expanded(
-              child: child,
+              child: Column(
+                children: [
+                  //Navbar
+                  const Navbar(),
+
+                  //View
+                  Expanded(
+                    child: child,
+                  ),
+                ],
+              ),
             )
           ],
         ));

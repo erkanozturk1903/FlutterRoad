@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, use_key_in_widget_constructors
 
 import 'package:admin_dashboard/providers/auth_provider.dart';
 import 'package:admin_dashboard/router/router.dart';

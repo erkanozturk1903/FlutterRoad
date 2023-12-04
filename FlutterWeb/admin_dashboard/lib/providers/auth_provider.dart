@@ -20,11 +20,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
   login(String email, String password) {
-    //TODO: HTTP IStek
     this._token = 'adjkfhadfyiu12y3hjasd.ajskhdaks.kjshdkjas';
     LocalStorage.prefs.setString('token', this._token!);
 
-    //TODO: Kontrol paneline git
     authStatus = AuthStatus.authenticated;
     notifyListeners();
 
@@ -40,7 +38,6 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
 
-    //TODO: Backende gidip token in doğru olup olmadığını kontrol edin
     await Future.delayed(Duration(milliseconds: 1000));
     authStatus = AuthStatus.authenticated;
     notifyListeners();
