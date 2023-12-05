@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/providers/sidemenu_provider.dart';
 import 'package:admin_dashboard/ui/shared/widgets/logo.dart';
 import 'package:admin_dashboard/ui/shared/widgets/menu_item.dart';
 import 'package:admin_dashboard/ui/shared/widgets/text_separator.dart';
@@ -21,10 +22,11 @@ class Sidebar extends StatelessWidget {
           ),
           const TextSeparator(text: 'main'),
           MenuItem(
-            text: 'Dashboard',
-            icon: Icons.dashboard,
-            onPressed: () {},
-          ),
+              text: 'Dashboard',
+              icon: Icons.dashboard,
+              onPressed: () => SideMenuProvider.closeMenu()
+              //SideMenuProvider.closeMenu(),
+              ),
           MenuItem(
             text: 'Kullanıcı Yönetimi',
             icon: Icons.manage_accounts,

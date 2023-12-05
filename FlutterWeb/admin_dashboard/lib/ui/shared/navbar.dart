@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/providers/sidemenu_provider.dart';
 import 'package:admin_dashboard/ui/shared/widgets/navbar_avatar.dart';
 import 'package:admin_dashboard/ui/shared/widgets/notifications_indicator.dart';
 import 'package:admin_dashboard/ui/shared/widgets/search_text.dart';
@@ -16,7 +17,10 @@ class Navbar extends StatelessWidget {
       child: Row(
         children: [
           if (size.width <= 700)
-            IconButton(onPressed: () {}, icon: const Icon(Icons.menu_outlined)),
+            IconButton(
+              onPressed: () => SideMenuProvider.openMenu(),
+              icon: const Icon(Icons.menu_outlined),
+            ),
           const SizedBox(
             width: 5,
           ),
