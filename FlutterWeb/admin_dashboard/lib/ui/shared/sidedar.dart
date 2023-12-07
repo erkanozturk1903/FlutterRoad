@@ -1,4 +1,7 @@
 import 'package:admin_dashboard/providers/sidemenu_provider.dart';
+import 'package:admin_dashboard/router/router.dart';
+import 'package:admin_dashboard/services/navigation_service.dart';
+import 'package:admin_dashboard/ui/screens/kullanici/kullanici.dart';
 import 'package:admin_dashboard/ui/shared/widgets/logo.dart';
 import 'package:admin_dashboard/ui/shared/widgets/menu_item.dart';
 import 'package:admin_dashboard/ui/shared/widgets/text_separator.dart';
@@ -24,53 +27,74 @@ class Sidebar extends StatelessWidget {
           MenuItem(
               text: 'Dashboard',
               icon: Icons.dashboard,
-              onPressed: () => SideMenuProvider.closeMenu()
+              onPressed: () {
+                NavigationService.navigateTo(Flurorouter.dashboardRoute);
+                SideMenuProvider.closeMenu();
+              }
               //SideMenuProvider.closeMenu(),
               ),
           MenuItem(
             text: 'Kullanıcı Yönetimi',
             icon: Icons.manage_accounts,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.kullaniciRoute);
+            },
           ),
           MenuItem(
             text: 'Firma Yönetimi',
             icon: Icons.business,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.firmaRoute);
+            },
           ),
           MenuItem(
             text: 'İnsan Kaynakları Yönetimi',
             icon: Icons.people,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.insankaynaklariRoute);
+            },
           ),
           MenuItem(
             text: 'İş Güvenliği Yönetimi',
             icon: Icons.engineering,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.isguvenligiRoute);
+            },
           ),
           MenuItem(
             text: 'İş Sağlığı Yönetimi',
             icon: Icons.health_and_safety,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.issagligiRoute);
+            },
           ),
           MenuItem(
             text: 'Döküman Yönetimi',
             icon: Icons.bookmark,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.dokumanRoute);
+            },
           ),
           MenuItem(
             text: 'Mail Yönetimi',
             icon: Icons.mail,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.mailRoute);
+            },
           ),
           MenuItem(
             text: 'Ajanda Yönetimi',
             icon: Icons.event,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.ajandaRoute);
+            },
           ),
           MenuItem(
             text: 'Çıkış',
             icon: Icons.exit_to_app,
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo(Flurorouter.loginRoute);
+            },
           )
         ],
       ),

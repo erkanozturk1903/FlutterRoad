@@ -14,6 +14,15 @@ class Flurorouter {
 
   // Dashboard
   static String dashboardRoute = '/dashboard';
+  static String kullaniciRoute = '/screen/user';
+  static String firmaRoute = '/screen/company';
+  static String insankaynaklariRoute = '/screen/humanresources';
+  static String isguvenligiRoute = '/screen/worksafety';
+  static String issagligiRoute = '/screen/workhealth';
+  static String dokumanRoute = '/screen/documents';
+  static String mailRoute = '/screen/mail';
+  static String ajandaRoute = '/screen/events';
+  static String blankRoute = '/screen/blank';
 
   static void configureRoutes() {
     //auth Routes
@@ -27,6 +36,30 @@ class Flurorouter {
     //Dashboard
     router.define(dashboardRoute,
         handler: DashboardHandlers.dashboard,
+        transitionType: TransitionType.fadeIn);
+    router.define(kullaniciRoute,
+        handler: DashboardHandlers.users,
+        transitionType: TransitionType.fadeIn);
+    router.define(firmaRoute,
+        handler: DashboardHandlers.company,
+        transitionType: TransitionType.fadeIn);
+
+    router.define(insankaynaklariRoute,
+        handler: DashboardHandlers.humanresources,
+        transitionType: TransitionType.fadeIn);
+    router.define(isguvenligiRoute,
+        handler: DashboardHandlers.worksafety,
+        transitionType: TransitionType.fadeIn);
+    router.define(issagligiRoute,
+        handler: DashboardHandlers.workhealth,
+        transitionType: TransitionType.fadeIn);
+    router.define(dokumanRoute,
+        handler: DashboardHandlers.documents,
+        transitionType: TransitionType.fadeIn);
+    router.define(mailRoute,
+        handler: DashboardHandlers.mail, transitionType: TransitionType.fadeIn);
+    router.define(ajandaRoute,
+        handler: DashboardHandlers.events,
         transitionType: TransitionType.fadeIn);
 
     //404
