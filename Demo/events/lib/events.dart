@@ -7,7 +7,6 @@ import 'package:events/fx_text.dart';
 import 'package:events/fx_text_field.dart';
 import 'package:events/fx_v_spacer.dart';
 import 'package:events/responsive_layout.dart';
-import 'package:events/structure_config.dart';
 import 'package:events/structure_dims.dart';
 import 'package:events/structure_style.dart';
 import 'package:flutter/material.dart';
@@ -133,6 +132,32 @@ class _EventsCalendarState extends State<EventsCalendar> {
         },
         appointmentBuilder: _appointmentBuilder,
         monthCellBuilder: _monthCellBuilder,
+        onTap: (detail) {
+          setState(() {
+            _date = detail.date ?? DateTime.now();
+            _dateAdd = detail.date ?? DateTime.now();
+          });
+          _addEvent(context);
+          widget.onTapCell!(detail);
+        },
+        onLongPress: (details) {
+          _draggedAppointment = details.appointments!.first;
+          _newAppointmentDate = details.date!;
+          setState(() {});
+          widget.onLongPressCell!(details);
+        },
+        onDragUpdate: (details) {
+          // _newAppointmentDate = details.date;
+          setState(() {});
+          widget.onDragUpdateCell!(details);
+        },
+        onDragEnd: (details) {
+          _draggedAppointment.startTime =
+              _newAppointmentDate.subtract(const Duration(hours: 1));
+          _draggedAppointment.endTime = _newAppointmentDate;
+          setState(() {});
+          widget.onDragEndCell!(details);
+        },
       ),
     );
   }
