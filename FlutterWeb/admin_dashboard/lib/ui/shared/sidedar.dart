@@ -1,7 +1,6 @@
 import 'package:admin_dashboard/providers/sidemenu_provider.dart';
 import 'package:admin_dashboard/router/router.dart';
 import 'package:admin_dashboard/services/navigation_service.dart';
-import 'package:admin_dashboard/ui/screens/kullanici/kullanici.dart';
 import 'package:admin_dashboard/ui/shared/widgets/logo.dart';
 import 'package:admin_dashboard/ui/shared/widgets/menu_item.dart';
 import 'package:admin_dashboard/ui/shared/widgets/text_separator.dart';

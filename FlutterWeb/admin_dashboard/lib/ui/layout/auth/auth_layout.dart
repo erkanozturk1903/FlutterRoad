@@ -73,11 +73,11 @@ class _DesktopBody extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height * 0.95,
-      color: Colors.black,
+      color: Colors.white,
       child: Row(
         children: [
           // Twitter Background
-          Expanded(child: BackgroundTwitter()),
+          const Expanded(child: BackgroundTwitter()),
 
           // View Container
           Container(
@@ -86,9 +86,9 @@ class _DesktopBody extends StatelessWidget {
             color: Colors.black,
             child: Column(
               children: [
-                SizedBox(height: 20),
-                CustomTitle(),
-                SizedBox(height: 50),
+                const SizedBox(height: 20),
+                const CustomTitle(),
+                const SizedBox(height: 50),
                 Expanded(child: child),
               ],
             ),
