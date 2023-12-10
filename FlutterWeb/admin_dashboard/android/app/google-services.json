@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863065831908",
+    "project_id": "healthandsafety-fb8a0",
+    "storage_bucket": "healthandsafety-fb8a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863065831908:android:418e3d615e5b833f5ceff1",
+        "android_client_info": {
+          "package_name": "com.example.admin_dashboard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNpgGgFuGqklhu-QKm5F2CirDWA9Fyo4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

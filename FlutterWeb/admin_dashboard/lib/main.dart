@@ -9,10 +9,15 @@ import 'package:admin_dashboard/ui/layout/dashboard/dashboard_layout.dart';
 import 'package:admin_dashboard/ui/layout/splash/splash_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   LocalStorage.configurePrefs();
   Flurorouter.configureRoutes();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(AppState());
 }
 

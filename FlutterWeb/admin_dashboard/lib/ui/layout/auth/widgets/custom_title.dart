@@ -22,7 +22,7 @@ class CustomTitle extends StatelessWidget {
           FittedBox(
             fit: BoxFit.contain,
             child: Text(
-              'WIS ENGEERINING ',
+              'WIS ENGINEERS ',
               style: GoogleFonts.montserratAlternates(
                 fontSize: 60,
                 color: Colors.white,

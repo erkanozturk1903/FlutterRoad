@@ -61,6 +61,12 @@ class _AjandaScreenState extends State<AjandaScreen> {
   DateTime _dateEdit = DateTime.now();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -93,6 +99,47 @@ class _AjandaScreenState extends State<AjandaScreen> {
         },
         appointmentBuilder: _appointmentBuilder,
         monthCellBuilder: _monthCellBuilder,
+        todayTextStyle: GoogleFonts.roboto(
+          color: Color(0xff707479),
+          fontSize: 16,
+        ),
+        selectionDecoration: BoxDecoration(
+          border: Border.all(
+            color: Color(0xff3761EB),
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        monthViewSettings: MonthViewSettings(
+            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+        todayHighlightColor: Color(0xff38BDF8),
+        allowDragAndDrop: true,
+        allowAppointmentResize: true,
+        onTap: (detail) {
+          setState(() {
+            _date = detail.date ?? DateTime.now();
+            _dateAdd = detail.date ?? DateTime.now();
+          });
+          _addEvent(context);
+          widget.onTapCell!(detail);
+        },
+        onLongPress: (details) {
+          _draggedAppointment = details.appointments!.first;
+          _newAppointmentDate = details.date!;
+          setState(() {});
+          widget.onLongPressCell!(details);
+        },
+        onDragUpdate: (details) {
+          // _newAppointmentDate = details.date;
+          setState(() {});
+          widget.onDragUpdateCell!(details);
+        },
+        onDragEnd: (details) {
+          _draggedAppointment.startTime =
+              _newAppointmentDate.subtract(const Duration(hours: 1));
+          _draggedAppointment.endTime = _newAppointmentDate;
+          setState(() {});
+          widget.onDragEndCell!(details);
+        },
       ),
     );
   }
@@ -292,6 +339,92 @@ class _AjandaScreenState extends State<AjandaScreen> {
 
   _DataSource _getDataSource() {
     return _DataSource(widget.appointmentsList ?? _appointments);
+  }
+
+  Future<dynamic> _addEvent(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Ekle',
+          ),
+          backgroundColor: Color(0xffFFFFFF),
+          actions: <Widget>[
+            Column(
+              children: [
+                Text(
+                  'Lütfen Başlık ekleyin',
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                TextField(
+                  controller: _addController,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                EnglishDatePicker(
+                  title: 'Seçilen Tarih',
+                  initialTime: _dateAdd,
+                  onChange: (date) {
+                    setState(() {
+                      _dateAdd = date ?? _date;
+                    });
+                    Navigator.pop(context, date);
+                  },
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                TextButton(
+                  child: Text('Tamam'),
+                  onPressed: () {
+                    setState(() {
+                      _appointments.add(
+                        Appointment(
+                          startTime: _dateAdd,
+                          endTime: _dateAdd.add(Duration(hours: 1)),
+                          subject: _addController.text,
+                        ),
+                      );
+                      _addController.text = "";
+                    });
+
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ),
+          ],
+        );
+      },
+    ).then((val) {
+      setState(() {
+        if (val.runtimeType == DateTime.now().runtimeType) {
+          _appointments.add(
+            Appointment(
+              startTime: _dateAdd,
+              endTime: _dateAdd.add(Duration(hours: 1)),
+              subject: _addController.text,
+              color: Color(0xff3761EB),
+            ),
+          );
+
+          widget.onAddEvent!(
+            Appointment(
+              startTime: _dateAdd,
+              endTime: _dateAdd.add(const Duration(hours: 1)),
+              subject: _addController.text,
+              color: Color(0xff3761EB),
+            ),
+          );
+        }
+
+        _addController.text = "";
+      });
+    });
   }
 }
 
