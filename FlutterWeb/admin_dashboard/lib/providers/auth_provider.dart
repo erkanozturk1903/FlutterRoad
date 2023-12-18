@@ -20,8 +20,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   login(String email, String password) {
-    //this._token = 'adjkfhadfyiu12y3hjasd.ajskhdaks.kjshdkjas';
-    //LocalStorage.prefs.setString('token', this._token!);
+    this._token = 'adjkfhadfyiu12y3hjasd.ajskhdaks.kjshdkjas';
+    LocalStorage.prefs.setString('token', this._token!);
 
     authStatus = AuthStatus.authenticated;
     notifyListeners();

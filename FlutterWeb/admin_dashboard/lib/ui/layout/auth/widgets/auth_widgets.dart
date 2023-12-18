@@ -113,6 +113,7 @@ class AuthHeaderLabel extends StatelessWidget {
 var textFormDecoration = InputDecoration(
   labelText: 'Tam İsim',
   hintText: 'Lütfen tam isminizi giriniz',
+  hintStyle: const TextStyle(color: Colors.white),
   border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(
