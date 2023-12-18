@@ -5,9 +5,11 @@ import 'dart:io';
 import 'package:admin_dashboard/providers/register_form_provider.dart';
 import 'package:admin_dashboard/router/router.dart';
 import 'package:admin_dashboard/ui/layout/auth/widgets/auth_widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_html/html.dart' as html;
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -22,6 +24,8 @@ class _RegisterViewState extends State<RegisterView> {
   late String password;
   late String profileImage;
   late String _uid;
+  File? _pickedImage;
+  Uint8List webImage = Uint8List(8);
   bool processing = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
@@ -30,9 +34,34 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  final ImagePicker _picker = ImagePicker();
-  XFile? _imageFile;
-  dynamic _pickedImageError;
+  Future<void> _pickImage() async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          _pickedImage = selected;
+        });
+      } else {
+        print('No image selected.');
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          _pickedImage = File('a');
+        });
+      } else {
+        print('No image selected.');
+      }
+    } else {
+      print('Something went wrong');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +98,20 @@ class _RegisterViewState extends State<RegisterView> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 20.0, horizontal: 40),
                               child: CircleAvatar(
-                                radius: 60,
-                                backgroundColor: Colors.white.withOpacity(0.4),
-                                backgroundImage: _imageFile == null
-                                    ? null
-                                    : FileImage(File(_imageFile!.path)),
-                              ),
+                                  radius: 60,
+                                  backgroundColor:
+                                      Colors.white.withOpacity(0.4),
+                                  backgroundImage: _pickedImage == null
+                                      ? null
+                                      : kIsWeb
+                                          ? Image.memory(
+                                              webImage,
+                                              fit: BoxFit.fill,
+                                            )
+                                          : Image.file(
+                                              _pickedImage!,
+                                              fit: BoxFit.fill,
+                                            ).image),
                             ),
                             Column(
                               children: [
@@ -110,7 +147,9 @@ class _RegisterViewState extends State<RegisterView> {
                                       Icons.photo,
                                       color: Colors.white,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _pickImage();
+                                    },
                                   ),
                                 )
                               ],

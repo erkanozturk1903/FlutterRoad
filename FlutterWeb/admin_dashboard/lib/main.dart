@@ -15,6 +15,7 @@ import 'firebase_options.dart';
 void main() async {
   LocalStorage.configurePrefs();
   Flurorouter.configureRoutes();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
