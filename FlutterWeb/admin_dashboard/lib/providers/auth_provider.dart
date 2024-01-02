@@ -1,8 +1,8 @@
 // ignore_for_file: unnecessary_this, prefer_const_constructors
 
 import 'package:admin_dashboard/router/router.dart';
-import 'package:admin_dashboard/services/local_storage.dart';
 import 'package:admin_dashboard/services/navigation_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 enum AuthStatus {
@@ -12,17 +12,17 @@ enum AuthStatus {
 }
 
 class AuthProvider extends ChangeNotifier {
-  String? _token;
   AuthStatus authStatus = AuthStatus.checking;
 
   AuthProvider() {
     this.isAuthenticated();
   }
 
-  login(String email, String password) {
-    this._token = 'adjkfhadfyiu12y3hjasd.ajskhdaks.kjshdkjas';
-    LocalStorage.prefs.setString('token', this._token!);
-
+  login(String email, String password) async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
     authStatus = AuthStatus.authenticated;
     notifyListeners();
 
@@ -30,9 +30,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> isAuthenticated() async {
-    final token = LocalStorage.prefs.getString('token');
+    final User? user = FirebaseAuth.instance.currentUser;
 
-    if (token == null) {
+    if (user == null) {
       authStatus = AuthStatus.notAuthenticated;
       notifyListeners();
       return false;

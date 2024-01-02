@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:admin_dashboard/providers/register_form_provider.dart';
 import 'package:admin_dashboard/router/router.dart';
 import 'package:admin_dashboard/ui/layout/auth/widgets/auth_widgets.dart';
-import 'package:admin_dashboard/ui/shared/widgets/snackbar.dart';
 import 'package:admin_dashboard/ui/views/login_view.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
