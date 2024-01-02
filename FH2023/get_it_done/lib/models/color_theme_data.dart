@@ -1,13 +1,14 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ColorThemeData extends ChangeNotifier {
   final ThemeData greenTheme = ThemeData(
     primaryColor: Colors.green,
     primarySwatch: Colors.green,
     //accentColor: Colors.green,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Colors.green,
     ),
     scaffoldBackgroundColor: Colors.green,
@@ -26,7 +27,7 @@ class ColorThemeData extends ChangeNotifier {
     primaryColor: Colors.red,
     primarySwatch: Colors.red,
     scaffoldBackgroundColor: Colors.red,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Colors.red,
     ),
     appBarTheme: const AppBarTheme(
@@ -44,7 +45,7 @@ class ColorThemeData extends ChangeNotifier {
     primaryColor: Colors.green,
     primarySwatch: Colors.green,
     scaffoldBackgroundColor: Colors.green,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Colors.green,
     ),
     appBarTheme: const AppBarTheme(
@@ -58,10 +59,27 @@ class ColorThemeData extends ChangeNotifier {
     ),
   );
 
+  bool _isGreenTheme = true;
+  static late SharedPreferences _sharedPreferences;
+
   void changeTheme(bool selected) {
-    _selectedThemeData = selected ? redTheme : greenTheme;
+    _isGreenTheme = selected;
     notifyListeners();
   }
 
-  ThemeData get selectedThemeData => _selectedThemeData;
+  bool get isGreenTheme => _isGreenTheme;
+  ThemeData get selectedThemeData => _isGreenTheme ? greenTheme : redTheme;
+
+  Future<void> createPrefObject() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  Future<void> saveThemeData(bool value) async {
+    _sharedPreferences.setBool('isGreenTheme', value);
+  }
+
+  Future<void> loadThemeData() async {
+    await createPrefObject();
+    _isGreenTheme = _sharedPreferences.getBool('isGreenTheme') ?? true;
+  }
 }

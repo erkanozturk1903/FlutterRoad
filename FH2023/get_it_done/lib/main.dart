@@ -4,7 +4,9 @@ import 'package:get_it_done/models/items_data.dart';
 import 'package:get_it_done/screens/home_page.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ColorThemeData().createPrefObject();
   runApp(
     MultiProvider(
       providers: [
@@ -23,6 +25,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Provider.of<ColorThemeData>(context).loadThemeData();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

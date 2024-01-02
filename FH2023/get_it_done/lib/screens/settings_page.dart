@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:get_it_done/models/color_theme_data.dart';
 import 'package:provider/provider.dart';
@@ -33,9 +35,9 @@ class SwitchCard extends StatefulWidget {
 }
 
 class _SwitchCardState extends State<SwitchCard> {
-  bool _value = true;
   @override
   Widget build(BuildContext context) {
+    bool _value = Provider.of<ColorThemeData>(context).isGreenTheme;
     return Card(
       child: SwitchListTile(
         subtitle: Text(
