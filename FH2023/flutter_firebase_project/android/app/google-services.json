@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1018687040783",
+    "project_id": "muhapp-1c94e",
+    "storage_bucket": "muhapp-1c94e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018687040783:android:cba6f2b37337fdb3dc627a",
+        "android_client_info": {
+          "package_name": "com.erkanozturk1903.flutter_firebase_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018687040783-c8f54h9qq0lfl80vb5pl4ql0l8i5rfjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfoQnSZRgaXpFeTq50YjnUk3LFhlyGBlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018687040783-c8f54h9qq0lfl80vb5pl4ql0l8i5rfjh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1018687040783-2448qt3e396nm0ujku53s05cgh7jti6s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.erkanozturk.chat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
