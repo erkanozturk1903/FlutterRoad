@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ColorThemeData().createPrefObject();
+  await ItemData().createSharedPref();
   runApp(
     MultiProvider(
       providers: [
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<ColorThemeData>(context).loadThemeData();
+    Provider.of<ItemData>(context).loadItemsFromSharedPref();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
