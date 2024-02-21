@@ -1,0 +1,12 @@
+name: api
+description: An empty conduit application.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=3.1.3 <4.0.0"
+
+dependencies:
+  conduit: ^4.4.0
+  conduit_core: ^4.4.0
+  collection: ^1.17.1
