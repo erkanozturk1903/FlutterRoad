@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:midsademy/pages/sign_in/sign_in.dart';
 import 'package:midsademy/pages/welcome/welcome.dart';
 
 void main() {
+
   runApp( const ProviderScope( child: MyApp()));
 }
 
@@ -11,14 +14,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ScreenUtilInit(
+      splitScreenMode: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        initialRoute: "/",
+        routes: {
+          "/": (context) =>  Welcome(),
+          "/signIn": (context) =>  SignInPage(),
+        },
+        //home:  Welcome(), //TODO: Initial Route "/"
       ),
-      home: const Welcome(),
     );
   }
 }

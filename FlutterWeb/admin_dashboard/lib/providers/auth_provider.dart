@@ -13,6 +13,8 @@ enum AuthStatus {
 
 class AuthProvider extends ChangeNotifier {
   AuthStatus authStatus = AuthStatus.checking;
+  final _firebaseAuth = FirebaseAuth.instance;
+
 
   AuthProvider() {
     this.isAuthenticated();
