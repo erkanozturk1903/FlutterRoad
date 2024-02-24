@@ -6,8 +6,8 @@ import 'package:midsademy/common/widgets/text_widgets.dart';
 import 'package:midsademy/pages/sign_in/widgets/app_textfields.dart';
 import 'package:midsademy/pages/sign_in/widgets/sign_in_widgets.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,19 @@ class SignInPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //TODO: Top login buttons
-                  thirdPartyLogin(),
+                  SizedBox(height: 20.h),
                   //TODO: More Login options
                   Center(
-                      child: text14Normal(
-                          text: "Or use your email account to login")),
-                  SizedBox(height: 50.h),
+                    child: text14Normal(
+                        text: "Enter your details to below & free sign up"),
+                  ),
+                  SizedBox(height: 20.h),
+                  appTextField(
+                    text: "Username",
+                    iconName: "assets/icons/user.png",
+                    hintText: "Enter your username",
+                  ),
+                  SizedBox(height: 20.h),
                   //TODO: Email fields
                   appTextField(
                     text: "Email",
@@ -42,26 +48,31 @@ class SignInPage extends StatelessWidget {
                       hintText: "Enter your password",
                       obscureText: true),
                   SizedBox(height: 10.h),
+                  appTextField(
+                      text: "Confirm Password",
+                      iconName: "assets/icons/lock.png",
+                      hintText: "Enter your confirm password",
+                      obscureText: true),
+                  SizedBox(height: 10.h),
                   Container(
                     margin: EdgeInsets.only(
                       left: 25.w,
                     ),
-                    child: textUnderline(
-                      text: "Forgot Password?",
+                    child: text14Normal(
+                      text: "By creating an account you agree to our Terms of Service and Privacy Policy",
                     ),
                   ),
+
                   SizedBox(height: 80.h),
-                  //TODO: Login button
-                  Center(child: appButton(buttonName: "Login")),
-                  SizedBox(height: 10.h),
-                  //TODO: Sign up button
+                  //TODO: Register button
                   Center(
                     child: appButton(
                       buttonName: "Register",
-                      isLogin: false,
                       context: context,
+                      isLogin: true
                     ),
                   ),
+
                 ],
               ),
             )),
