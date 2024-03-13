@@ -63,15 +63,17 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 60),
               //TODO: Login button
 
-              InkWell(
-                onTap: () {
-                  print("Login Tıklandı");
-                },
-                child: Center(
-                  child: appButton(
+              Center(
+                child: appButton(
                     buttonName: "Login",
-                  ),
-                ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    }),
               ),
 
               const SizedBox(height: 10),

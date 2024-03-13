@@ -13,9 +13,7 @@ Widget appButton(
       VoidCallback? onTap,
     }) {
   return GestureDetector(
-    onTap: () {
-
-    },
+    onTap: onTap,
     child: Container(
       width: width,
       height: height,
