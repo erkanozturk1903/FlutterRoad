@@ -1,9 +1,8 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, non_constant_identifier_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:midsatech_mobile/pages/main/dashboard.dart';
-import 'package:midsatech_mobile/pages/main/events.dart';
+import 'package:midsatech_mobile/pages/main/events/events.dart';
 import 'package:midsatech_mobile/pages/main/human_resource.dart';
 import 'package:midsatech_mobile/pages/main/profile.dart';
 import 'package:midsatech_mobile/pages/main/safety.dart';
@@ -15,8 +14,6 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
-final advancedDrawerController = AdvancedDrawerController();
 
 class _HomePageState extends State<HomePage> {
   var currentPage = DrawerSections.dashboard;

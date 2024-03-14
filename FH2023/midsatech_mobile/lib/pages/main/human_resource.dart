@@ -10,9 +10,23 @@ class HumanPage extends StatefulWidget {
 
 class _HumanPageState extends State<HumanPage> {
   List<Human> humans = [
-    Human(id: "1", name: "A.Levent", surname: "Bahadıroğlu", department: "IT"),
-    Human(id: "2", name: "Erkan", surname: "Öztürk", department: "IT"),
-    Human(id: "3", name: "Ekin", surname: "Uğur", department: "IT"),
+    Human(
+        id: "1",
+        name: "A.Levent",
+        surname: "Bahadıroğlu",
+        department: "IT",
+        gender: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        birthDate: '',
+        birthPlace: '',
+        education: '',
+        bloodType: '',
+        maritalStatus: '',
+        jobs: '',
+        profilResmiUrl: ''),
+
     // Daha fazla personel ekleyebilirsiniz.
   ];
   void _yeniPersonelEkle() {
@@ -40,10 +54,10 @@ class _HumanPageState extends State<HumanPage> {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columns: const [
-            DataColumn(label: Text('Ad')),
-            DataColumn(label: Text('Soyad')),
+            DataColumn(label: Text('Name')),
+            DataColumn(label: Text('Surname')),
             //DataColumn(label: Text('Departman')),
-            DataColumn(label: Text('Aksiyon')), // Detay butonu için sütun
+            DataColumn(label: Text('Details')), // Detay butonu için sütun
           ],
           rows: humans
               .map(
@@ -76,10 +90,12 @@ class _HumanPageState extends State<HumanPage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepOrangeAccent,
-
         onPressed: _yeniPersonelEkle,
         tooltip: 'Personel Ekle',
-        child:const Icon(Icons.add,color: Colors.white,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

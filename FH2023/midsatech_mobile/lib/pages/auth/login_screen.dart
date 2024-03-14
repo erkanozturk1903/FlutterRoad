@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:midsatech_mobile/common/utils/app_colors.dart';
 import 'package:midsatech_mobile/common/widget/button_widget.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
 import 'package:midsatech_mobile/pages/auth/register.dart';

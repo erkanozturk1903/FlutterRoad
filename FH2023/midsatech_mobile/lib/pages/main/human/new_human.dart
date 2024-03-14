@@ -1,10 +1,14 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:midsatech_mobile/pages/main/human/model/human_model.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PersonelEklemeFormu extends StatefulWidget {
   final Function(Human) onPersonelEkle;
 
-  PersonelEklemeFormu({required this.onPersonelEkle});
+  const PersonelEklemeFormu({Key? key, required this.onPersonelEkle})
+      : super(key: key);
 
   @override
   _PersonelEklemeFormuState createState() => _PersonelEklemeFormuState();
@@ -15,25 +19,63 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
   final adController = TextEditingController();
   final soyadController = TextEditingController();
   final departmanController = TextEditingController();
-  final profilResmiUrlController = TextEditingController();
+  final cinsiyetController = TextEditingController();
+  final emailController = TextEditingController();
+  final telefonNumarasiController = TextEditingController();
+  final adresController = TextEditingController();
+  final dogumTarihiController = TextEditingController();
+  final dogumYeriController = TextEditingController();
+  final egitimController = TextEditingController();
+  final kanGrubuController = TextEditingController();
+  final medeniDurumController = TextEditingController();
+  final isController = TextEditingController();
+  String? profilResmiUrl; // Null olabilir
 
   @override
   void dispose() {
     adController.dispose();
     soyadController.dispose();
     departmanController.dispose();
-    profilResmiUrlController.dispose();
+    cinsiyetController.dispose();
+    emailController.dispose();
+    telefonNumarasiController.dispose();
+    adresController.dispose();
+    dogumTarihiController.dispose();
+    dogumYeriController.dispose();
+    egitimController.dispose();
+    kanGrubuController.dispose();
+    medeniDurumController.dispose();
+    isController.dispose();
     super.dispose();
+  }
+
+  Future<void> _profilResmiSec() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      profilResmiUrl = image?.path; // Dosya yolunu kaydet
+    });
   }
 
   void _kaydet() {
     if (_formKey.currentState!.validate()) {
       var yeniPersonel = Human(
-        id: DateTime.now().toString(), // Basit bir ID oluşturma yöntemi
+        id: DateTime.now().toString(),
         name: adController.text,
         surname: soyadController.text,
         department: departmanController.text,
-        profilResmiUrl: profilResmiUrlController.text,
+        gender: cinsiyetController.text,
+        email: emailController.text,
+        phoneNumber: telefonNumarasiController.text,
+        address: adresController.text,
+        birthDate: dogumTarihiController.text,
+        birthPlace: dogumYeriController.text,
+        education: egitimController.text,
+        bloodType: kanGrubuController.text,
+        maritalStatus: medeniDurumController.text,
+        jobs: isController.text,
+        profilResmiUrl: profilResmiUrl ?? "", // Null kontrolü
       );
       widget.onPersonelEkle(yeniPersonel);
       Navigator.of(context).pop();
@@ -44,7 +86,7 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Yeni Personel Ekle"),
+        title: const Text("Yeni Personel Ekle"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -52,49 +94,55 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                controller: adController,
-                decoration: InputDecoration(labelText: 'Ad'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Lütfen bir ad girin';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: soyadController,
-                decoration: InputDecoration(labelText: 'Soyad'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Lütfen bir soyad girin';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: departmanController,
-                decoration: InputDecoration(labelText: 'Departman'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Lütfen bir departman girin';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: profilResmiUrlController,
-                decoration: InputDecoration(labelText: 'Profil Resmi URL'),
-                // Profil resmi URL'si opsiyonel olabilir
+              // Her alan için TextFormField widget'ları
+              buildTextFormField(controller: adController, label: 'Name'),
+              buildTextFormField(controller: soyadController, label: 'Surname'),
+              buildTextFormField(
+                  controller: departmanController, label: 'Department'),
+              buildTextFormField(
+                  controller: cinsiyetController, label: 'Gender'),
+              buildTextFormField(controller: emailController, label: 'E-Mail'),
+              buildTextFormField(
+                  controller: telefonNumarasiController, label: 'Phone Number'),
+              buildTextFormField(controller: adresController, label: 'Address'),
+              buildTextFormField(
+                  controller: dogumTarihiController, label: 'Birth Date'),
+              buildTextFormField(
+                  controller: dogumYeriController, label: 'Birth Place'),
+              buildTextFormField(
+                  controller: egitimController, label: 'Education'),
+              buildTextFormField(
+                  controller: kanGrubuController, label: 'Blood Type'),
+              buildTextFormField(
+                  controller: medeniDurumController, label: 'Marital Status'),
+              buildTextFormField(controller: isController, label: 'Jobs'),
+              if (profilResmiUrl != null) Image.network(profilResmiUrl!),
+              ElevatedButton(
+                onPressed: _profilResmiSec,
+                child: const Text('Profil Resmi Seç'),
               ),
               ElevatedButton(
                 onPressed: _kaydet,
-                child: Text('Kaydet'),
+                child: const Text('Kaydet'),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  TextFormField buildTextFormField(
+      {required TextEditingController controller, required String label}) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(labelText: label),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen $label alanını doldurun';
+        }
+        return null;
+      },
     );
   }
 }
