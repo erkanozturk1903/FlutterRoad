@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:midsatech_mobile/pages/main/work/work_accident/models/is_kazasi_model.dart';
@@ -13,15 +11,73 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
 
-  // Form için gerekli değişkenler
-  String? _isYeriAdi;
-  String? _kazaYeri;
-  DateTime? _tarih;
-  TimeOfDay? _saat;
-  KazaOlayTuru? _kazaOlayTuru;
-  EtkilenenBolge? _etkilenenBolge;
-  KazaNedeniTipi? _kazaNedeniTipi;
-  List<String> _kazaNedeniDetaylar = [];
+  late IsKazasi _isKazasi;
+  late IsyeriBilgileri _isyeriBilgileri;
+  late KazaOlayBilgileri _kazaOlayBilgileri;
+  late KazazedeBilgileri _kazazedeBilgileri;
+  late KazaOlayArastirmasi _kazaOlayArastirmasi;
+  late Sonuclar _sonuclar;
+  late ArastirmaEkibi _arastirmaEkibi;
+
+  @override
+  void initState() {
+    super.initState();
+    _isyeriBilgileri = IsyeriBilgileri(
+      isverenTuru: '',
+      isYeriAdi: '',
+      digerIsYeriAdi: '',
+    );
+    _kazaOlayBilgileri = KazaOlayBilgileri(
+      kazaNo: '',
+      tarih: DateTime.now(),
+      kazaYeri: '',
+      saat: '',
+      faaliyet: '',
+      vardiya: '',
+    );
+    _kazazedeBilgileri = KazazedeBilgileri(
+      adiSoyadi: '',
+      sicilNo: '',
+      birimi: '',
+      tcKimlikNo: '',
+      iseGirisTarihi: DateTime.now(),
+      dogumTarihi: DateTime.now(),
+    );
+    _kazaOlayArastirmasi = KazaOlayArastirmasi(
+      kazaOlayTarifi: '',
+      kazaOlayTuru: [],
+      etkilenenBolge: [],
+      kazaninNedeni: {},
+    );
+    _sonuclar = Sonuclar(
+      kazaOlaySonucu: [],
+      raporGunSayisi: '',
+      hastaneAdi: '',
+      kazaSonrasiYapilanIslemler: [],
+    );
+    _arastirmaEkibi = ArastirmaEkibi(
+      adiSoyadi: '',
+      gorevi: '',
+      tarih: DateTime.now(),
+      imza: '',
+    );
+    _isKazasi = IsKazasi(
+      isyeriBilgileri: _isyeriBilgileri,
+      kazaOlayBilgileri: _kazaOlayBilgileri,
+      kazazedeBilgileri: _kazazedeBilgileri,
+      kazaOlayArastirmasi: _kazaOlayArastirmasi,
+      sonuclar: _sonuclar,
+      arastirmaEkibi: _arastirmaEkibi,
+    );
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      _formKey.currentState!.reset();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,44 +86,107 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: const Text(
-          'Work Accident Form',
+          'İş Kazası Formu',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
       ),
-      body: Stepper(
-        type: StepperType.vertical,
-        currentStep: _currentStep,
-        onStepContinue: _currentStep < _getSteps().length - 1
-            ? () => setState(() => _currentStep += 1)
-            : null,
-        onStepCancel:
-            _currentStep > 0 ? () => setState(() => _currentStep -= 1) : null,
-        steps: _getSteps(),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Stepper(
+            type: StepperType.vertical,
+            connectorColor:
+                MaterialStateColor.resolveWith((states) => Colors.deepOrange),
+            currentStep: _currentStep,
+            onStepTapped: (value) => setState(() => _currentStep = value),
+            controlsBuilder: (context, details) {
+              return Row(
+                children: [
+                  _currentStep == 5
+                      ? const SizedBox()
+                      : TextButton(
+                          onPressed: () {
+                            _currentStep < 5
+                                ? setState(() => _currentStep += 1)
+                                : null;
+                          },
+                          child: const Text(
+                            'İleri',
+                            style: TextStyle(
+                              color: Color(0xFF021734),
+                            ),
+                          ),
+                        ),
+                  _currentStep == 0
+                      ? const SizedBox()
+                      : TextButton(
+                          onPressed: () {
+                            _currentStep > 0
+                                ? setState(() => _currentStep -= 1)
+                                : null;
+                          },
+                          child: const Text(
+                            'Geri',
+                            style: TextStyle(
+                              color: Color(0xFF021734),
+                            ),
+                          ),
+                        ),
+                ],
+              );
+            },
+            steps: _getSteps(),
+          ),
+        ),
       ),
+      floatingActionButton: _currentStep == 5
+          ? FloatingActionButton(
+              onPressed: _submitForm,
+              child: Icon(Icons.save),
+            )
+          : null,
     );
   }
 
   List<Step> _getSteps() {
     return [
       Step(
-        title: Text('Genel Bilgiler'),
+        title: Text('İş Yeri Bilgileri'),
         content: _generalInformationForm(),
         isActive: _currentStep >= 0,
-        state: _currentStep > 0 ? StepState.complete : StepState.indexed,
+        state: _currentStep > 0 ? StepState.complete : StepState.disabled,
       ),
       Step(
-        title: Text('Kaza Detayları'),
+        title: Text('Kaza Olayı Bilgileri'),
         content: _accidentDetailsForm(),
         isActive: _currentStep >= 1,
         state: _currentStep > 1 ? StepState.complete : StepState.indexed,
       ),
       Step(
-        title: Text('Kaza Sonrası İşlemler'),
-        content: _postAccidentActionsForm(),
+        title: Text('Kazazedeye İlişkin Bilgiler'),
+        content: _personnelInformationForm(),
         isActive: _currentStep >= 2,
         state: _currentStep > 2 ? StepState.complete : StepState.indexed,
+      ),
+      Step(
+        title: Text('Kaza Sonrası İşlemler'),
+        content: _postAccidentActionsForm(),
+        isActive: _currentStep >= 3,
+        state: _currentStep > 3 ? StepState.complete : StepState.indexed,
+      ),
+      Step(
+        title: Text('Kaza Sonrası Yapılan İşlemler'),
+        content: _accidentActionsAftermathForm(),
+        isActive: _currentStep >= 4,
+        state: _currentStep > 4 ? StepState.complete : StepState.indexed,
+      ),
+      Step(
+        title: Text('Sonuçlar'),
+        content: _resultsForm(),
+        isActive: _currentStep >= 5,
+        state: _currentStep > 5 ? StepState.complete : StepState.disabled,
       ),
     ];
   }
@@ -77,16 +196,28 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
       children: [
         TextFormField(
           decoration: InputDecoration(labelText: 'İş Yeri Adı'),
-          onSaved: (value) => _isYeriAdi = value,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _isyeriBilgileri.isYeriAdi = value ?? '',
         ),
         TextFormField(
           decoration: InputDecoration(labelText: 'Kaza Yeri'),
-          onSaved: (value) => _kazaYeri = value,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazaOlayBilgileri.kazaYeri = value ?? '',
         ),
         // Tarih seçici
         ListTile(
           title: Text(
-              'Tarih: ${_tarih != null ? DateFormat('yyyy-MM-dd').format(_tarih!) : 'Seçilmedi'}'),
+              'Tarih: ${_kazaOlayBilgileri.tarih != null ? DateFormat('yyyy-MM-dd').format(_kazaOlayBilgileri.tarih!) : 'Seçilmedi'}'),
           onTap: () async {
             DateTime? picked = await showDatePicker(
               context: context,
@@ -94,22 +225,178 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
               firstDate: DateTime(2000),
               lastDate: DateTime(2025),
             );
-            if (picked != null && picked != _tarih) {
-              setState(() => _tarih = picked);
+            if (picked != null && picked != _kazaOlayBilgileri.tarih) {
+              setState(() => _kazaOlayBilgileri.tarih = picked);
             }
           },
         ),
         // Saat seçici
         ListTile(
           title: Text(
-              'Saat: ${_saat != null ? _saat!.format(context) : 'Seçilmedi'}'),
+              'Saat: ${_kazaOlayBilgileri.saat != null ? _kazaOlayBilgileri.saat : 'Seçilmedi'}'),
           onTap: () async {
             TimeOfDay? picked = await showTimePicker(
               context: context,
               initialTime: TimeOfDay.now(),
             );
-            if (picked != null && picked != _saat) {
-              setState(() => _saat = picked);
+            if (picked != null && picked != _kazaOlayBilgileri.saat) {
+              setState(() => _kazaOlayBilgileri.saat = picked.format(context));
+            }
+          },
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Faaliyet'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazaOlayBilgileri.faaliyet = value ?? '',
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Vardiya'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazaOlayBilgileri.vardiya = value ?? '',
+        ),
+      ],
+    );
+  }
+
+  Widget _accidentDetailsForm() {
+    return Column(
+      children: [
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Kaza No'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazaOlayBilgileri.kazaNo = value ?? '',
+        ),
+        // Kaza olayı tarifi
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Kaza Olayı Tarifi'),
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazaOlayArastirmasi.kazaOlayTarifi = value ?? '',
+        ),
+        // Kaza olayı türü
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Kaza Olayı Türü'),
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazaOlayArastirmasi.kazaOlayTuru = [value ?? ''],
+        ),
+        // Etkilenen bölge
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Etkilenen Bölge'),
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) =>
+              _kazaOlayArastirmasi.etkilenenBolge = [value ?? ''],
+        ),
+      ],
+    );
+  }
+
+  Widget _personnelInformationForm() {
+    return Column(
+      children: [
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Adı Soyadı'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazazedeBilgileri.adiSoyadi = value ?? '',
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Sicil No'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazazedeBilgileri.sicilNo = value ?? '',
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Birimi'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazazedeBilgileri.birimi = value ?? '',
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'TC Kimlik No'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _kazazedeBilgileri.tcKimlikNo = value ?? '',
+        ),
+        // İşe giriş tarihi seçici
+        ListTile(
+          title: Text(
+              'İşe Giriş Tarihi: ${_kazazedeBilgileri.iseGirisTarihi != null ? DateFormat('yyyy-MM-dd').format(_kazazedeBilgileri.iseGirisTarihi!) : 'Seçilmedi'}'),
+          onTap: () async {
+            DateTime? picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            );
+            if (picked != null && picked != _kazazedeBilgileri.iseGirisTarihi) {
+              setState(() => _kazazedeBilgileri.iseGirisTarihi = picked);
+            }
+          },
+        ),
+        // Doğum tarihi seçici
+        ListTile(
+          title: Text(
+              'Doğum Tarihi: ${_kazazedeBilgileri.dogumTarihi != null ? DateFormat('yyyy-MM-dd').format(_kazazedeBilgileri.dogumTarihi!) : 'Seçilmedi'}'),
+          onTap: () async {
+            DateTime? picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            );
+            if (picked != null && picked != _kazazedeBilgileri.dogumTarihi) {
+              setState(() => _kazazedeBilgileri.dogumTarihi = picked);
             }
           },
         ),
@@ -117,17 +404,84 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
     );
   }
 
-  Widget _accidentDetailsForm() {
-    // Kaza detayları formu
-    // Bu alan, modeldeki KazaOlayTuru ve EtkilenenBolge enum'ları için dropdown menüler,
-    // ve diğer ilgili detay alanları içerecek şekilde genişletilebilir.
-    return Container(); // Bu metod, örnek amaçlı boş bırakılmıştır.
+  Widget _postAccidentActionsForm() {
+    return Column(
+      children: [
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Kaza Sonrası İşlemler'),
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) =>
+              _sonuclar.kazaSonrasiYapilanIslemler = [value ?? ''],
+        ),
+      ],
+    );
   }
 
-  Widget _postAccidentActionsForm() {
-    // Kaza sonrası işlemler formu
-    // Bu alan, kaza sonrasında yapılan işlemlerle ilgili detayları toplayacak checkbox'lar,
-    // ve diğer ilgili form elemanlarını içerebilir.
-    return Container(); // Bu metod, örnek amaçlı boş bırakılmıştır.
+  Widget _accidentActionsAftermathForm() {
+    return Column(
+      children: [
+        TextFormField(
+          decoration:
+              InputDecoration(labelText: 'Kaza Sonrası Yapılan İşlemler'),
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) =>
+              _sonuclar.kazaSonrasiYapilanIslemler = [value ?? ''],
+        ),
+      ],
+    );
+  }
+
+  Widget _resultsForm() {
+    return Column(
+      children: [
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Kaza Olay Sonucu'),
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _sonuclar.kazaOlaySonucu = [value ?? ''],
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Rapor Gün Sayısı'),
+          keyboardType: TextInputType.number,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _sonuclar.raporGunSayisi = value ?? '',
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Hastane Adı'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen bu alanı doldurun';
+            }
+            return null;
+          },
+          onSaved: (value) => _sonuclar.hastaneAdi = value ?? '',
+        ),
+      ],
+    );
   }
 }
