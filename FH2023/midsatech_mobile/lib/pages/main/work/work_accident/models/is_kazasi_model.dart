@@ -105,3 +105,71 @@ class ArastirmaEkibi {
     required this.imza,
   });
 }
+
+/*
+import 'package:flutter/material.dart';
+
+class IsKazasiModel {
+  final String? employerType;
+  final String? businessName;
+  final String? accidentNumber;
+  final String? accidentLocation;
+  final DateTime? accidentDate;
+  final TimeOfDay? accidentTime;
+  final String? activity;
+  final String? shift;
+  final String? nameSurname;
+  final String? departmentWorkInformation;
+  final String? identificationNumber;
+  final DateTime? startDateOfWork;
+  final DateTime? dateOfBirth;
+  final String? postAccidentProcedures;
+  final List<String>? accidentIncidentType;
+  final List<String>? affectedArea;
+  final List<String>? accidentCauseEmployed;
+  final List<String>? accidentCauseEquipment;
+  final List<String>? workingEnvironment;
+  final String? accidentResultReport;
+  final String? numberOfReportDays;
+  final String? hospitalName;
+  final List<String>? accidentResult;
+  final String? nonconformitiesCausedAccident;
+  final String? correctivePreventiveActions;
+  final String? investigatingNameSurname;
+  final String? position;
+  final DateTime? investigationDate;
+  final String? signature;
+
+  IsKazasiModel({
+    this.employerType,
+    this.businessName,
+    this.accidentNumber,
+    this.accidentLocation,
+    this.accidentDate,
+    this.accidentTime,
+    this.activity,
+    this.shift,
+    this.nameSurname,
+    this.departmentWorkInformation,
+    this.identificationNumber,
+    this.startDateOfWork,
+    this.dateOfBirth,
+    this.postAccidentProcedures,
+    this.accidentIncidentType,
+    this.affectedArea,
+    this.accidentCauseEmployed,
+    this.accidentCauseEquipment,
+    this.workingEnvironment,
+    this.accidentResultReport,
+    this.numberOfReportDays,
+    this.hospitalName,
+    this.accidentResult,
+    this.nonconformitiesCausedAccident,
+    this.correctivePreventiveActions,
+    this.investigatingNameSurname,
+    this.position,
+    this.investigationDate,
+    this.signature,
+  });
+}
+*/

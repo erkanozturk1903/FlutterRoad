@@ -1,14 +1,14 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: prefer_const_constructors_in_immutables, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:midsatech_mobile/pages/main/work/work_accident/is_kazasi.dart';
+import 'package:midsatech_mobile/pages/main/work/corrective_actions/correvtive_list.dart';
 
-class IsKazasiListesiGrafik extends StatelessWidget {
-  final List<IsKazasi> isKazasiListesi;
+class DofGrafik extends StatelessWidget {
+  final List<Dof> dofListesi;
 
   // ignore: use_key_in_widget_constructors
-  IsKazasiListesiGrafik({required this.isKazasiListesi});
+  DofGrafik({required this.dofListesi});
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +22,20 @@ class IsKazasiListesiGrafik extends StatelessWidget {
   }
 
   List<PieChartSectionData> _getSections() {
-    Map<String, int> kazalarinNedenleri = {};
+    Map<String, int> dofDurumu = {};
 
     // Kazaların nedenlerini say
-    for (var kaza in isKazasiListesi) {
-      kazalarinNedenleri[kaza.yaralanmaTuru] =
-          (kazalarinNedenleri[kaza.yaralanmaTuru] ?? 0) + 1;
+    for (var dof in dofListesi) {
+      dofDurumu[dof.dofDurumu] = (dofDurumu[dof.dofDurumu] ?? 0) + 1;
     }
 
     // Toplam dilim sayısını hesapla
-    int totalSections = kazalarinNedenleri.length;
+    int totalSections = dofDurumu.length;
 
     // Pasta dilimlerini oluştur
     List<PieChartSectionData> sections = [];
     int index = 0;
-    kazalarinNedenleri.forEach((neden, sayi) {
+    dofDurumu.forEach((neden, sayi) {
       // ignore: prefer_const_declarations
       final double fontSize = 12;
       const double radius = 120;
@@ -44,7 +43,8 @@ class IsKazasiListesiGrafik extends StatelessWidget {
       const double textSize = 18;
 
       // Her dilimin yüzdesini hesapla
-      double value = sayi.toDouble() / isKazasiListesi.length * 100;
+
+      double value = sayi.toDouble() / dofListesi.length * 100;
 
       sections.add(PieChartSectionData(
         color: _getRandomColor(index),

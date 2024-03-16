@@ -1,6 +1,7 @@
 // ignore_for_file: sort_child_properties_last, non_constant_identifier_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:midsatech_mobile/pages/auth/login_screen.dart';
 import 'package:midsatech_mobile/pages/main/dashboard.dart';
 import 'package:midsatech_mobile/pages/main/events/events.dart';
 import 'package:midsatech_mobile/pages/main/human_resource.dart';
@@ -42,6 +43,17 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: container,
       drawer: Drawer(

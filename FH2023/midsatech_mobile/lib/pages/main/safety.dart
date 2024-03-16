@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:midsatech_mobile/pages/main/work/corrective_actions/correvtive_list.dart';
 import 'package:midsatech_mobile/pages/main/work/work_accident/is_kazasi.dart';
 
 class SafetyPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _SafetyPageState extends State<SafetyPage> {
       icon: Icons.assignment_turned_in_outlined,
       colors: [Colors.green.shade600, Colors.lightGreen.shade500],
       iconColor: Colors.white,
-      destination: IsKazasiListesi(),
+      destination: CorrectiveActionsPage(),
     ),
     CardInfo(
       name: 'Near Miss Form',

@@ -1,27 +1,27 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:midsatech_mobile/pages/main/work/work_form/work_accident.dart';
+import 'package:midsatech_mobile/pages/main/work/corrective_actions/correctivite_form/correctivite_form.dart';
 
-class IsKazasiListesi extends StatefulWidget {
-  const IsKazasiListesi({super.key});
+class CorrectiveActionsPage extends StatefulWidget {
+  const CorrectiveActionsPage({super.key});
 
   @override
-  State<IsKazasiListesi> createState() => _IsKazasiListesiState();
+  State<CorrectiveActionsPage> createState() => _CorrectiveActionsPageState();
 }
 
-class _IsKazasiListesiState extends State<IsKazasiListesi> {
-  List<IsKazasi> isKazasiListesi = [
-    IsKazasi('01.01.2021', 'Kayma'),
-    IsKazasi('02.01.2021', 'Düşme'),
-    IsKazasi('03.01.2021', 'Kayma'),
-    IsKazasi('15.03.2024', 'Trafik Kazası'),
-    IsKazasi('15.03.2024', 'Yüksekten Düşme')
+class _CorrectiveActionsPageState extends State<CorrectiveActionsPage> {
+  List<Dof> dofListesi = [
+    Dof('01.01.2021', 'Continues'),
+    Dof('02.01.2021', 'Completed'),
+    Dof('03.01.2021', 'Completed'),
+    Dof('15.03.2024', 'Completed'),
+    Dof('15.03.2024', 'Continues')
   ];
 
-  void yeniIsKazasiEkle(IsKazasi yeniIsKazasi) {
+  void yeniIsKazasiEkle(Dof yeniDof) {
     setState(() {
-      isKazasiListesi.add(yeniIsKazasi);
+      dofListesi.add(yeniDof);
     });
   }
 
@@ -32,7 +32,7 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: const Text(
-          'Work Accident List',
+          'Corrective Preventive Actions',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -40,12 +40,12 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final yeniIsKazasi = await Navigator.push(
+          final yeniDof = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => IsKazasiFormPage()),
+            MaterialPageRoute(builder: (context) => CorrectiviteFormPage()),
           );
-          if (yeniIsKazasi != null) {
-            yeniIsKazasiEkle(yeniIsKazasi);
+          if (yeniDof != null) {
+            yeniIsKazasiEkle(yeniDof);
           }
         },
         child: const Icon(
@@ -64,16 +64,15 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
               DataColumn(label: Text('Cause of Accident')),
               DataColumn(label: Text('Details')),
             ],
-            rows: isKazasiListesi.map((isKazasi) {
+            rows: dofListesi.map((dof) {
               return DataRow(cells: [
-                DataCell(Text(isKazasi.tarih)),
-                DataCell(Text(isKazasi.yaralanmaTuru)),
+                DataCell(Text(dof.dofTarihi)),
+                DataCell(Text(dof.dofDurumu)),
                 DataCell(ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => IsKazasiDetay(isKazasi)),
+                      MaterialPageRoute(builder: (context) => DofDetay(dof)),
                     );
                   },
                   child: Text('Details'),
@@ -87,11 +86,11 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
   }
 }
 
-class IsKazasi {
-  final String tarih;
-  final String yaralanmaTuru;
+class Dof {
+  final String dofTarihi;
+  final String dofDurumu;
 
-  IsKazasi(this.tarih, this.yaralanmaTuru);
+  Dof(this.dofTarihi, this.dofDurumu);
 }
 
 class YeniIsKazasiEkle extends StatefulWidget {
@@ -133,8 +132,8 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                final yeniIsKazasi = IsKazasi(
-                    tarihController.text, yaralanmaTuruController.text);
+                final yeniIsKazasi =
+                    Dof(tarihController.text, yaralanmaTuruController.text);
                 Navigator.pop(context, yeniIsKazasi);
               },
               child: Text('Save'),
@@ -146,10 +145,10 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
   }
 }
 
-class IsKazasiDetay extends StatelessWidget {
-  final IsKazasi isKazasi;
+class DofDetay extends StatelessWidget {
+  final Dof dof;
 
-  IsKazasiDetay(this.isKazasi);
+  DofDetay(this.dof);
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +157,7 @@ class IsKazasiDetay extends StatelessWidget {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'İş Kazası Detayı',
+          'Corrective Actions Details',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -168,8 +167,8 @@ class IsKazasiDetay extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('İş Kazası Tarihi: ${isKazasi.tarih}'),
-            Text('Yaralanma Türü: ${isKazasi.yaralanmaTuru}'),
+            Text('Correctivete Actions Date: ${dof.dofTarihi}'),
+            Text('Correctivete State: ${dof.dofDurumu}'),
           ],
         ),
       ),
