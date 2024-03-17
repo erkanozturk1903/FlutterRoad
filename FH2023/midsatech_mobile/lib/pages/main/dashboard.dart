@@ -11,11 +11,11 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   final List<IsKazasi> isKazasiListesi = [
-    IsKazasi('01.01.2021', 'Kayma'),
-    IsKazasi('02.01.2021', 'Düşme'),
-    IsKazasi('03.01.2021', 'Kayma'),
-    IsKazasi('15.03.2024', 'Trafik Kazası'),
-    IsKazasi('15.03.2024', 'Yüksekten Düşme')
+    IsKazasi('02.01.2021', 'Fall'),
+    IsKazasi('01.01.2021', 'Slip'),
+    IsKazasi('02.01.2021', 'Falling From High'),
+    IsKazasi('15.03.2024', 'Traffic Accident'),
+    IsKazasi('15.03.2024', 'Falling From High')
   ];
 
   List<Dof> dofListesi = [

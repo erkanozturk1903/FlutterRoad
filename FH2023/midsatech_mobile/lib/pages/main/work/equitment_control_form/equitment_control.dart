@@ -1,28 +1,24 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:midsatech_mobile/pages/main/work/work_form/work_accident.dart';
+import 'package:midsatech_mobile/pages/main/work/equitment_control_form/equitment_control_form/equitment_form.dart';
 
-class IsKazasiListesi extends StatefulWidget {
-  const IsKazasiListesi({super.key});
+class EquitmentControlFormPage extends StatefulWidget {
+  const EquitmentControlFormPage({super.key});
 
   @override
-  State<IsKazasiListesi> createState() => _IsKazasiListesiState();
+  State<EquitmentControlFormPage> createState() =>
+      _EquitmentControlFormPageState();
 }
 
-class _IsKazasiListesiState extends State<IsKazasiListesi> {
-  List<IsKazasi> isKazasiListesi = [
-    IsKazasi('01.01.2021', 'Slip'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Falling From High'),
-    IsKazasi('15.03.2024', 'Traffic Accident'),
-    IsKazasi('15.03.2024', 'Falling From High')
+class _EquitmentControlFormPageState extends State<EquitmentControlFormPage> {
+  List<EquitmentControl> equitmentControlListesi = [
+    EquitmentControl('01.01.2024', 'General Checklist'),
   ];
 
-  void yeniIsKazasiEkle(IsKazasi yeniIsKazasi) {
+  void yeniCalismaFormuEkle(EquitmentControl yeniEuipmentControl) {
     setState(() {
-      isKazasiListesi.add(yeniIsKazasi);
+      equitmentControlListesi.add(yeniEuipmentControl);
     });
   }
 
@@ -33,7 +29,7 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: const Text(
-          'Work Accident List',
+          'Equipment Control Form',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -41,12 +37,12 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final yeniIsKazasi = await Navigator.push(
+          final yeniEuipmentControl = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => IsKazasiFormPage()),
+            MaterialPageRoute(builder: (context) => EquitmentControlForm()),
           );
-          if (yeniIsKazasi != null) {
-            yeniIsKazasiEkle(yeniIsKazasi);
+          if (yeniEuipmentControl != null) {
+            yeniCalismaFormuEkle(yeniEuipmentControl);
           }
         },
         child: const Icon(
@@ -62,19 +58,20 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
           child: DataTable(
             columns: [
               DataColumn(label: Text('Date')),
-              DataColumn(label: Text('Cause of Accident')),
+              DataColumn(label: Text('Control Form Type')),
               DataColumn(label: Text('Details')),
             ],
-            rows: isKazasiListesi.map((isKazasi) {
+            rows: equitmentControlListesi.map((equitment) {
               return DataRow(cells: [
-                DataCell(Text(isKazasi.tarih)),
-                DataCell(Text(isKazasi.yaralanmaTuru)),
+                DataCell(Text(equitment.equitmentControlTarihi)),
+                DataCell(Text(equitment.equitmentControlFormType)),
                 DataCell(ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => IsKazasiDetay(isKazasi)),
+                          builder: (context) =>
+                              EquitmentControlDetay(equitment)),
                     );
                   },
                   child: Text('Details'),
@@ -88,11 +85,11 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
   }
 }
 
-class IsKazasi {
-  final String tarih;
-  final String yaralanmaTuru;
+class EquitmentControl {
+  final String equitmentControlTarihi;
+  final String equitmentControlFormType;
 
-  IsKazasi(this.tarih, this.yaralanmaTuru);
+  EquitmentControl(this.equitmentControlTarihi, this.equitmentControlFormType);
 }
 
 class YeniIsKazasiEkle extends StatefulWidget {
@@ -102,7 +99,7 @@ class YeniIsKazasiEkle extends StatefulWidget {
 
 class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
   final TextEditingController tarihController = TextEditingController();
-  final TextEditingController yaralanmaTuruController = TextEditingController();
+  final TextEditingController workPermitController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +108,7 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'Add New Work Accident',
+          'Add New Work Permit Form',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -124,19 +121,19 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
           children: [
             TextFormField(
               controller: tarihController,
-              decoration: InputDecoration(labelText: 'Date of Work Accident'),
+              decoration: InputDecoration(labelText: 'Date of Near Miss'),
             ),
             SizedBox(height: 16),
             TextFormField(
-              controller: yaralanmaTuruController,
-              decoration: InputDecoration(labelText: 'Injury Type'),
+              controller: workPermitController,
+              decoration: InputDecoration(labelText: 'Work Permit Type'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                final yeniIsKazasi = IsKazasi(
-                    tarihController.text, yaralanmaTuruController.text);
-                Navigator.pop(context, yeniIsKazasi);
+                final yeniNearMiss = EquitmentControl(
+                    tarihController.text, workPermitController.text);
+                Navigator.pop(context, yeniNearMiss);
               },
               child: Text('Save'),
             ),
@@ -147,10 +144,11 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
   }
 }
 
-class IsKazasiDetay extends StatelessWidget {
-  final IsKazasi isKazasi;
+class EquitmentControlDetay extends StatelessWidget {
+  final EquitmentControl equitmentControl;
 
-  IsKazasiDetay(this.isKazasi);
+  // ignore: prefer_const_constructors_in_immutables
+  EquitmentControlDetay(this.equitmentControl);
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +157,7 @@ class IsKazasiDetay extends StatelessWidget {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'İş Kazası Detayı',
+          'Corrective Actions Details',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -169,8 +167,10 @@ class IsKazasiDetay extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('İş Kazası Tarihi: ${isKazasi.tarih}'),
-            Text('Yaralanma Türü: ${isKazasi.yaralanmaTuru}'),
+            Text(
+                'Equitment Control Date: ${equitmentControl.equitmentControlTarihi}'),
+            Text(
+                'Equitment Checklist: ${equitmentControl.equitmentControlFormType}'),
           ],
         ),
       ),

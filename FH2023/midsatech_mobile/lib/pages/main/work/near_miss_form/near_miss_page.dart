@@ -1,28 +1,26 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:midsatech_mobile/pages/main/work/work_form/work_accident.dart';
+import 'package:midsatech_mobile/pages/main/work/near_miss_form/page/near_miss_form.dart';
 
-class IsKazasiListesi extends StatefulWidget {
-  const IsKazasiListesi({super.key});
+class NearMissPage extends StatefulWidget {
+  const NearMissPage({super.key});
 
   @override
-  State<IsKazasiListesi> createState() => _IsKazasiListesiState();
+  State<NearMissPage> createState() => _NearMissPageState();
 }
 
-class _IsKazasiListesiState extends State<IsKazasiListesi> {
-  List<IsKazasi> isKazasiListesi = [
-    IsKazasi('01.01.2021', 'Slip'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Falling From High'),
-    IsKazasi('15.03.2024', 'Traffic Accident'),
-    IsKazasi('15.03.2024', 'Falling From High')
+class _NearMissPageState extends State<NearMissPage> {
+  List<NearMiss> nearMissListesi = [
+    NearMiss('01.01.2024', 'Production'),
+    NearMiss('02.01.2021', 'Stairs'),
+    NearMiss('03.01.2021', 'Toilet'),
+    NearMiss('15.03.2024', 'Dining Hall'),
   ];
 
-  void yeniIsKazasiEkle(IsKazasi yeniIsKazasi) {
+  void yeniIsKazasiEkle(NearMiss yeniNearMiss) {
     setState(() {
-      isKazasiListesi.add(yeniIsKazasi);
+      nearMissListesi.add(yeniNearMiss);
     });
   }
 
@@ -33,7 +31,7 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: const Text(
-          'Work Accident List',
+          'Near Miss Actions',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -41,12 +39,12 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final yeniIsKazasi = await Navigator.push(
+          final yeniNearMiss = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => IsKazasiFormPage()),
+            MaterialPageRoute(builder: (context) => NearMissFormPage()),
           );
-          if (yeniIsKazasi != null) {
-            yeniIsKazasiEkle(yeniIsKazasi);
+          if (yeniNearMiss != null) {
+            yeniIsKazasiEkle(yeniNearMiss);
           }
         },
         child: const Icon(
@@ -62,19 +60,19 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
           child: DataTable(
             columns: [
               DataColumn(label: Text('Date')),
-              DataColumn(label: Text('Cause of Accident')),
+              DataColumn(label: Text('Section')),
               DataColumn(label: Text('Details')),
             ],
-            rows: isKazasiListesi.map((isKazasi) {
+            rows: nearMissListesi.map((nearMiis) {
               return DataRow(cells: [
-                DataCell(Text(isKazasi.tarih)),
-                DataCell(Text(isKazasi.yaralanmaTuru)),
+                DataCell(Text(nearMiis.nearMissTarihi)),
+                DataCell(Text(nearMiis.nearMissSection)),
                 DataCell(ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => IsKazasiDetay(isKazasi)),
+                          builder: (context) => NearMissDetay(nearMiis)),
                     );
                   },
                   child: Text('Details'),
@@ -88,11 +86,11 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
   }
 }
 
-class IsKazasi {
-  final String tarih;
-  final String yaralanmaTuru;
+class NearMiss {
+  final String nearMissTarihi;
+  final String nearMissSection;
 
-  IsKazasi(this.tarih, this.yaralanmaTuru);
+  NearMiss(this.nearMissTarihi, this.nearMissSection);
 }
 
 class YeniIsKazasiEkle extends StatefulWidget {
@@ -102,7 +100,7 @@ class YeniIsKazasiEkle extends StatefulWidget {
 
 class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
   final TextEditingController tarihController = TextEditingController();
-  final TextEditingController yaralanmaTuruController = TextEditingController();
+  final TextEditingController nearMissController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +109,7 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'Add New Work Accident',
+          'Add New Near Miss',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -124,19 +122,19 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
           children: [
             TextFormField(
               controller: tarihController,
-              decoration: InputDecoration(labelText: 'Date of Work Accident'),
+              decoration: InputDecoration(labelText: 'Date of Near Miss'),
             ),
             SizedBox(height: 16),
             TextFormField(
-              controller: yaralanmaTuruController,
-              decoration: InputDecoration(labelText: 'Injury Type'),
+              controller: nearMissController,
+              decoration: InputDecoration(labelText: 'Section of Near Miss'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                final yeniIsKazasi = IsKazasi(
-                    tarihController.text, yaralanmaTuruController.text);
-                Navigator.pop(context, yeniIsKazasi);
+                final yeniNearMiss =
+                    NearMiss(tarihController.text, nearMissController.text);
+                Navigator.pop(context, yeniNearMiss);
               },
               child: Text('Save'),
             ),
@@ -147,10 +145,11 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
   }
 }
 
-class IsKazasiDetay extends StatelessWidget {
-  final IsKazasi isKazasi;
+class NearMissDetay extends StatelessWidget {
+  final NearMiss nearMiss;
 
-  IsKazasiDetay(this.isKazasi);
+  // ignore: prefer_const_constructors_in_immutables
+  NearMissDetay(this.nearMiss);
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +158,7 @@ class IsKazasiDetay extends StatelessWidget {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'İş Kazası Detayı',
+          'Corrective Actions Details',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -169,8 +168,8 @@ class IsKazasiDetay extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('İş Kazası Tarihi: ${isKazasi.tarih}'),
-            Text('Yaralanma Türü: ${isKazasi.yaralanmaTuru}'),
+            Text('Correctivete Actions Date: ${nearMiss.nearMissTarihi}'),
+            Text('Correctivete State: ${nearMiss.nearMissSection}'),
           ],
         ),
       ),

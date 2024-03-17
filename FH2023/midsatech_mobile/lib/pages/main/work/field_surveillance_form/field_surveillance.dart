@@ -1,28 +1,25 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:midsatech_mobile/pages/main/work/work_form/work_accident.dart';
+import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/pages/field_surveillance_form.dart';
 
-class IsKazasiListesi extends StatefulWidget {
-  const IsKazasiListesi({super.key});
+class FieldSurveillancePage extends StatefulWidget {
+  const FieldSurveillancePage({super.key});
 
   @override
-  State<IsKazasiListesi> createState() => _IsKazasiListesiState();
+  State<FieldSurveillancePage> createState() => _FieldSurveillancePageState();
 }
 
-class _IsKazasiListesiState extends State<IsKazasiListesi> {
-  List<IsKazasi> isKazasiListesi = [
-    IsKazasi('01.01.2021', 'Slip'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Falling From High'),
-    IsKazasi('15.03.2024', 'Traffic Accident'),
-    IsKazasi('15.03.2024', 'Falling From High')
+class _FieldSurveillancePageState extends State<FieldSurveillancePage> {
+  List<FieldSurveillance> workDefinitonListesi = [
+    FieldSurveillance('01.01.2024', 'Working at Height'),
+    FieldSurveillance('02.01.2021', 'Working in Confined Spaces'),
+    FieldSurveillance('03.01.2021', 'Working with Lifting Equipment'),
   ];
 
-  void yeniIsKazasiEkle(IsKazasi yeniIsKazasi) {
+  void yeniCalismaFormuEkle(FieldSurveillance yeniDefinitonNonconformity) {
     setState(() {
-      isKazasiListesi.add(yeniIsKazasi);
+      workDefinitonListesi.add(yeniDefinitonNonconformity);
     });
   }
 
@@ -33,7 +30,7 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: const Text(
-          'Work Accident List',
+          'Field Surveillance Form',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -41,12 +38,13 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final yeniIsKazasi = await Navigator.push(
+          final yeniWorkPermit = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => IsKazasiFormPage()),
+            MaterialPageRoute(
+                builder: (context) => FieldSurveillanceFormPage()),
           );
-          if (yeniIsKazasi != null) {
-            yeniIsKazasiEkle(yeniIsKazasi);
+          if (yeniWorkPermit != null) {
+            yeniCalismaFormuEkle(yeniWorkPermit);
           }
         },
         child: const Icon(
@@ -62,19 +60,21 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
           child: DataTable(
             columns: [
               DataColumn(label: Text('Date')),
-              DataColumn(label: Text('Cause of Accident')),
+              DataColumn(label: Text('Definition of Nonconformity')),
               DataColumn(label: Text('Details')),
             ],
-            rows: isKazasiListesi.map((isKazasi) {
+            rows: workDefinitonListesi.map((definitionNonconformity) {
               return DataRow(cells: [
-                DataCell(Text(isKazasi.tarih)),
-                DataCell(Text(isKazasi.yaralanmaTuru)),
+                DataCell(Text(definitionNonconformity.workPermitTarihi)),
+                DataCell(
+                    Text(definitionNonconformity.workDefinitonNonconformity)),
                 DataCell(ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => IsKazasiDetay(isKazasi)),
+                          builder: (context) =>
+                              WorkPermitDetay(definitionNonconformity)),
                     );
                   },
                   child: Text('Details'),
@@ -88,11 +88,11 @@ class _IsKazasiListesiState extends State<IsKazasiListesi> {
   }
 }
 
-class IsKazasi {
-  final String tarih;
-  final String yaralanmaTuru;
+class FieldSurveillance {
+  final String workPermitTarihi;
+  final String workDefinitonNonconformity;
 
-  IsKazasi(this.tarih, this.yaralanmaTuru);
+  FieldSurveillance(this.workPermitTarihi, this.workDefinitonNonconformity);
 }
 
 class YeniIsKazasiEkle extends StatefulWidget {
@@ -102,7 +102,7 @@ class YeniIsKazasiEkle extends StatefulWidget {
 
 class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
   final TextEditingController tarihController = TextEditingController();
-  final TextEditingController yaralanmaTuruController = TextEditingController();
+  final TextEditingController workPermitController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +111,7 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'Add New Work Accident',
+          'Add New Work Permit Form',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -124,19 +124,21 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
           children: [
             TextFormField(
               controller: tarihController,
-              decoration: InputDecoration(labelText: 'Date of Work Accident'),
+              decoration: InputDecoration(
+                  labelText: 'Date of Definition of Nonconformity'),
             ),
             SizedBox(height: 16),
             TextFormField(
-              controller: yaralanmaTuruController,
-              decoration: InputDecoration(labelText: 'Injury Type'),
+              controller: workPermitController,
+              decoration:
+                  InputDecoration(labelText: 'Definition of Nonconformity'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                final yeniIsKazasi = IsKazasi(
-                    tarihController.text, yaralanmaTuruController.text);
-                Navigator.pop(context, yeniIsKazasi);
+                final yeniNearMiss = FieldSurveillance(
+                    tarihController.text, workPermitController.text);
+                Navigator.pop(context, yeniNearMiss);
               },
               child: Text('Save'),
             ),
@@ -147,10 +149,11 @@ class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
   }
 }
 
-class IsKazasiDetay extends StatelessWidget {
-  final IsKazasi isKazasi;
+class WorkPermitDetay extends StatelessWidget {
+  final FieldSurveillance definitionNonconformity;
 
-  IsKazasiDetay(this.isKazasi);
+  // ignore: prefer_const_constructors_in_immutables
+  WorkPermitDetay(this.definitionNonconformity);
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +162,7 @@ class IsKazasiDetay extends StatelessWidget {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'İş Kazası Detayı',
+          'Corrective Actions Details',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -169,8 +172,10 @@ class IsKazasiDetay extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('İş Kazası Tarihi: ${isKazasi.tarih}'),
-            Text('Yaralanma Türü: ${isKazasi.yaralanmaTuru}'),
+            Text(
+                'Correctivete Actions Date: ${definitionNonconformity.workPermitTarihi}'),
+            Text(
+                'Correctivete State: ${definitionNonconformity.workDefinitonNonconformity}'),
           ],
         ),
       ),

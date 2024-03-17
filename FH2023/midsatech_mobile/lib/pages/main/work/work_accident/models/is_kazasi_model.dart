@@ -114,15 +114,15 @@ class IsKazasiModel {
   final String? businessName;
   final String? accidentNumber;
   final String? accidentLocation;
-  final DateTime? accidentDate;
-  final TimeOfDay? accidentTime;
+  final Timestamp? accidentDate;
+  final String? accidentTime; // Bu alan TimeOfDay yerine String olarak değiştirildi.
   final String? activity;
   final String? shift;
   final String? nameSurname;
   final String? departmentWorkInformation;
   final String? identificationNumber;
-  final DateTime? startDateOfWork;
-  final DateTime? dateOfBirth;
+  final Timestamp? startDateOfWork;
+  final Timestamp? dateOfBirth;
   final String? postAccidentProcedures;
   final List<String>? accidentIncidentType;
   final List<String>? affectedArea;
@@ -137,7 +137,7 @@ class IsKazasiModel {
   final String? correctivePreventiveActions;
   final String? investigatingNameSurname;
   final String? position;
-  final DateTime? investigationDate;
+  final Timestamp? investigationDate;
   final String? signature;
 
   IsKazasiModel({
@@ -171,5 +171,73 @@ class IsKazasiModel {
     this.investigationDate,
     this.signature,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'employerType': employerType,
+      'businessName': businessName,
+      'accidentNumber': accidentNumber,
+      'accidentLocation': accidentLocation,
+      'accidentDate': accidentDate,
+      'accidentTime': accidentTime,
+      'activity': activity,
+      'shift': shift,
+      'nameSurname': nameSurname,
+      'departmentWorkInformation': departmentWorkInformation,
+      'identificationNumber': identificationNumber,
+      'startDateOfWork': startDateOfWork,
+      'dateOfBirth': dateOfBirth,
+      'postAccidentProcedures': postAccidentProcedures,
+      'accidentIncidentType': accidentIncidentType,
+      'affectedArea': affectedArea,
+      'accidentCauseEmployed': accidentCauseEmployed,
+      'accidentCauseEquipment': accidentCauseEquipment,
+      'workingEnvironment': workingEnvironment,
+      'accidentResultReport': accidentResultReport,
+      'numberOfReportDays': numberOfReportDays,
+      'hospitalName': hospitalName,
+      'accidentResult': accidentResult,
+      'nonconformitiesCausedAccident': nonconformitiesCausedAccident,
+      'correctivePreventiveActions': correctivePreventiveActions,
+      'investigatingNameSurname': investigatingNameSurname,
+      'position': position,
+      'investigationDate': investigationDate,
+      'signature': signature,
+    };
+  }
+
+  factory IsKazasiModel.fromMap(Map<String, dynamic> map) {
+    return IsKazasiModel(
+      employerType: map['employerType'],
+      businessName: map['businessName'],
+      accidentNumber: map['accidentNumber'],
+      accidentLocation: map['accidentLocation'],
+      accidentDate: map['accidentDate'],
+      accidentTime: map['accidentTime'],
+      activity: map['activity'],
+      shift: map['shift'],
+      nameSurname: map['nameSurname'],
+      departmentWorkInformation: map['departmentWorkInformation'],
+      identificationNumber: map['identificationNumber'],
+      startDateOfWork: map['startDateOfWork'],
+      dateOfBirth: map['dateOfBirth'],
+      postAccidentProcedures: map['postAccidentProcedures'],
+      accidentIncidentType: List<String>.from(map['accidentIncidentType']),
+      affectedArea: List<String>.from(map['affectedArea']),
+      accidentCauseEmployed: List<String>.from(map['accidentCauseEmployed']),
+      accidentCauseEquipment: List<String>.from(map['accidentCauseEquipment']),
+      workingEnvironment: List<String>.from(map['workingEnvironment']),
+      accidentResultReport: map['accidentResultReport'],
+      numberOfReportDays: map['numberOfReportDays'],
+      hospitalName: map['hospitalName'],
+      accidentResult: List<String>.from(map['accidentResult']),
+      nonconformitiesCausedAccident: map['nonconformitiesCausedAccident'],
+      correctivePreventiveActions: map['correctivePreventiveActions'],
+      investigatingNameSurname: map['investigatingNameSurname'],
+      position: map['position'],
+      investigationDate: map['investigationDate'],
+      signature: map['signature'],
+    );
+  }
 }
 */

@@ -2,7 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:midsatech_mobile/pages/main/work/corrective_actions/correvtive_list.dart';
+import 'package:midsatech_mobile/pages/main/work/equitment_control_form/equitment_control.dart';
+import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/field_surveillance.dart';
+import 'package:midsatech_mobile/pages/main/work/near_miss_form/near_miss_page.dart';
 import 'package:midsatech_mobile/pages/main/work/work_accident/is_kazasi.dart';
+import 'package:midsatech_mobile/pages/main/work/work_permit_form/work_permit_page.dart';
 
 class SafetyPage extends StatefulWidget {
   @override
@@ -30,28 +34,28 @@ class _SafetyPageState extends State<SafetyPage> {
       icon: Icons.warning_amber_outlined,
       colors: [Colors.orange.shade700, Colors.amber.shade600],
       iconColor: Colors.white,
-      destination: IsKazasiListesi(),
+      destination: NearMissPage(),
     ),
     CardInfo(
       name: 'Work Permit Form',
       icon: Icons.home_work_outlined,
       colors: [Colors.purple.shade500, Colors.purple.shade700],
       iconColor: Colors.white,
-      destination: IsKazasiListesi(),
+      destination: WorkPermitPage(),
     ),
     CardInfo(
-      name: 'Field Inspection Form',
+      name: 'Field Surveillance Form',
       icon: Icons.search_outlined,
       colors: [Colors.red.shade600, Colors.red.shade800],
       iconColor: Colors.white,
-      destination: IsKazasiListesi(),
+      destination: FieldSurveillancePage(),
     ),
     CardInfo(
       name: 'Equipment Control Form',
       icon: Icons.build_circle_outlined,
       colors: [Colors.teal.shade500, Colors.tealAccent.shade700],
       iconColor: Colors.white,
-      destination: IsKazasiListesi(),
+      destination: EquitmentControlFormPage(),
     ),
   ];
 

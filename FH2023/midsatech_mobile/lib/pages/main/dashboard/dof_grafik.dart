@@ -45,10 +45,11 @@ class DofGrafik extends StatelessWidget {
       // Her dilimin yüzdesini hesapla
 
       double value = sayi.toDouble() / dofListesi.length * 100;
+      double roundedValue = (value * 100).round() / 100;
 
       sections.add(PieChartSectionData(
         color: _getRandomColor(index),
-        value: value,
+        value: roundedValue,
         title: '$neden\n$sayi',
         radius: radius,
         titleStyle: TextStyle(
@@ -71,7 +72,7 @@ class DofGrafik extends StatelessWidget {
             ],
           ),
           child: Text(
-            '$value%',
+            '$roundedValue%',
             style: TextStyle(
               fontSize: textSize,
               fontWeight: FontWeight.bold,
