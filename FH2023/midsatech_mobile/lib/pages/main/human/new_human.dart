@@ -1,8 +1,7 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:midsatech_mobile/pages/main/human/model/human_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PersonelEklemeFormu extends StatefulWidget {
   final Function(Human) onPersonelEkle;
@@ -77,6 +76,15 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
         jobs: isController.text,
         profilResmiUrl: profilResmiUrl ?? "", // Null kontrolü
       );
+
+      // Firestore'a yeni kullanıcıyı eklemek için
+      FirebaseFirestore.instance
+          .collection('midsatech')
+          .doc('customers')
+          .collection('users')
+          .doc('human')
+          .set(yeniPersonel.toMap());
+
       widget.onPersonelEkle(yeniPersonel);
       Navigator.of(context).pop();
     }

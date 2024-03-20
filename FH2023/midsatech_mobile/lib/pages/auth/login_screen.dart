@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_final_fields
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:midsatech_mobile/common/widget/button_widget.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
@@ -14,6 +17,43 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login(BuildContext context) async {
+    final String email = _emailController.text
+        .trim(); // Email için TextEditingController tanımlamanız gerekir
+    final String password = _passwordController
+        .text; // Şifre için TextEditingController tanımlamanız gerekir
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
+    try {
+      // Kullanıcı girişi
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      // Giriş başarılı, ana sayfaya yönlendir
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } catch (e) {
+      // Hata durumunda kullanıcıya bilgi ver
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login failed: $e'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 15),
               appTextField(
+                controller: _emailController,
                 text: "Email",
                 iconName: "assets/icons/user.png",
                 hintText: "Enter your email",
@@ -61,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               //TODO: Password fields
               appTextField(
+                  controller: _passwordController,
                   text: "Password",
                   iconName: "assets/icons/lock.png",
                   hintText: "Enter your password",
@@ -78,12 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: appButton(
                     buttonName: "Login",
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
+                      _login(context);
                     }),
               ),
 
