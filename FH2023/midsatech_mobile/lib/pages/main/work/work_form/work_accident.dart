@@ -1,9 +1,12 @@
-import 'dart:io';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:midsatech_mobile/pages/main/work/work_accident/models/is_kazasi_model.dart';
 
 class IsKazasiFormPage extends StatefulWidget {
   @override
@@ -11,11 +14,16 @@ class IsKazasiFormPage extends StatefulWidget {
 }
 
 class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
   final ImagePicker _picker = ImagePicker();
   List<XFile>? imageFileList = [];
   dynamic _pickImageError;
+
+/* final CollectionReference usersCollection =
+      FirebaseFirestore.instance.
+
+ */
 
   void pickImages() async {
     try {
@@ -51,8 +59,16 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
     );
   }
 
-  void _submitForm() {
-    print('Veri Kayıt Edildi');
+  Future<void> submitForm(
+      Map<String, dynamic> data, List<XFile>? imageFileList) async {
+    final IsKazasiReport isKazasiReport =
+        IsKazasiReport.fromForm(data, imageFileList);
+    await FirebaseFirestore.instance
+        .collection('midsatech')
+        .doc('customers')
+        .collection('users')
+        .doc('is_kazasi_report')
+        .set(isKazasiReport.toMap());
   }
 
   @override
@@ -530,8 +546,11 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
           FloatingActionButton(
             heroTag: 'save',
             backgroundColor: Colors.deepOrange,
-            onPressed: () {
-              _submitForm();
+            onPressed: () async {
+              if (_formKey.currentState!.validate()) {
+                final data = _formKey.currentState!.value;
+                await submitForm(data, imageFileList);
+              }
               Navigator.pop(context);
             },
             child: const Icon(Icons.save, color: Colors.white),

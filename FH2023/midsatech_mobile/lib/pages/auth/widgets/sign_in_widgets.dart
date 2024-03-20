@@ -1,9 +1,10 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget thirdPartyLogin() {
   return Container(
-    margin:const EdgeInsets.only(left: 80, right: 88, top: 40, bottom: 20),
+    margin: const EdgeInsets.only(left: 80, right: 88, top: 40, bottom: 20),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -25,4 +26,3 @@ Widget _loginButton(String imagePath) {
     ),
   );
 }
-

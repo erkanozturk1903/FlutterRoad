@@ -1,176 +1,70 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:midsatech_mobile/pages/main/work/work_form/work_accident.dart';
+import 'package:midsatech_mobile/pages/main/work/work_accident/models/is_kazasi_model.dart';
 
 class IsKazasiListesi extends StatefulWidget {
-  const IsKazasiListesi({super.key});
-
   @override
-  State<IsKazasiListesi> createState() => _IsKazasiListesiState();
+  _IsKazasiListesiState createState() => _IsKazasiListesiState();
 }
 
 class _IsKazasiListesiState extends State<IsKazasiListesi> {
-  List<IsKazasi> isKazasiListesi = [
-    IsKazasi('01.01.2021', 'Slip'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Fall'),
-    IsKazasi('02.01.2021', 'Falling From High'),
-    IsKazasi('15.03.2024', 'Traffic Accident'),
-    IsKazasi('15.03.2024', 'Falling From High')
-  ];
-
-  void yeniIsKazasiEkle(IsKazasi yeniIsKazasi) {
-    setState(() {
-      isKazasiListesi.add(yeniIsKazasi);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF021734),
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Work Accident List',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final yeniIsKazasi = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => IsKazasiFormPage()),
-          );
-          if (yeniIsKazasi != null) {
-            yeniIsKazasiEkle(yeniIsKazasi);
-          }
-        },
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+        title: Text('Work Accident List'),
         backgroundColor: Colors.deepOrange,
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: DataTable(
-            columns: [
-              DataColumn(label: Text('Date')),
-              DataColumn(label: Text('Cause of Accident')),
-              DataColumn(label: Text('Details')),
-            ],
-            rows: isKazasiListesi.map((isKazasi) {
-              return DataRow(cells: [
-                DataCell(Text(isKazasi.tarih)),
-                DataCell(Text(isKazasi.yaralanmaTuru)),
-                DataCell(ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => IsKazasiDetay(isKazasi)),
-                    );
-                  },
-                  child: Text('Details'),
-                )),
-              ]);
-            }).toList(),
-          ),
-        ),
-      ),
-    );
-  }
-}
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('midsatech/customers/users/is_kazasi_report').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
 
-class IsKazasi {
-  final String tarih;
-  final String yaralanmaTuru;
-
-  IsKazasi(this.tarih, this.yaralanmaTuru);
-}
-
-class YeniIsKazasiEkle extends StatefulWidget {
-  @override
-  _YeniIsKazasiEkleState createState() => _YeniIsKazasiEkleState();
-}
-
-class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
-  final TextEditingController tarihController = TextEditingController();
-  final TextEditingController yaralanmaTuruController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF021734),
-        foregroundColor: Colors.white,
-        title: Text(
-          'Add New Work Accident',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: tarihController,
-              decoration: InputDecoration(labelText: 'Date of Work Accident'),
-            ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: yaralanmaTuruController,
-              decoration: InputDecoration(labelText: 'Injury Type'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                final yeniIsKazasi = IsKazasi(
-                    tarihController.text, yaralanmaTuruController.text);
-                Navigator.pop(context, yeniIsKazasi);
-              },
-              child: Text('Save'),
-            ),
-          ],
-        ),
+          List<DocumentSnapshot> docs = snapshot.data!.docs;
+          return ListView.builder(
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              Map<String, dynamic> data = docs[index].data() as Map<String, dynamic>;
+              IsKazasiReport report = IsKazasiReport.fromForm(data, imageFileList);
+              
+              return ListTile(
+                title: Text(report.accidentDate.toString()),
+                subtitle: Text(report.accidentIncidentType.join(', ')),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => IsKazasiDetay(report: report)),
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
 
 class IsKazasiDetay extends StatelessWidget {
-  final IsKazasi isKazasi;
+   final IsKazasiReport report;
 
-  IsKazasiDetay(this.isKazasi);
+  IsKazasiDetay(this.report);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF021734),
-        foregroundColor: Colors.white,
-        title: Text(
-          'İş Kazası Detayı',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        title: Text('Accident Details'),
+        backgroundColor: Colors.deepOrange,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('İş Kazası Tarihi: ${isKazasi.tarih}'),
-            Text('Yaralanma Türü: ${isKazasi.yaralanmaTuru}'),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Date: ${report.accidentDate}'),
+            Text('Incident Type: ${report.accidentIncidentType.join(', ')}'),
+            // Diğer alanlar...
           ],
         ),
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:midsatech_mobile/common/widget/app_shadow.dart';
 import 'package:midsatech_mobile/common/widget/image_widgets.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
