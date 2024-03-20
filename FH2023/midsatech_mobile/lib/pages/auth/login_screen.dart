@@ -33,14 +33,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              thirdPartyLogin(),
               const SizedBox(
                 height: 10,
               ),
               Center(
+                child: Text(
+                  ' Midsatech-W',
+                  style: TextStyle(
+                      color: Colors.deepOrange.shade400,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              thirdPartyLogin(),
+              const SizedBox(
+                height: 5,
+              ),
+              Center(
                 child: text14Normal(text: 'Or use your email account to login'),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 15),
               appTextField(
                 text: "Email",
                 iconName: "assets/icons/user.png",
@@ -59,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Forgot Password?",
                 ),
               ),
-              const SizedBox(height: 60),
+              const SizedBox(height: 40),
               //TODO: Login button
 
               Center(

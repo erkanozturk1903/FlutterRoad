@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ? Icon(
                         Icons.person,
                         size: 60,
-                        color: Colors.white,,
+                        color: Colors.white,
                       )
                     : null,
               ),

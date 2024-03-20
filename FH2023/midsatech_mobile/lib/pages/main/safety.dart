@@ -62,27 +62,31 @@ class _SafetyPageState extends State<SafetyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 30.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1.0,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+          ),
+          padding: EdgeInsets.all(10),
+          itemCount: cards.length,
+          itemBuilder: (context, index) {
+            return CustomCardItem(
+              name: cards[index].name,
+              icon: cards[index].icon,
+              colors: cards[index].colors,
+              iconColor: cards[index].iconColor,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => cards[index].destination),
+              ),
+            );
+          },
         ),
-        padding: EdgeInsets.all(10),
-        itemCount: cards.length,
-        itemBuilder: (context, index) {
-          return CustomCardItem(
-            name: cards[index].name,
-            icon: cards[index].icon,
-            colors: cards[index].colors,
-            iconColor: cards[index].iconColor,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => cards[index].destination),
-            ),
-          );
-        },
       ),
     );
   }

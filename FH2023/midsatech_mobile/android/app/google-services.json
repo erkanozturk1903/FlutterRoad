@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "169469224384",
+    "project_id": "midsatech-w",
+    "storage_bucket": "midsatech-w.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169469224384:android:3ea7b123b803b0a3649425",
+        "android_client_info": {
+          "package_name": "com.midsatech.midsatech_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBloOcnXp6DQF8coahzbsqEOr_mboHWx9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

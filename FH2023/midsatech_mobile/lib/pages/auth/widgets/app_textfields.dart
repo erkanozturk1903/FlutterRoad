@@ -1,24 +1,23 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:midsatech_mobile/common/widget/app_shadow.dart';
 import 'package:midsatech_mobile/common/widget/image_widgets.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
 
-
-Widget appTextField(
-    {String text = "",
-      String iconName = "",
-      String hintText = "Type in your info",
-      bool obscureText = false,
-    }) {
+Widget appTextField({
+  String text = "",
+  String iconName = "",
+  String hintText = "Type in your info",
+  bool obscureText = false,
+  TextEditingController? controller,
+}) {
   return Container(
       padding: const EdgeInsets.only(left: 25, right: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           text14Normal(text: text),
-         const SizedBox(height: 5),
+          const SizedBox(height: 5),
           Container(
             width: 325,
             height: 50,
@@ -39,6 +38,7 @@ Widget appTextField(
                   width: 260,
                   height: 50,
                   child: TextField(
+                    controller: controller,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       hintText: hintText,
@@ -62,7 +62,6 @@ Widget appTextField(
                           color: Colors.transparent,
                         ),
                       ),
-
                     ),
                     onChanged: (value) {
                       print(value);
