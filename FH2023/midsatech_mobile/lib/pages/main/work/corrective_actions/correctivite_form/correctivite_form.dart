@@ -2,11 +2,13 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:midsatech_mobile/pages/main/work/corrective_actions/correctivite_form/models/corrective_model.dart';
+import 'package:midsatech_mobile/pages/main/work/corrective_actions/models/corrective_model.dart';
 
 class CorrectiviteFormPage extends StatefulWidget {
   @override
@@ -14,31 +16,13 @@ class CorrectiviteFormPage extends StatefulWidget {
 }
 
 class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final ImagePicker _picker = ImagePicker();
   List<XFile>? imageFileList = [];
   dynamic _pickImageError;
-
-  CorrectiviteFormData formData = CorrectiviteFormData(
-    businessName: '',
-    cpaNumber: '',
-    date: null,
-    demandWhy: [],
-    nameSurname: '',
-    mission: '',
-    unitOfWork: '',
-    definitionOfNonconformity: '',
-    possibleRisks: '',
-    rootCause: '',
-    adviceAndSuggestions: '',
-    imagePaths: [],
-    activitiesPerformed: '',
-    cpaResult: [],
-    dateResult: null,
-    approvedName: '',
-  );
 
   void pickImages() async {
     try {
@@ -74,36 +58,26 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
     );
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+  Future<void> _submitForm(
+      Map<String, dynamic> formData, List<XFile>? imageFileList) async {
+    // Debug: Form verilerini konsola yazdır
+    print("Form Data: $formData");
+    final CorrectiveAction correctiveAction =
+        CorrectiveAction.fromForm(formData, imageFileList);
 
-/*     // Verileri formData nesnesine atama
-    CorrectiviteFormData formData = CorrectiviteFormData(
-      
-      businessName: _formKey.currentState.['field1']!.value.toString(),
-      cpaNumber: _formKey.currentState!.fields['field2']!.value.toString(),
-      date: _formKey.currentState!.fields['date']!.value as DateTime?,
-      demandWhy: (_formKey.currentState!.fields['demandwhy']!.value as List).map((value) => value.toString()).toList(),
-      nameSurname: _formKey.currentState!.fields['adi']!.value.toString(),
-      mission: _formKey.currentState!.fields['mission']!.value.toString(),
-      unitOfWork: _formKey.currentState!.fields['unit']!.value.toString(),
-      definitionOfNonconformity: _formKey.currentState!.fields['defination']!.value.toString(),
-      possibleRisks: _formKey.currentState!.fields['posible_risks']!.value.toString(),
-      rootCause: _formKey.currentState!.fields['root_cause']!.value.toString(),
-      adviceAndSuggestions: _formKey.currentState!.fields['advice_suggestions']!.value.toString(),
-      imagePaths: imageFileList!.map((image) => image.path).toList(),
-      activitiesPerformed: _formKey.currentState!.fields['activities_performed']!.value.toString(),
-      cpaResult: (_formKey.currentState!.fields['cpa_result']!.value as List).map((value) => value.toString()).toList(),
-      dateResult: _formKey.currentState!.fields['date_result']!.value as DateTime?,
-      approvedName: _formKey.currentState!.fields['approved_name']!.value.toString(),
-    );
- */
-      // Verileri formData nesnesi üzerinden işleme devam etme
-      print(formData.toJson());
-
-      // Formu sıfırla
-      _formKey.currentState!.reset();
+    // Debug: Dönüştürülen IsKazasiReport nesnesinin haritasını konsola yazdır
+    print("IsKazasiReport toMap: ${correctiveAction.toMap()}");
+    try {
+      await FirebaseFirestore.instance
+          .collection('midsatech')
+          .doc('customers')
+          .collection('administrator')
+          .doc('dof')
+          .collection('dof_list')
+          .add(correctiveAction.toMap());
+      print('Corrective action saved successfully');
+    } catch (e) {
+      print('Error saving corrective action: $e');
     }
   }
 
@@ -113,8 +87,8 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
-        title: const Text(
-          'CPA Form',
+        title: Text(
+          'cpa_form'.tr,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -132,33 +106,43 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
             controlsBuilder: (context, details) {
               return Row(
                 children: [
-                  _currentStep == 4
+                  _currentStep == 5
                       ? const SizedBox()
                       : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
                           onPressed: () {
-                            _currentStep < 4
+                            _currentStep < 5
                                 ? setState(() => _currentStep += 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Next',
+                          child: Text(
+                            'next'.tr,
                             style: TextStyle(
-                              color: Color(0xFF021734),
+                              color: Colors.white,
                             ),
                           ),
                         ),
                   _currentStep == 0
                       ? const SizedBox()
                       : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
                           onPressed: () {
                             _currentStep > 0
                                 ? setState(() => _currentStep -= 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Back',
+                          child: Text(
+                            'back'.tr,
                             style: TextStyle(
-                              color: Color(0xFF021734),
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -167,32 +151,32 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
             },
             steps: <Step>[
               Step(
-                title: Text('General Information'),
+                title: Text('general_information'),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
-                      name: 'field1',
-                      decoration: InputDecoration(labelText: 'Business Name'),
+                      name: 'businessName',
+                      decoration: InputDecoration(labelText: 'business_name'.tr),
                     ),
                     FormBuilderTextField(
-                      name: 'field2',
-                      decoration: InputDecoration(labelText: 'CPA Number'),
+                      name: 'cpaNumber',
+                      decoration: InputDecoration(labelText: 'cpa_number'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'date',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: InputDecoration(labelText: 'Date'),
+                      decoration: InputDecoration(labelText: 'date'.tr),
                     ),
                     FormBuilderCheckboxGroup(
-                      name: 'demandwhy',
-                      options: const [
-                        FormBuilderFieldOption(value: 'Field Inspection'),
-                        FormBuilderFieldOption(value: 'Employee Suggestion'),
-                        FormBuilderFieldOption(value: 'Survey'),
-                        FormBuilderFieldOption(value: 'Work Accident'),
-                        FormBuilderFieldOption(value: 'Internal Audit'),
-                        FormBuilderFieldOption(value: 'External Audit'),
+                      name: 'demandWhy',
+                      options: [
+                        FormBuilderFieldOption(value: 'field_inspection'.tr),
+                        FormBuilderFieldOption(value: 'employee_suggestion'.tr),
+                        FormBuilderFieldOption(value: 'survey'.tr),
+                        FormBuilderFieldOption(value: 'work_accident'.tr),
+                        FormBuilderFieldOption(value: 'internal_audit'.tr),
+                        FormBuilderFieldOption(value: 'external_audit'.tr),
                       ],
                     ),
                   ],
@@ -202,20 +186,20 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
                     _currentStep >= 0 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Requesting The Activity'),
+                title: Text('requesting_the_activity'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
-                      name: 'adi',
-                      decoration: InputDecoration(labelText: 'Name -Surname'),
+                      name: 'nameSurname',
+                      decoration: InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'mission',
-                      decoration: InputDecoration(labelText: 'Mission'),
+                      decoration: InputDecoration(labelText: 'mission'.tr),
                     ),
                     FormBuilderTextField(
-                      name: 'unit',
-                      decoration: InputDecoration(labelText: 'Unit Of Work'),
+                      name: 'unitOfWork',
+                      decoration: InputDecoration(labelText: 'unit_of_work'.tr),
                     ),
                   ],
                 ),
@@ -224,50 +208,33 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
                     _currentStep >= 1 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Non-Conformity Information'),
+                title: Text('non_conformity_information'.tr),
                 content: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       FormBuilderTextField(
                         maxLines: 2,
-                        name: 'defination',
+                        name: 'nonconformityDefinition',
                         decoration: InputDecoration(
-                            labelText: 'Definition of Nonconformity'),
+                            labelText: 'definition_of_nonconformity'.tr),
                       ),
                       FormBuilderTextField(
                         maxLines: 2,
-                        name: 'posible_risks',
+                        name: 'possibleRisks',
                         decoration:
-                            InputDecoration(labelText: 'Possible Risks'),
+                            InputDecoration(labelText: 'possible_risks'.tr),
                       ),
                       FormBuilderTextField(
                         maxLines: 2,
-                        name: 'root_cause',
-                        decoration: InputDecoration(labelText: 'Root Cause'),
+                        name: 'rootCause',
+                        decoration: InputDecoration(labelText: 'root_cause'.tr),
                       ),
                       FormBuilderTextField(
                         maxLines: 2,
-                        name: 'advice_suggestions',
+                        name: 'adviceSuggestions',
                         decoration: InputDecoration(
-                            labelText: 'Advice and Suggestions'),
+                            labelText: 'advice_and_suggestions'.tr),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            color: Colors.grey[200],
-                            height: 150,
-                            width: 150,
-                            child: imageFileList != null
-                                ? prewiewImages()
-                                : const Center(
-                                    child: Text('No Image Selected'),
-                                  ),
-                          )
-                        ],
-                      )
                     ],
                   ),
                 ),
@@ -276,27 +243,27 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
                     _currentStep >= 2 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Corrective Preventive Activities'),
+                title: Text('corrective_preventive_activities'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
                       maxLines: 2,
-                      name: 'activities_performed',
+                      name: 'activitiesPerformed',
                       decoration:
-                          InputDecoration(labelText: 'Activities Performed'),
+                          InputDecoration(labelText: 'activities_performed'.tr),
                     ),
                     FormBuilderCheckboxGroup(
-                      name: 'cpa_result',
-                      options: const [
-                        FormBuilderFieldOption(value: 'Activity Continues'),
-                        FormBuilderFieldOption(value: 'Activity Completed'),
+                      name: 'cpaResult',
+                      options: [
+                        FormBuilderFieldOption(value: 'activity_continues'.tr),
+                        FormBuilderFieldOption(value: 'activity_completed'.tr),
                       ],
                     ),
                     FormBuilderDateTimePicker(
-                      name: 'date_result',
+                      name: 'dateResult',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: InputDecoration(labelText: 'Date Result'),
+                      decoration: InputDecoration(labelText: 'date_result'.tr),
                     ),
                   ],
                 ),
@@ -305,18 +272,38 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
                     _currentStep >= 3 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Result'),
-                content: Column(
-                  children: <Widget>[
-                    FormBuilderTextField(
-                      name: 'approved_name',
-                      decoration: InputDecoration(labelText: 'Name Surname'),
-                    ),
+                title: Text('correctivite_photos'.tr),
+                content: Row(
+                  children: [
+                    Container(
+                      color: Colors.grey[200],
+                      height: 150,
+                      width: 150,
+                      child: imageFileList != null
+                          ? prewiewImages()
+                          : Center(
+                              child: Text('no_image_selected'.tr),
+                            ),
+                    )
                   ],
                 ),
                 isActive: _currentStep >= 4,
                 state:
                     _currentStep >= 4 ? StepState.complete : StepState.disabled,
+              ),
+              Step(
+                title: Text('result'.tr),
+                content: Column(
+                  children: <Widget>[
+                    FormBuilderTextField(
+                      name: 'approvedName',
+                      decoration: InputDecoration(labelText: 'name_and_surname'.tr),
+                    ),
+                  ],
+                ),
+                isActive: _currentStep >= 5,
+                state:
+                    _currentStep >= 5 ? StepState.complete : StepState.disabled,
               ),
             ],
           ),
@@ -337,7 +324,14 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
           FloatingActionButton(
             heroTag: 'save',
             backgroundColor: Colors.deepOrange,
-            onPressed: _submitForm,
+            onPressed: () async {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+                final data = _formKey.currentState!.value;
+                await _submitForm(data, imageFileList);
+              }
+              Navigator.pop(context);
+            },
             child: const Icon(Icons.save, color: Colors.white),
           )
         ],

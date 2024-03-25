@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/common/widget/button_widget.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
 import 'package:midsatech_mobile/pages/auth/register.dart';
@@ -90,35 +91,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 5,
               ),
               Center(
-                child: text14Normal(text: 'Or use your email account to login'),
+                child: text14Normal(text: 'our_user_your_email_account_to_login'.tr),
               ),
               const SizedBox(height: 15),
               appTextField(
                 controller: _emailController,
-                text: "Email",
+                text: "email".tr,
                 iconName: "assets/icons/user.png",
-                hintText: "Enter your email",
+                hintText: "enter_your_email".tr,
               ),
               const SizedBox(height: 20),
               //TODO: Password fields
               appTextField(
                   controller: _passwordController,
-                  text: "Password",
+                  text: "password".tr,
                   iconName: "assets/icons/lock.png",
-                  hintText: "Enter your password",
+                  hintText: "enter_your_password".tr,
                   obscureText: true),
               const SizedBox(height: 10),
-              Container(
+              /*Container(
                 child: textUnderline(
                   text: "Forgot Password?",
                 ),
-              ),
+              ),*/
               const SizedBox(height: 40),
               //TODO: Login button
 
               Center(
                 child: appButton(
-                    buttonName: "Login",
+                    buttonName: "login".tr,
                     onTap: () {
                       _login(context);
                     }),
@@ -128,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
               //TODO: Sign up button
               Center(
                 child: appButton(
-                    buttonName: "Register",
+                    buttonName: "register".tr,
                     isLogin: false,
                     context: context,
                     onTap: () {

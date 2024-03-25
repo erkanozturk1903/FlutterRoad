@@ -1,7 +1,11 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, unnecessary_null_comparison
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/models/field_surveiallance.dart';
 import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/pages/field_surveillance_form.dart';
+import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/pages/form_details.dart';
 
 class FieldSurveillancePage extends StatefulWidget {
   const FieldSurveillancePage({super.key});
@@ -11,17 +15,7 @@ class FieldSurveillancePage extends StatefulWidget {
 }
 
 class _FieldSurveillancePageState extends State<FieldSurveillancePage> {
-  List<FieldSurveillance> workDefinitonListesi = [
-    FieldSurveillance('01.01.2024', 'Working at Height'),
-    FieldSurveillance('02.01.2021', 'Working in Confined Spaces'),
-    FieldSurveillance('03.01.2021', 'Working with Lifting Equipment'),
-  ];
-
-  void yeniCalismaFormuEkle(FieldSurveillance yeniDefinitonNonconformity) {
-    setState(() {
-      workDefinitonListesi.add(yeniDefinitonNonconformity);
-    });
-  }
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +32,12 @@ class _FieldSurveillancePageState extends State<FieldSurveillancePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final yeniWorkPermit = await Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => FieldSurveillanceFormPage()),
+              builder: (context) => FieldSurveillanceFormPage(),
+            ),
           );
-          if (yeniWorkPermit != null) {
-            yeniCalismaFormuEkle(yeniWorkPermit);
-          }
         },
         child: const Icon(
           Icons.add,
@@ -53,131 +45,48 @@ class _FieldSurveillancePageState extends State<FieldSurveillancePage> {
         ),
         backgroundColor: Colors.deepOrange,
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: DataTable(
-            columns: [
-              DataColumn(label: Text('Date')),
-              DataColumn(label: Text('Definition of Nonconformity')),
-              DataColumn(label: Text('Details')),
-            ],
-            rows: workDefinitonListesi.map((definitionNonconformity) {
-              return DataRow(cells: [
-                DataCell(Text(definitionNonconformity.workPermitTarihi)),
-                DataCell(
-                    Text(definitionNonconformity.workDefinitonNonconformity)),
-                DataCell(ElevatedButton(
-                  onPressed: () {
+      body: StreamBuilder(
+        stream: _firestore.collection('field_surveillance_forms').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No forms available'));
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (BuildContext context, int index) {
+              var formData = snapshot.data!.docs[index];
+              var formModel = FieldSurveillanceFormModel.fromMap(
+                  formData.data() as Map<String, dynamic>);
+              return Card(
+                elevation: 2,
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: ListTile(
+                  title: Text(
+                    'Date: ${DateFormat('yyyy-MM-dd').format(formModel.date)}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Definition of Nonconformity: ${formModel.definitionOfNonconformity}',
+                  ),
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              WorkPermitDetay(definitionNonconformity)),
+                        builder: (context) =>
+                            FormDetailsPage(formModel: formModel),
+                      ),
                     );
                   },
-                  child: Text('Details'),
-                )),
-              ]);
-            }).toList(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class FieldSurveillance {
-  final String workPermitTarihi;
-  final String workDefinitonNonconformity;
-
-  FieldSurveillance(this.workPermitTarihi, this.workDefinitonNonconformity);
-}
-
-class YeniIsKazasiEkle extends StatefulWidget {
-  @override
-  _YeniIsKazasiEkleState createState() => _YeniIsKazasiEkleState();
-}
-
-class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
-  final TextEditingController tarihController = TextEditingController();
-  final TextEditingController workPermitController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF021734),
-        foregroundColor: Colors.white,
-        title: Text(
-          'Add New Work Permit Form',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: tarihController,
-              decoration: InputDecoration(
-                  labelText: 'Date of Definition of Nonconformity'),
-            ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: workPermitController,
-              decoration:
-                  InputDecoration(labelText: 'Definition of Nonconformity'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                final yeniNearMiss = FieldSurveillance(
-                    tarihController.text, workPermitController.text);
-                Navigator.pop(context, yeniNearMiss);
-              },
-              child: Text('Save'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class WorkPermitDetay extends StatelessWidget {
-  final FieldSurveillance definitionNonconformity;
-
-  // ignore: prefer_const_constructors_in_immutables
-  WorkPermitDetay(this.definitionNonconformity);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF021734),
-        foregroundColor: Colors.white,
-        title: Text(
-          'Corrective Actions Details',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-                'Correctivete Actions Date: ${definitionNonconformity.workPermitTarihi}'),
-            Text(
-                'Correctivete State: ${definitionNonconformity.workDefinitonNonconformity}'),
-          ],
-        ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

@@ -2,10 +2,13 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/models/field_surveiallance.dart';
 
 class FieldSurveillanceFormPage extends StatefulWidget {
   @override
@@ -14,7 +17,7 @@ class FieldSurveillanceFormPage extends StatefulWidget {
 }
 
 class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
   int? _selectedOlasilik;
   int? _selectedSiddet;
@@ -59,9 +62,42 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
     );
   }
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> addFormToFirestore(FieldSurveillanceFormModel formModel) async {
+    try {
+      await _firestore
+          .collection('field_surveillance_forms')
+          .add(formModel.toMap());
+    } catch (e) {
+      print('Error adding form to Firestore: $e');
+    }
+  }
+
   void _submitForm() {
-    print('Kaydedildi');
-    Navigator.pop(context);
+    _formKey.currentState?.save();
+    if (_formKey.currentState != null) {
+      final formData = _formKey.currentState!.value;
+      final formModel = FieldSurveillanceFormModel(
+        detecting: formData['detecting'],
+        preparedBy: formData['prepared_by'],
+        reportNumber: formData['report_number'],
+        date: formData['date'],
+        definitionOfNonconformity: formData['definition_nonconformity'],
+        reasonForNonconformity: formData['reason_nonconformity'],
+        addressOfUnit: formData['address_unit'],
+        responsibleUnit: formData['responsible_unit'],
+        imageUrls: imageFileList!.map((file) => file.path).toList(),
+        selectedPossibility: _selectedOlasilik!,
+        selectedViolence: _selectedSiddet!,
+        riskAssessment: _sonuc!,
+        opinionOfTheUnitResponsible: formData['opinion_unit_responsible'],
+      );
+
+      addFormToFirestore(formModel);
+      print('Kaydedildi');
+      Navigator.pop(context);
+    }
   }
 
   void _hesaplaVeOnlemGoster() {
@@ -72,70 +108,24 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
       String onlemlerMesaji;
       if (_sonuc! >= 15 && _sonuc! < 25) {
         _sonucRengi = Colors.red;
-        onlemlerMesaji = """
-II. Priority Hazards:
-Subjects that received 25 points as a result of the evaluation:
-• Work is stopped immediately.
-• The danger is brought under control.
-• Documented procedures/instructions are created for control.
-  • A monitoring and measurement plan is made and records are kept.
-   • Corrective and preventive actions for improvement are determined,
-    is documented, implemented and monitored. •
-    1. priority hazards are accepted as a result of controls
-    It is aimed to reduce it to acceptable limits.
-     • Where possible, quantify improvements.
-     are tracked and recorded.
-     • Necessary training is given to the personnel.
-      • All implementations on these issues are reviewed periodically.
-      It is audited and reported to management.
-"""; // Uzun açıklama yer alacak
+        onlemlerMesaji = "ii_priority_hazards".tr; // Uzun açıklama yer alacak
       } else if (_sonuc! >= 8 && _sonuc! < 15) {
         _sonucRengi = Colors.yellow;
-        onlemlerMesaji = """
-III.Priority Hazards:
-  As a result of the evaluation, over 8 (inclusive) points and below 15 points
-   Topics that get points:
-  The measures are described in the planned applications section and the implementation
-  checks are made.
-   Necessary training is given to the staff.
-    3. Priority hazards are acceptable as a result of controls
-     It is aimed to reduce it to the limits.
-""";
+        onlemlerMesaji = "iii_priority_hazards".tr;
       } else if (_sonuc! <= 6) {
         _sonucRengi = Colors.green;
-        onlemlerMesaji = """
-IV. Priority Hazards:
-  Subjects that received 6 or less points as a result of the evaluation:
-  It is examined to ensure that it does not pose a significant danger in the future.
-  and, if necessary, measures are described in the planned applications section,
-   Application checks are carried out and necessary training is given to the personnel.
-""";
+        onlemlerMesaji = "iv_priority_hazards".tr;
       } else if (_sonuc == 25) {
         _sonucRengi = Colors.red;
-        onlemlerMesaji = """
-I. Priority Hazards:
-  Subjects that received 25 points as a result of the evaluation:
-   • Work is stopped immediately.
-   • The danger is brought under control.
-    • Documented procedures/instructions are created for control.
-     • A monitoring and measurement plan is made and records are kept.
-      • Corrective and preventive actions for improvement are determined,
-       is documented, implemented and monitored.
-       • 1st priority hazards can be accepted as a result of controls.
-        It is aimed to reduce it to the limits.
-         • Where possible, quantify improvements.
-         are tracked and recorded.
-          • Necessary training is given to the personnel.
-           • All practices on these issues are audited periodically and reported to the management.
-""";
+        onlemlerMesaji = "i_priority_hazards".tr;
       } else {
-        onlemlerMesaji = 'Undetermined Risk';
+        onlemlerMesaji = 'undetermined_risk'.tr;
       }
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Precautions to take'),
+            title: Text('precautions_to_take'.tr),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -145,7 +135,7 @@ I. Priority Hazards:
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Ok'),
+                child: Text('ok'.tr),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -163,8 +153,8 @@ I. Priority Hazards:
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
-        title: const Text(
-          'Near Miss Form',
+        title: Text(
+          'near_miss_form'.tr,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -195,8 +185,8 @@ I. Priority Hazards:
                                 ? setState(() => _currentStep += 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Next',
+                          child: Text(
+                            'next'.tr,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -218,8 +208,8 @@ I. Priority Hazards:
                                 ? setState(() => _currentStep -= 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Back',
+                          child: Text(
+                            'back'.tr,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -230,27 +220,28 @@ I. Priority Hazards:
             },
             steps: <Step>[
               Step(
-                title: Text('General Information'),
+                title: Text('general_information'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'detecting',
-                      decoration: InputDecoration(labelText: 'Detecting'),
+                      decoration: InputDecoration(labelText: 'detecting'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'prepared_by',
-                      decoration:
-                          InputDecoration(labelText: 'Prepared the Report By'),
+                      decoration: InputDecoration(
+                          labelText: 'prepared_the_report_by'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'report_number',
-                      decoration: InputDecoration(labelText: 'Report Number'),
+                      decoration:
+                          InputDecoration(labelText: 'report_number'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'date',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: InputDecoration(labelText: 'Date'),
+                      decoration: InputDecoration(labelText: 'date'.tr),
                     ),
                   ],
                 ),
@@ -259,7 +250,7 @@ I. Priority Hazards:
                     _currentStep >= 0 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Type/Definition Of Nonconformity'),
+                title: Text('type_definition_of_nonconformity'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
@@ -267,23 +258,23 @@ I. Priority Hazards:
                       maxLength: 500,
                       name: 'definition_nonconformity',
                       decoration: InputDecoration(
-                          labelText: 'Definition of Of Nonconformity'),
+                          labelText: 'definition_of_nonconformity'.tr),
                     ),
                     FormBuilderTextField(
                       maxLines: 3,
                       maxLength: 500,
                       name: 'reason_nonconformity',
                       decoration: InputDecoration(
-                          labelText: 'Reasoon For Non-Conformity'),
+                          labelText: 'reasoon_for_non_conformity'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'address_unit',
-                      decoration: InputDecoration(labelText: 'Address of Unit'),
+                      decoration: InputDecoration(labelText: 'address_of_unit'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'responsible_unit',
                       decoration:
-                          InputDecoration(labelText: 'Responsible Unit'),
+                          InputDecoration(labelText: 'responsible_unit'.tr),
                     ),
                   ],
                 ),
@@ -292,7 +283,7 @@ I. Priority Hazards:
                     _currentStep >= 1 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Nonconformity Photo'),
+                title: Text('nonconformity_photo'.tr),
                 content: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
@@ -304,8 +295,8 @@ I. Priority Hazards:
                             width: 200,
                             child: imageFileList != null
                                 ? prewiewImages()
-                                : const Center(
-                                    child: Text('No Image Selected'),
+                                : Center(
+                                    child: Text('no_image_selected'.tr),
                                   ),
                           )
                         ],
@@ -321,19 +312,19 @@ I. Priority Hazards:
                     _currentStep >= 2 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('What is the incident?'),
+                title: Text('what_is_the_incident'.tr),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     DropdownButton<int>(
-                      hint: Text('Select Possibility'),
+                      hint: Text('select_possibility'.tr),
                       value: _selectedOlasilik,
-                      items: const [
-                        DropdownMenuItem(value: 5, child: Text('5 Very High')),
-                        DropdownMenuItem(value: 4, child: Text('4 High')),
-                        DropdownMenuItem(value: 3, child: Text('3 Middle')),
-                        DropdownMenuItem(value: 2, child: Text('2 Low')),
-                        DropdownMenuItem(value: 1, child: Text('1 Very Low')),
+                      items: [
+                        DropdownMenuItem(value: 5, child: Text('five_very_high'.tr)),
+                        DropdownMenuItem(value: 4, child: Text('four_high'.tr)),
+                        DropdownMenuItem(value: 3, child: Text('three_middle'.tr)),
+                        DropdownMenuItem(value: 2, child: Text('two_low'.tr)),
+                        DropdownMenuItem(value: 1, child: Text('one_very_low')),
                       ],
                       onChanged: (value) {
                         setState(() {
@@ -343,14 +334,14 @@ I. Priority Hazards:
                       },
                     ),
                     DropdownButton<int>(
-                      hint: Text('Violence Seçiniz'),
+                      hint: Text('violence_select'.tr),
                       value: _selectedSiddet,
-                      items: const [
-                        DropdownMenuItem(value: 5, child: Text('5 So serious')),
-                        DropdownMenuItem(value: 4, child: Text('4 Serious')),
-                        DropdownMenuItem(value: 3, child: Text('3 Middle')),
-                        DropdownMenuItem(value: 2, child: Text('2 Light')),
-                        DropdownMenuItem(value: 1, child: Text('1 Very Light')),
+                      items: [
+                        DropdownMenuItem(value: 5, child: Text('five_so_serious'.tr)),
+                        DropdownMenuItem(value: 4, child: Text('four_serious'.tr)),
+                        DropdownMenuItem(value: 3, child: Text('three_middle'.tr)),
+                        DropdownMenuItem(value: 2, child: Text('two_light'.tr)),
+                        DropdownMenuItem(value: 1, child: Text('one_very_light'.tr)),
                       ],
                       onChanged: (value) {
                         setState(() {
@@ -366,7 +357,7 @@ I. Priority Hazards:
                         child: Column(
                           children: [
                             Text(
-                              'Risk assessment: $_sonuc',
+                              'risk_assessment'.tr + ':' '$_sonuc',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -381,7 +372,7 @@ I. Priority Hazards:
                     _currentStep >= 3 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Regulatory and Preventive Activity Suggestions'),
+                title: Text('regulatory_and_preventive_activity'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
@@ -389,7 +380,7 @@ I. Priority Hazards:
                       maxLines: 4,
                       name: 'opinion_unit_responsible',
                       decoration: InputDecoration(
-                          labelText: 'Opinion of the Unit Responsible'),
+                          labelText: 'opinion_of_the_unit_responsible'.tr),
                     ),
                   ],
                 ),

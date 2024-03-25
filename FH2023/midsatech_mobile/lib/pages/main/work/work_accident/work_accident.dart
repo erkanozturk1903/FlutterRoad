@@ -1,9 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_single_cascade_in_expression_statements
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:midsatech_mobile/pages/main/work/work_accident/models/is_kazasi_model.dart';
@@ -19,11 +20,6 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
   final ImagePicker _picker = ImagePicker();
   List<XFile>? imageFileList = [];
   dynamic _pickImageError;
-
-/* final CollectionReference usersCollection =
-      FirebaseFirestore.instance.
-
- */
 
   void pickImages() async {
     try {
@@ -60,15 +56,31 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
   }
 
   Future<void> submitForm(
-      Map<String, dynamic> data, List<XFile>? imageFileList) async {
+      Map<String, dynamic> formData, List<XFile>? imageFileList) async {
+    // Debug: Form verilerini konsola yazdır
+    print("Form Data: $formData");
+
+    // Burada, IsKazasiReport modelinizin 'fromForm' metodunu çağırıyoruz.
+    // Bu örnekte, metodunuzun form verilerini ve resim listesini alıp bir IsKazasiReport nesnesine dönüştürdüğünü varsayıyoruz.
     final IsKazasiReport isKazasiReport =
-        IsKazasiReport.fromForm(data, imageFileList);
-    await FirebaseFirestore.instance
-        .collection('midsatech')
-        .doc('customers')
-        .collection('users')
-        .doc('is_kazasi_report')
-        .set(isKazasiReport.toMap());
+        IsKazasiReport.fromForm(formData, imageFileList);
+
+    // Debug: Dönüştürülen IsKazasiReport nesnesinin haritasını konsola yazdır
+    print("IsKazasiReport toMap: ${isKazasiReport.toMap()}");
+
+    try {
+      // Veritabanına kaydet
+      await FirebaseFirestore.instance
+          .collection('midsatech')
+          .doc('customers')
+          .collection('administrator')
+          .doc('is_kazasi_report')
+          .collection('reports')
+          .add(isKazasiReport.toMap());
+      print('Form submitted successfully');
+    } catch (e) {
+      print('Error submitting form: $e');
+    }
   }
 
   @override
@@ -77,8 +89,8 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
-        title: const Text(
-          'Work Accident Form',
+        title: Text(
+          'work_accident_form'.tr,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -99,30 +111,40 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                   _currentStep == 14
                       ? const SizedBox()
                       : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
                           onPressed: () {
                             _currentStep < 14
                                 ? setState(() => _currentStep += 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Next',
+                          child: Text(
+                            'next'.tr,
                             style: TextStyle(
-                              color: Color(0xFF021734),
+                              color: Colors.white,
                             ),
                           ),
                         ),
                   _currentStep == 0
                       ? const SizedBox()
                       : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
                           onPressed: () {
                             _currentStep > 0
                                 ? setState(() => _currentStep -= 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Back',
+                          child: Text(
+                            'back'.tr,
                             style: TextStyle(
-                              color: Color(0xFF021734),
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -131,27 +153,27 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
             },
             steps: <Step>[
               Step(
-                title: Text('Workplace Information'),
+                title: Text('workplace_information'.tr),
                 content: Column(
                   children: [
                     FormBuilderCheckboxGroup(
                       name: 'employer_type',
-                      options: const [
+                      options:  [
                         FormBuilderFieldOption(
-                          value: 'Principal Employer',
+                          value: 'principal_employer'.tr,
                         ),
                         FormBuilderFieldOption(
-                          value: 'Sub-Employer',
+                          value: 'sub_employer'.tr,
                         ),
                         FormBuilderFieldOption(
-                          value: 'Other',
+                          value: 'other'.tr,
                         ),
                       ],
                     ),
                     FormBuilderTextField(
                       name: 'business_name',
                       decoration:
-                          const InputDecoration(labelText: 'Business Name'),
+                      InputDecoration(labelText: 'business_name'.tr),
                     ),
                   ],
                 ),
@@ -160,38 +182,38 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 0 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Accident Incident Information'),
+                title: Text('accident_incident_information'.tr),
                 content: Column(
                   children: [
                     FormBuilderTextField(
                       name: 'accident_number',
                       decoration:
-                          const InputDecoration(labelText: 'Accident Number'),
+                      InputDecoration(labelText: 'accident_number'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'accident_location',
                       decoration:
-                          const InputDecoration(labelText: 'Accident Location'),
+                      InputDecoration(labelText: 'accident_location'),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'accident_date',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: const InputDecoration(labelText: 'Date'),
+                      decoration: InputDecoration(labelText: 'date'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'accident_time',
                       inputType: InputType.time,
                       format: DateFormat('HH:mm'),
-                      decoration: const InputDecoration(labelText: 'Time'),
+                      decoration:  InputDecoration(labelText: 'time'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'activity',
-                      decoration: const InputDecoration(labelText: 'Activity'),
+                      decoration: InputDecoration(labelText: 'activity'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'shift',
-                      decoration: const InputDecoration(labelText: 'Shift'),
+                      decoration:  InputDecoration(labelText: 'shift'.tr),
                     ),
                   ],
                 ),
@@ -200,37 +222,37 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 1 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Information Regarding the Victim'),
+                title: Text('information_regarding_the_victim'.tr),
                 content: Column(
                   children: [
                     FormBuilderTextField(
                       name: 'name_surname',
                       decoration:
-                          const InputDecoration(labelText: 'Name Surname'),
+                      InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'department_work_information',
-                      decoration: const InputDecoration(
-                          labelText: 'Department Work Information'),
+                      decoration: InputDecoration(
+                          labelText: 'department_work_information'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'identification_number',
-                      decoration: const InputDecoration(
-                          labelText: 'Identification Number'),
+                      decoration: InputDecoration(
+                          labelText: 'identification_number'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'start_date_of_work',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: const InputDecoration(
-                          labelText: 'Start Date Of Work'),
+                      decoration: InputDecoration(
+                          labelText: 'start_date_of_work'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'date_of_birth',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
                       decoration:
-                          const InputDecoration(labelText: 'Date Of Birth'),
+                      InputDecoration(labelText: 'date_of_birth'.tr),
                     ),
                   ],
                 ),
@@ -239,14 +261,14 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 2 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Post Accident Procedures'),
+                title: Text('post_accident_procedures'.tr),
                 content: Column(
                   children: [
                     FormBuilderTextField(
                       maxLines: 5,
                       name: 'post_accident_procedures',
-                      decoration: const InputDecoration(
-                          labelText: 'Post Accident Procedures'),
+                      decoration: InputDecoration(
+                          labelText: 'post_accident_procedures'.tr),
                     ),
                   ],
                 ),
@@ -256,26 +278,22 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
               ),
               Step(
                 title: Text('Accident Incident Type'),
-                content: Column(
-                  children: [
-                    FormBuilderCheckboxGroup(
-                      name: 'accident_incident_type',
-                      options: const [
-                        FormBuilderFieldOption(value: 'Slip/Fall/Crash'),
-                        FormBuilderFieldOption(value: 'Falling from high'),
-                        FormBuilderFieldOption(value: 'Object impact/fall'),
-                        FormBuilderFieldOption(value: 'Crush/Jam/Cut'),
-                        FormBuilderFieldOption(value: 'Burr/Dust formation'),
-                        FormBuilderFieldOption(value: 'Combustion/Explosion'),
-                        FormBuilderFieldOption(value: 'Electric shock'),
-                        FormBuilderFieldOption(value: 'Hot/Welding work'),
-                        FormBuilderFieldOption(value: 'Landslide/Collapse'),
-                        FormBuilderFieldOption(value: 'Poisoning'),
-                        FormBuilderFieldOption(value: 'Chemical Exposure'),
-                        FormBuilderFieldOption(value: 'Traffic Accident'),
-                        FormBuilderFieldOption(value: 'Other'),
-                      ],
-                    )
+                content: FormBuilderCheckboxGroup(
+                  name: 'accident_incident_type',
+                  options: [
+                    FormBuilderFieldOption(value: 'slip_fall_crash'.tr),
+                    FormBuilderFieldOption(value: 'falling_from_high'.tr),
+                    FormBuilderFieldOption(value: 'object_impact_fall'.tr),
+                    FormBuilderFieldOption(value: 'crush_jam_cut'.tr),
+                    FormBuilderFieldOption(value: 'burr_dust_formation'.tr),
+                    FormBuilderFieldOption(value: 'combustion_explosion'.tr),
+                    FormBuilderFieldOption(value: 'electric_shock'.tr),
+                    FormBuilderFieldOption(value: 'hot_welding_work'.tr),
+                    FormBuilderFieldOption(value: 'landslide_collapse'.tr),
+                    FormBuilderFieldOption(value: 'poisoning'.tr),
+                    FormBuilderFieldOption(value: 'chemical_exposure'.tr),
+                    FormBuilderFieldOption(value: 'traffic_accident'.tr),
+                    FormBuilderFieldOption(value: 'other'.tr),
                   ],
                 ),
                 isActive: _currentStep >= 4,
@@ -283,23 +301,23 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 4 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Affected Area'),
+                title: Text('affected_area'.tr),
                 content: Column(
                   children: [
                     FormBuilderCheckboxGroup(
                       name: 'affected_area',
-                      options: const [
-                        FormBuilderFieldOption(value: 'Head'),
-                        FormBuilderFieldOption(value: 'Neck'),
-                        FormBuilderFieldOption(value: 'Eye'),
-                        FormBuilderFieldOption(value: 'Face'),
-                        FormBuilderFieldOption(value: 'Back'),
-                        FormBuilderFieldOption(value: 'Body'),
-                        FormBuilderFieldOption(value: 'Hand'),
-                        FormBuilderFieldOption(value: 'Foot'),
-                        FormBuilderFieldOption(value: 'Leg'),
-                        FormBuilderFieldOption(value: 'Whole body'),
-                        FormBuilderFieldOption(value: 'Other'),
+                      options: [
+                        FormBuilderFieldOption(value: 'head'.tr),
+                        FormBuilderFieldOption(value: 'neck'.tr),
+                        FormBuilderFieldOption(value: 'eye'.tr),
+                        FormBuilderFieldOption(value: 'face'.tr),
+                        FormBuilderFieldOption(value: 'backs'.tr),
+                        FormBuilderFieldOption(value: 'body'.tr),
+                        FormBuilderFieldOption(value: 'hand'.tr),
+                        FormBuilderFieldOption(value: 'foot'.tr),
+                        FormBuilderFieldOption(value: 'leg'.tr),
+                        FormBuilderFieldOption(value: 'whole_body'.tr),
+                        FormBuilderFieldOption(value: 'other'.tr),
                       ],
                     )
                   ],
@@ -309,24 +327,24 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 5 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Cause of Accident Incident 1'),
+                title: Text('cause_of_accident_incident_one'.tr),
                 content: Column(
                   children: [
                     FormBuilderCheckboxGroup(
                       name: 'accident_cause_employed',
-                      options: const [
+                      options: [
                         FormBuilderFieldOption(
-                            value: 'Failure to comply with the rules'),
+                            value: 'failure_to_comply_with_the_rules'.tr),
                         FormBuilderFieldOption(
-                            value: 'Absentmindedness/Carelessness'),
-                        FormBuilderFieldOption(value: 'Fatigue'),
+                            value: 'absentmindedness_carelessness'.tr),
+                        FormBuilderFieldOption(value: 'fatigue'.tr),
                         FormBuilderFieldOption(
-                            value: 'Operation without protection'),
-                        FormBuilderFieldOption(value: 'Not using PPE'),
-                        FormBuilderFieldOption(value: 'Using faulty equipment'),
+                            value: 'operation_without_protection'.tr),
+                        FormBuilderFieldOption(value: 'not_using_ppe'.tr),
+                        FormBuilderFieldOption(value: 'using_faulty_equipment'.tr),
                         FormBuilderFieldOption(
-                            value: 'Working outside of duty'),
-                        FormBuilderFieldOption(value: 'Other'),
+                            value: 'working_outside_of_duty'.tr),
+                        FormBuilderFieldOption(value: 'other'.tr),
                       ],
                     )
                   ],
@@ -336,25 +354,25 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 6 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Cause of Accident Incident 2'),
+                title: Text('cause_of_accident_incident_two'.tr),
                 content: Column(
                   children: [
                     FormBuilderCheckboxGroup(
                       name: 'accident_cause_equipment',
-                      options: const [
-                        FormBuilderFieldOption(value: 'Unsuitable equipment'),
+                      options: [
+                        FormBuilderFieldOption(value: 'unsuitable_equipment'.tr),
                         FormBuilderFieldOption(
-                            value: 'Lack of periodic control'),
+                            value: 'lack_of_periodic_control'.tr),
                         FormBuilderFieldOption(
-                            value: 'Lack of maintenance machinery/equipment'),
+                            value: 'lack_of_maintenance_macinery_equitment'.tr),
                         FormBuilderFieldOption(
-                            value: 'Missing and defective protectors'),
-                        FormBuilderFieldOption(value: 'Unsecured equipment'),
-                        FormBuilderFieldOption(value: 'Ungrounded equipment'),
-                        FormBuilderFieldOption(value: 'Isolation disorder'),
+                            value: 'missing_and_defective_protectors'.tr),
+                        FormBuilderFieldOption(value: 'unsecured_equipment'.tr),
+                        FormBuilderFieldOption(value: 'ungrounded_equipment'.tr),
+                        FormBuilderFieldOption(value: 'isolation_disorder'.tr),
                         FormBuilderFieldOption(
-                            value: 'Improper equipment placement'),
-                        FormBuilderFieldOption(value: 'Other'),
+                            value: 'improper_equipment_placement'.tr),
+                        FormBuilderFieldOption(value: 'other'.tr),
                       ],
                     )
                   ],
@@ -364,23 +382,23 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 7 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Cause of Accident Incident 3'),
+                title: Text('cause_of_accident_incident_three'.tr),
                 content: Column(
                   children: [
                     FormBuilderCheckboxGroup(
                       name: 'working_environment',
-                      options: const [
+                      options: [
                         FormBuilderFieldOption(
-                            value: 'Disorganized working environment'),
-                        FormBuilderFieldOption(value: 'Lack of safety sign'),
-                        FormBuilderFieldOption(value: 'Lack of instructions'),
-                        FormBuilderFieldOption(value: 'Insufficient lighting'),
+                            value: 'disorganized_working_environment'.tr),
+                        FormBuilderFieldOption(value: 'lack_of_safety_sign'.tr),
+                        FormBuilderFieldOption(value: 'lack_of_instructions'.tr),
+                        FormBuilderFieldOption(value: 'insufficient_lighting'.tr),
                         FormBuilderFieldOption(
-                            value: 'Ergonomic inconvenience'),
-                        FormBuilderFieldOption(value: 'Unsafe stacking'),
-                        FormBuilderFieldOption(value: 'Noise'),
-                        FormBuilderFieldOption(value: 'Electricity'),
-                        FormBuilderFieldOption(value: 'Other'),
+                            value: 'ergonomic_inconvenience'.tr),
+                        FormBuilderFieldOption(value: 'unsafe_stacking'),
+                        FormBuilderFieldOption(value: 'noise'.tr),
+                        FormBuilderFieldOption(value: 'electricity'.tr),
+                        FormBuilderFieldOption(value: 'other'.tr),
                       ],
                     )
                   ],
@@ -390,7 +408,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 8 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Accident Incident Photos'),
+                title: Text('accident_incident_photos'.tr),
                 content: Row(
                   children: [
                     Container(
@@ -399,8 +417,8 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                       width: 150,
                       child: imageFileList != null
                           ? prewiewImages()
-                          : const Center(
-                              child: Text('No Image Selected'),
+                          : Center(
+                              child: Text('no_selected_image'.tr),
                             ),
                     )
                   ],
@@ -410,23 +428,23 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     _currentStep >= 9 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Accident Incident Result Report'),
+                title: Text('accident_result_report'.tr),
                 content: Column(
                   children: [
                     FormBuilderTextField(
                       name: 'accident_result_report',
                       decoration:
-                          const InputDecoration(labelText: 'Accident Result'),
+                           InputDecoration(labelText: 'accident_result'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'number_of_report_days',
-                      decoration: const InputDecoration(
-                          labelText: 'Number of Report Days'),
+                      decoration: InputDecoration(
+                          labelText: 'number_of_report_days'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'hospital_name',
                       decoration:
-                          const InputDecoration(labelText: 'Hospital Name'),
+                      InputDecoration(labelText: 'hospital_name'.tr),
                     ),
                   ],
                 ),
@@ -436,23 +454,23 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     : StepState.disabled,
               ),
               Step(
-                title: Text('Accident Incident Result'),
+                title: Text('accident_result_incident'.tr),
                 content: Column(
                   children: [
                     FormBuilderCheckboxGroup(
                       name: 'accident_result',
-                      options: const [
-                        FormBuilderFieldOption(value: 'No loss'),
+                      options: [
+                        FormBuilderFieldOption(value: 'no_loss'.tr),
                         FormBuilderFieldOption(
-                            value: 'Accident with material damage'),
-                        FormBuilderFieldOption(value: 'Minor injury'),
-                        FormBuilderFieldOption(value: 'Serious injury'),
-                        FormBuilderFieldOption(value: 'Loss of limb'),
-                        FormBuilderFieldOption(value: 'Loss of life'),
-                        FormBuilderFieldOption(value: 'No treatment required'),
+                            value: 'accident_with_material_damage'.tr),
+                        FormBuilderFieldOption(value: 'minor_injury'.tr),
+                        FormBuilderFieldOption(value: 'serious_injury'.tr),
+                        FormBuilderFieldOption(value: 'loss_off_limb'.tr),
+                        FormBuilderFieldOption(value: 'loss_of_life'.tr),
+                        FormBuilderFieldOption(value: 'no_treatment_required'.tr),
                         FormBuilderFieldOption(
-                            value: 'Occupational medicine (treatment)'),
-                        FormBuilderFieldOption(value: 'Hospital'),
+                            value: 'occupational_medicine_treatment'.tr),
+                        FormBuilderFieldOption(value: 'hospital'.tr),
                       ],
                     )
                   ],
@@ -463,15 +481,15 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     : StepState.disabled,
               ),
               Step(
-                title: Text('Nonconformities That Caused the Accident'),
+                title: Text('nonconformities_caused_accident'.tr),
                 content: Column(
                   children: [
                     FormBuilderTextField(
                       maxLines: 5,
                       name: 'nonconformities_caused_accident',
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           labelText:
-                              'Nonconformities That Caused the Accident'),
+                              'nonconformities_caused_accident'.tr),
                     ),
                   ],
                 ),
@@ -481,14 +499,14 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     : StepState.disabled,
               ),
               Step(
-                title: Text('Corrective Preventive Actions'),
+                title: Text('corrective_preventive_actions'.tr),
                 content: Column(
                   children: [
                     FormBuilderTextField(
                       maxLines: 5,
                       name: 'corrective_preventive_actions',
-                      decoration: const InputDecoration(
-                          labelText: 'Corrective Preventive Actions'),
+                      decoration: InputDecoration(
+                          labelText: 'corrective_preventive_actions'.tr),
                     ),
                   ],
                 ),
@@ -498,27 +516,27 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     : StepState.disabled,
               ),
               Step(
-                title: Text('Investigation Team'),
+                title: Text('investigation_team'.tr),
                 content: Column(
                   children: [
                     FormBuilderTextField(
                       name: 'investing_name_surname',
                       decoration:
-                          const InputDecoration(labelText: 'Name Surname'),
+                      InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'position',
-                      decoration: const InputDecoration(labelText: 'Position'),
+                      decoration: InputDecoration(labelText: 'position'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'date',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: const InputDecoration(labelText: 'Date'),
+                      decoration:  InputDecoration(labelText: 'date'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'signature',
-                      decoration: const InputDecoration(labelText: 'Signature'),
+                      decoration: InputDecoration(labelText: 'signature'.tr),
                     ),
                   ],
                 ),
@@ -548,6 +566,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
             backgroundColor: Colors.deepOrange,
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
                 final data = _formKey.currentState!.value;
                 await submitForm(data, imageFileList);
               }

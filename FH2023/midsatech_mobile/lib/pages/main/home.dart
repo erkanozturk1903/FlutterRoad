@@ -1,6 +1,7 @@
-// ignore_for_file: sort_child_properties_last, non_constant_identifier_names, prefer_const_constructors
+// ignore_for_file: sort_child_properties_last, non_constant_identifier_names, prefer_const_constructors, unnecessary_brace_in_string_interps
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/pages/auth/login_screen.dart';
 import 'package:midsatech_mobile/pages/main/dashboard.dart';
 import 'package:midsatech_mobile/pages/main/events/events.dart';
@@ -37,13 +38,27 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         //automaticallyImplyLeading: false,
-        title: const Text(
-          'Home',
-          style: TextStyle(
-            color: Colors.white,
+        title: Center(
+          child: Text(
+            'home'.tr,
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return LanguageSelectorDialog();
+                },
+              );
+            },
+            icon: const Icon(Icons.language),
+          ),
+          const SizedBox(width: 10),
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -76,15 +91,15 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         // shows the list of menu drawer
         children: [
-          menuItem(1, "Dashboard", Icons.dashboard_outlined,
+          menuItem(1, "dashboard".tr, Icons.dashboard_outlined,
               currentPage == DrawerSections.dashboard ? true : false),
-          menuItem(2, "Human Resource", Icons.supervised_user_circle_rounded,
+          menuItem(2, "human_resource".tr, Icons.supervised_user_circle_rounded,
               currentPage == DrawerSections.human ? true : false),
-          menuItem(3, "Work Safety", Icons.workspaces_sharp,
+          menuItem(3, "work_safety".tr, Icons.workspaces_sharp,
               currentPage == DrawerSections.safety ? true : false),
-          menuItem(4, "Event", Icons.calendar_month,
+          menuItem(4, "event".tr, Icons.calendar_month,
               currentPage == DrawerSections.event ? true : false),
-          menuItem(5, "Profile", Icons.feedback_outlined,
+          menuItem(5, "profile".tr, Icons.feedback_outlined,
               currentPage == DrawerSections.profile ? true : false),
         ],
       ),
@@ -146,4 +161,65 @@ enum DrawerSections {
   safety,
   event,
   profile,
+}
+
+class LanguageSelectorDialog extends StatelessWidget {
+  const LanguageSelectorDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Select Language'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FlagButton(
+            countryCode: 'en',
+            onPressed: () {
+              changeLanguage(context, 'en', 'US');
+            },
+          ),
+          FlagButton(
+            countryCode: 'fi',
+            onPressed: () {
+              changeLanguage(context, 'fi', 'FI');
+            },
+          ),
+          FlagButton(
+            countryCode: 'tr',
+            onPressed: () {
+              changeLanguage(context, 'tr', 'TR');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void changeLanguage(
+      BuildContext context, String languageCode, String countryCode) {
+    Get.updateLocale(Locale(languageCode, countryCode));
+    Navigator.pop(context);
+  }
+}
+
+class FlagButton extends StatelessWidget {
+  final String countryCode;
+  final VoidCallback onPressed;
+
+  const FlagButton(
+      {Key? key, required this.countryCode, required this.onPressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Image.asset(
+        'assets/lang/${countryCode}.jpg',
+        width: 32,
+        height: 32,
+      ),
+    );
+  }
 }

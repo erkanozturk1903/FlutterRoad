@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:midsatech_mobile/pages/main/work/corrective_actions/correvtive_list.dart';
 
 class DofGrafik extends StatelessWidget {
-  final List<Dof> dofListesi;
+  //final List<Dof> dofListesi;
 
   // ignore: use_key_in_widget_constructors
-  DofGrafik({required this.dofListesi});
+  DofGrafik({
+    Key? key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,6 @@ class DofGrafik extends StatelessWidget {
 
   List<PieChartSectionData> _getSections() {
     Map<String, int> dofDurumu = {};
-
-    // Kazaların nedenlerini say
-    for (var dof in dofListesi) {
-      dofDurumu[dof.dofDurumu] = (dofDurumu[dof.dofDurumu] ?? 0) + 1;
-    }
 
     // Toplam dilim sayısını hesapla
     int totalSections = dofDurumu.length;
@@ -44,12 +40,12 @@ class DofGrafik extends StatelessWidget {
 
       // Her dilimin yüzdesini hesapla
 
-      double value = sayi.toDouble() / dofListesi.length * 100;
-      double roundedValue = (value * 100).round() / 100;
+      //double value = sayi.toDouble() / dofListesi.length * 100;
+      //double roundedValue = (value * 100).round() / 100;
 
       sections.add(PieChartSectionData(
         color: _getRandomColor(index),
-        value: roundedValue,
+        // value: roundedValue,
         title: '$neden\n$sayi',
         radius: radius,
         titleStyle: TextStyle(
@@ -72,7 +68,7 @@ class DofGrafik extends StatelessWidget {
             ],
           ),
           child: Text(
-            '$roundedValue%',
+            'deneme',
             style: TextStyle(
               fontSize: textSize,
               fontWeight: FontWeight.bold,

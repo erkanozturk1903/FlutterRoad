@@ -1,0 +1,104 @@
+{
+  "checklists": [
+    {
+      "title": "General Checklist",
+      "items": [
+        {
+          "description": "Was the necessary information given to the Occupational Safety Unit regarding the work to be done?",
+          "isChecked": false
+        },
+        {
+          "description": "Is the Project Coordinator/Technician-Technician in the field where the work is carried out?",
+          "isChecked": false
+        },
+        {
+          "description": "Is the personnel conducting the work the personnel reported by the company and whose documents have been submitted?",
+          "isChecked": false
+        },
+        {
+          "description": "Is environmental safety taken?",
+          "isChecked": false
+        },
+        {
+          "description": "Are the necessary safety measures taken according to the work done?",
+          "isChecked": false
+        },
+        {
+          "description": "Are the working instructions (working at height, manual handling, welding work, etc.) considered related to the work done?",
+          "isChecked": false
+        },
+        {
+          "description": "Does the personnel within the field comply with Covid-19 precautions?",
+          "isChecked": false
+        },
+        {
+          "description": "If there is hot work such as open flame source work, has the relevant units (Occupational Safety Unit, Emergency Coordination, Fire Department) been informed?",
+          "isChecked": false
+        },
+        {
+          "description": "When working in a closed area, are heat/smoke detectors deactivated considering the conditions such as dust, heat, etc. generated?",
+          "isChecked": false
+        },
+        {
+          "description": "Are the machines, equipment, cables (Welding, electricity, etc.) in the field scattered in a way that could cause falling or equipment damage?",
+          "isChecked": false
+        },
+        {
+          "description": "Do the used work equipment have protective equipment? Are they in a safe condition?",
+          "isChecked": false
+        },
+        {
+          "description": "If breaking, drilling, cutting work is being done, is environmental safety considered against dust etc. formation?",
+          "isChecked": false
+        },
+        {
+          "description": "If chemical use is involved, are measures taken for the spread of the chemical, personal exposure, etc.?",
+          "isChecked": false
+        },
+        {
+          "description": "If oxy-gas welding is to be done, are the shawl, hose, and cylinders checked? Are they suitable for the work?",
+          "isChecked": false
+        },
+        {
+          "description": "If electric arc welding is to be done, are the cable assembly and electrical components checked? Are they suitable for the work?",
+          "isChecked": false
+        },
+        {
+          "description": "If working with electricity, are precautions taken by cutting off energy, grounding, labeling, and locking?",
+          "isChecked": false
+        },
+        {
+          "description": "If there is work at height, are portable ladders, mobile scaffolds, etc., provided according to the height and standards?",
+          "isChecked": false
+        },
+        {
+          "description": "If there is work at height, are there suitable anchorage points for safety belts?",
+          "isChecked": false
+        },
+        {
+          "description": "Is construction machinery being used in the work? If so, does the operator have documents and does the construction machine have periodic control?",
+          "isChecked": false
+        },
+        {
+          "description": "Are the employees using the Personal Protective Equipment (PPE) provided to them?",
+          "isChecked": false
+        },
+        {
+          "description": "Do the employees have a lack of Personal Protective Equipment (PPE)?",
+          "isChecked": false
+        }
+      ]
+    },
+    {
+      "title": "Örnek Başlık",
+      "items": [
+        {
+          "description": "Örnek Açıklama"
+        },
+        {
+          "description": "Örnek Açıklama"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -58,20 +59,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   disabledForegroundColor: Colors.grey.withOpacity(0.38),
                 ),
                 onPressed: _pickImage,
-                child: Text('Change Profile Picture'),
+                child: Text('change_profile_picture'.tr),
               ),
               SizedBox(height: 20),
-              _buildTextFormField('Email'),
+              _buildTextFormField('email'.tr),
               const SizedBox(height: 20),
-              _buildTextFormField('Name'),
+              _buildTextFormField('name'.tr),
               const SizedBox(height: 20),
-              _buildTextFormField('Address'),
+              _buildTextFormField('address'.tr),
               const SizedBox(height: 20),
-              _buildTextFormField('Phone Number'),
+              _buildTextFormField('phone_number'.tr),
               const SizedBox(height: 20),
-              _buildTextFormField('Position'),
+              _buildTextFormField('position'.tr),
               const SizedBox(height: 20),
-              _buildTextFormField('Profession'),
+              _buildTextFormField('profession'.tr),
               const SizedBox(height: 20),
               // DropdownButtonFormField ve Kaydet butonu...
               ElevatedButton(
@@ -85,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   // Profil güncelleme işlemleri...
                 },
                 child: Text(
-                  'Save Profile',
+                  'save_profile'.tr,
                   style: TextStyle(color: Colors.white),
                 ),
               ),

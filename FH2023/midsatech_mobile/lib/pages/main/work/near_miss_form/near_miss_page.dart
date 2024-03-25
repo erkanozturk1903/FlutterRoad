@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:midsatech_mobile/pages/main/work/near_miss_form/page/near_miss_form.dart';
+import 'package:midsatech_mobile/pages/main/work/near_miss_form/page/near_missing.dart';
 
 class NearMissPage extends StatefulWidget {
   const NearMissPage({super.key});
@@ -11,27 +15,14 @@ class NearMissPage extends StatefulWidget {
 }
 
 class _NearMissPageState extends State<NearMissPage> {
-  List<NearMiss> nearMissListesi = [
-    NearMiss('01.01.2024', 'Production'),
-    NearMiss('02.01.2021', 'Stairs'),
-    NearMiss('03.01.2021', 'Toilet'),
-    NearMiss('15.03.2024', 'Dining Hall'),
-  ];
-
-  void yeniIsKazasiEkle(NearMiss yeniNearMiss) {
-    setState(() {
-      nearMissListesi.add(yeniNearMiss);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
-        title: const Text(
-          'Near Miss Actions',
+        title: Text(
+          'near_miss_actions'.tr,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -39,13 +30,10 @@ class _NearMissPageState extends State<NearMissPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final yeniNearMiss = await Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => NearMissFormPage()),
           );
-          if (yeniNearMiss != null) {
-            yeniIsKazasiEkle(yeniNearMiss);
-          }
         },
         child: const Icon(
           Icons.add,
@@ -53,125 +41,53 @@ class _NearMissPageState extends State<NearMissPage> {
         ),
         backgroundColor: Colors.deepOrange,
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: DataTable(
-            columns: [
-              DataColumn(label: Text('Date')),
-              DataColumn(label: Text('Section')),
-              DataColumn(label: Text('Details')),
-            ],
-            rows: nearMissListesi.map((nearMiis) {
-              return DataRow(cells: [
-                DataCell(Text(nearMiis.nearMissTarihi)),
-                DataCell(Text(nearMiis.nearMissSection)),
-                DataCell(ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NearMissDetay(nearMiis)),
-                    );
-                  },
-                  child: Text('Details'),
-                )),
-              ]);
-            }).toList(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class NearMiss {
-  final String nearMissTarihi;
-  final String nearMissSection;
-
-  NearMiss(this.nearMissTarihi, this.nearMissSection);
-}
-
-class YeniIsKazasiEkle extends StatefulWidget {
-  @override
-  _YeniIsKazasiEkleState createState() => _YeniIsKazasiEkleState();
-}
-
-class _YeniIsKazasiEkleState extends State<YeniIsKazasiEkle> {
-  final TextEditingController tarihController = TextEditingController();
-  final TextEditingController nearMissController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF021734),
-        foregroundColor: Colors.white,
-        title: Text(
-          'Add New Near Miss',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: tarihController,
-              decoration: InputDecoration(labelText: 'Date of Near Miss'),
-            ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: nearMissController,
-              decoration: InputDecoration(labelText: 'Section of Near Miss'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                final yeniNearMiss =
-                    NearMiss(tarihController.text, nearMissController.text);
-                Navigator.pop(context, yeniNearMiss);
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('near_miss_forms')
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            final forms = snapshot.data!.docs;
+            return ListView.builder(
+              itemCount: forms.length,
+              itemBuilder: (context, index) {
+                final form = forms[index];
+                final formData = form.data() as Map<String, dynamic>;
+                final date = (formData['date'] as Timestamp).toDate();
+                return Card(
+                  child: ListTile(
+                    title: Text(
+                      '${formData['business_name']} - ${DateFormat('yyyy-MM-dd').format(date)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      '${formData['adi']} - ${formData['location']}',
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              NearMissDetailPage(formData: formData),
+                        ),
+                      );
+                    },
+                  ),
+                );
               },
-              child: Text('Save'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class NearMissDetay extends StatelessWidget {
-  final NearMiss nearMiss;
-
-  // ignore: prefer_const_constructors_in_immutables
-  NearMissDetay(this.nearMiss);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF021734),
-        foregroundColor: Colors.white,
-        title: Text(
-          'Corrective Actions Details',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Correctivete Actions Date: ${nearMiss.nearMissTarihi}'),
-            Text('Correctivete State: ${nearMiss.nearMissSection}'),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }

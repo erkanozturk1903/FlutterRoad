@@ -2,10 +2,13 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:midsatech_mobile/pages/main/work/near_miss_form/models/near_miss_model.dart';
 
 class NearMissFormPage extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class NearMissFormPage extends StatefulWidget {
 }
 
 class _NearMissFormPageState extends State<NearMissFormPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
 
   final ImagePicker _picker = ImagePicker();
@@ -54,11 +57,44 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
     );
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+  void _submitForm() async {
+    if (_formKey.currentState!.saveAndValidate()) {
+      final formData = _formKey.currentState!.value;
+      final nearMissData = NearMissFormData(
+        businessName: formData['business_name'],
+        location: formData['location'] ?? '',
+        date: formData['date'] ?? DateTime.now(),
+        adi: formData['adi'] ?? '',
+        mission: formData['mission'] ?? '',
+        unit: formData['unit'] ?? '',
+        phone: formData['phone'] ?? '',
+        email: formData['email'] ?? '',
+        description: formData['description'] ?? '',
+        solution: formData['solution'] ?? '',
+        nearMissIncident: formData['near_miss_incident'] ?? false,
+        dangerousSituation: formData['dangerous_situation'] ?? false,
+        opinionUnitResponsible: formData['opinion_unit_responsible'] ?? '',
+        imageUrls: imageFileList!.map((file) => file.path).toList(),
+      );
 
-      _formKey.currentState!.reset();
+      try {
+        await FirebaseFirestore.instance.collection('near_miss_forms').add(
+              nearMissData.toMap(),
+            );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Form submitted successfully!'),
+          ),
+        );
+        Navigator.of(context).pop();
+      } catch (e) {
+        print('Error submitting form: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occurred, please try again later.'),
+          ),
+        );
+      }
     }
   }
 
@@ -68,8 +104,8 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
-        title: const Text(
-          'Near Miss Form',
+        title: Text(
+          'near_miss_form'.tr,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -100,8 +136,8 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                                 ? setState(() => _currentStep += 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Next',
+                          child: Text(
+                            'next'.tr,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -123,8 +159,8 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                                 ? setState(() => _currentStep -= 1)
                                 : null;
                           },
-                          child: const Text(
-                            'Back',
+                          child: Text(
+                            'back'.tr,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -135,22 +171,22 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
             },
             steps: <Step>[
               Step(
-                title: Text('General Information'),
+                title: Text('general_information'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'business_name',
-                      decoration: InputDecoration(labelText: 'Business Name'),
+                      decoration: InputDecoration(labelText: 'business_name'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'location',
-                      decoration: InputDecoration(labelText: 'Location'),
+                      decoration: InputDecoration(labelText: 'location'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'date',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: InputDecoration(labelText: 'Date'),
+                      decoration: InputDecoration(labelText: 'date'.tr),
                     ),
                   ],
                 ),
@@ -159,28 +195,28 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                     _currentStep >= 0 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Information About The Survivor'),
+                title: Text('information_about_the_survivor'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'adi',
-                      decoration: InputDecoration(labelText: 'Name -Surname'),
+                      decoration: InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'mission',
-                      decoration: InputDecoration(labelText: 'Mission'),
+                      decoration: InputDecoration(labelText: 'mission'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'unit',
-                      decoration: InputDecoration(labelText: 'Unit Of Work'),
+                      decoration: InputDecoration(labelText: 'unit_of_work'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'phone',
-                      decoration: InputDecoration(labelText: 'Phone Number'),
+                      decoration: InputDecoration(labelText: 'phone'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'email',
-                      decoration: InputDecoration(labelText: 'E-Mail Address'),
+                      decoration: InputDecoration(labelText: 'email'.tr),
                     ),
                   ],
                 ),
@@ -189,7 +225,7 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                     _currentStep >= 1 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Description of the Incident/Dangerous Situation'),
+                title: Text('description_of_the_incident_dangerous'.tr),
                 content: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
@@ -198,14 +234,14 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                         maxLines: 6,
                         name: 'description',
                         decoration: InputDecoration(
-                            labelText: 'Description of the Incident'),
+                            labelText: 'description_of_the_incident'.tr),
                       ),
                       FormBuilderTextField(
                         maxLength: 2000,
                         maxLines: 6,
                         name: 'solution',
                         decoration:
-                            InputDecoration(labelText: 'What is the Solution?'),
+                            InputDecoration(labelText: 'what_is_the_solution'.tr),
                       ),
                       const SizedBox(
                         height: 20,
@@ -218,8 +254,8 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                             width: 200,
                             child: imageFileList != null
                                 ? prewiewImages()
-                                : const Center(
-                                    child: Text('No Image Selected'),
+                                : Center(
+                                    child: Text('no_image_selected'.tr),
                                   ),
                           )
                         ],
@@ -235,16 +271,16 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                     _currentStep >= 2 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('What is the incident?'),
+                title: Text('what_is_the_incident'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderCheckbox(
                       name: 'near_miss_incident',
-                      title: Text('Near Miss Incident'),
+                      title: Text('near_miss_incident'.tr),
                     ),
                     FormBuilderCheckbox(
                       name: 'dangerous_situation',
-                      title: Text('Dangerous Situation'),
+                      title: Text('dangerous_situation'.tr),
                     )
                   ],
                 ),
@@ -253,7 +289,7 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                     _currentStep >= 3 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Opinion Of The Unit Responsible'),
+                title: Text('opinion_of_the_unit_responsible'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
@@ -261,7 +297,7 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                       maxLines: 6,
                       name: 'opinion_unit_responsible',
                       decoration: InputDecoration(
-                          labelText: 'Opinion of the Unit Responsible'),
+                          labelText: 'opinion_of_the_unit_responsible'.tr),
                     ),
                   ],
                 ),

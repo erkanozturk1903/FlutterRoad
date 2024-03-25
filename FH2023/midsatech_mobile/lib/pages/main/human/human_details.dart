@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, unnecessary_string_interpolations, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/pages/main/human/model/human_model.dart';
 
 class HumanDetails extends StatelessWidget {
@@ -19,22 +20,22 @@ class HumanDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Name: ${human.name}", style: TextStyle(fontSize: 18)),
-            Text("Surname: ${human.surname}", style: TextStyle(fontSize: 18)),
-            Text("Department: ${human.department}",
+            Text("name".tr + ":" + "${human.name}", style: TextStyle(fontSize: 18)),
+            Text("surname".tr + ":" + "${human.surname}", style: TextStyle(fontSize: 18)),
+            Text("department".tr + ":" + "${human.department}",
                 style: TextStyle(fontSize: 18)),
-            Text("Gender: ${human.gender}", style: TextStyle(fontSize: 18)),
-            Text("Birth Date: ${human.birthDate}",
+            Text("gender".tr + ":" + "${human.gender}", style: TextStyle(fontSize: 18)),
+            Text("birth_date".tr + ":" + "${human.birthDate}",
                 style: TextStyle(fontSize: 18)),
-            Text("Email: ${human.email}", style: TextStyle(fontSize: 18)),
-            Text("Phone: ${human.birthPlace}", style: TextStyle(fontSize: 18)),
-            Text("Address: ${human.address}", style: TextStyle(fontSize: 18)),
-            Text("Blood Type: ${human.bloodType}",
+            Text("email".tr + ":" + "${human.email}", style: TextStyle(fontSize: 18)),
+            Text("phone".tr + ":" + "${human.birthPlace}", style: TextStyle(fontSize: 18)),
+            Text("address".tr + ":" + "${human.address}", style: TextStyle(fontSize: 18)),
+            Text("blood_type".tr + ":" + "${human.bloodType}",
                 style: TextStyle(fontSize: 18)),
-            Text("Height: ${human.education}", style: TextStyle(fontSize: 18)),
-            Text("Education: ${human.maritalStatus}",
+            Text("height".tr + ":" + "${human.education}", style: TextStyle(fontSize: 18)),
+            Text("education".tr + ":" + "${human.maritalStatus}",
                 style: TextStyle(fontSize: 18)),
-            Text("Job: ${human.jobs}", style: TextStyle(fontSize: 18)),
+            Text("job".tr + ":" + "${human.jobs}", style: TextStyle(fontSize: 18)),
 
             // Buraya düzenleme için bir buton ekleyebilirsiniz.
           ],

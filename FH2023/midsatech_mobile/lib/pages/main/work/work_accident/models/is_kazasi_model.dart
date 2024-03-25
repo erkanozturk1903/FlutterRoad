@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 
 class IsKazasiReport {
-  final String employerType; // String to accommodate single selection
+  final List<String> employerType; // String to accommodate single selection
   final List<String> accidentIncidentType;
   final List<String> affectedArea;
   final List<String> accidentCauseEmployed;
@@ -71,8 +71,8 @@ class IsKazasiReport {
   factory IsKazasiReport.fromForm(
       Map<String, dynamic> data, List<XFile>? imageFileList) {
     return IsKazasiReport(
-      employerType: data['employer_type'] as String? ??
-          '', // Null durumu için varsayılan değer
+      employerType: List<String>.from(
+          data['employer_type'] ?? []), // Null durumu için varsayılan değer
       accidentIncidentType:
           List<String>.from(data['accident_incident_type'] ?? []),
       affectedArea: List<String>.from(data['affected_area'] ?? []),
@@ -85,24 +85,34 @@ class IsKazasiReport {
       businessName: data['business_name'] as String? ?? '',
       accidentNumber: data['accident_number'] as String? ?? '',
       accidentLocation: data['accident_location'] as String? ?? '',
-      accidentDate: data['accident_date'] != null
-          ? DateTime.parse(data['accident_date'])
-          : DateTime.now(),
-      accidentTime: data['accident_time'] != null
-          ? DateTime.parse(data['accident_time'])
-          : DateTime.now(),
+
+      accidentDate: data['accident_date'] is String
+          ? DateTime.parse(data['accident_time'] as String)
+          : data['accident_time'] is DateTime
+              ? data['accident_time'] as DateTime
+              : DateTime.now(),
+
+      accidentTime: data['accident_time'] is String
+          ? DateTime.parse(data['accident_date'] as String)
+          : data['accident_date'] is DateTime
+              ? data['accident_date'] as DateTime
+              : DateTime.now(),
       activity: data['activity'] as String? ?? '',
       shift: data['shift'] as String? ?? '',
       nameSurname: data['name_surname'] as String? ?? '',
       departmentWorkInformation:
           data['department_work_information'] as String? ?? '',
       identificationNumber: data['identification_number'] as String? ?? '',
-      startDateOfWork: data['start_date_of_work'] != null
-          ? DateTime.parse(data['start_date_of_work'])
-          : DateTime.now(),
-      dateOfBirth: data['date_of_birth'] != null
-          ? DateTime.parse(data['date_of_birth'])
-          : DateTime.now(),
+      startDateOfWork: data['start_date_of_work'] is String
+          ? DateTime.parse(data['start_date_of_work'] as String)
+          : data['start_date_of_work'] is DateTime
+              ? data['start_date_of_work'] as DateTime
+              : DateTime.now(),
+      dateOfBirth: data['date_of_birth'] is String
+          ? DateTime.parse(data['date_of_birth'] as String)
+          : data['date_of_birth'] is DateTime
+              ? data['date_of_birth'] as DateTime
+              : DateTime.now(),
       postAccidentProcedures: data['post_accident_procedures'] as String? ?? '',
       accidentPhotos: imageFileList?.map((e) => e.path).toList(),
       accidentResultReport: data['accident_result_report'] as String? ?? '',
@@ -111,8 +121,11 @@ class IsKazasiReport {
       investigatingNameSurname:
           data['investigating_name_surname'] as String? ?? '',
       position: data['position'] as String? ?? '',
-      date:
-          data['date'] != null ? DateTime.parse(data['date']) : DateTime.now(),
+      date: data['date'] is String
+          ? DateTime.parse(data['date'] as String)
+          : data['date'] is DateTime
+              ? data['date'] as DateTime
+              : DateTime.now(),
       signature: data['signature'] as String? ?? '',
     );
   }

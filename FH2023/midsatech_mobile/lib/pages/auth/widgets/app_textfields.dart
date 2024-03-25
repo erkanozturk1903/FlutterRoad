@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/common/widget/app_shadow.dart';
 import 'package:midsatech_mobile/common/widget/image_widgets.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
@@ -6,7 +7,7 @@ import 'package:midsatech_mobile/common/widget/text_widgets.dart';
 Widget appTextField({
   String text = "",
   String iconName = "",
-  String hintText = "Type in your info",
+  String hintText = "type_in_your_info",
   bool obscureText = false,
   TextEditingController? controller,
 }) {
@@ -40,7 +41,7 @@ Widget appTextField({
                     controller: controller,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-                      hintText: hintText,
+                      hintText: hintText.tr,
                       border: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.transparent,

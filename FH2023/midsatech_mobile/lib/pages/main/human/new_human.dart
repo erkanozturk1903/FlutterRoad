@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/pages/main/human/model/human_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -81,9 +82,10 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
       FirebaseFirestore.instance
           .collection('midsatech')
           .doc('customers')
-          .collection('users')
+          .collection('administrator')
           .doc('human')
-          .set(yeniPersonel.toMap());
+          .collection('personel')
+          .add(yeniPersonel.toMap());
 
       widget.onPersonelEkle(yeniPersonel);
       Navigator.of(context).pop();
@@ -94,7 +96,7 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Yeni Personel Ekle"),
+        title:  Text("add_new_staff".tr),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -103,35 +105,35 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
           child: ListView(
             children: [
               // Her alan için TextFormField widget'ları
-              buildTextFormField(controller: adController, label: 'Name'),
-              buildTextFormField(controller: soyadController, label: 'Surname'),
+              buildTextFormField(controller: adController, label: 'name'.tr),
+              buildTextFormField(controller: soyadController, label: 'surname'.tr),
               buildTextFormField(
-                  controller: departmanController, label: 'Department'),
+                  controller: departmanController, label: 'department'.tr),
               buildTextFormField(
-                  controller: cinsiyetController, label: 'Gender'),
-              buildTextFormField(controller: emailController, label: 'E-Mail'),
+                  controller: cinsiyetController, label: 'gender'.tr),
+              buildTextFormField(controller: emailController, label: 'email'.tr),
               buildTextFormField(
-                  controller: telefonNumarasiController, label: 'Phone Number'),
-              buildTextFormField(controller: adresController, label: 'Address'),
+                  controller: telefonNumarasiController, label: 'phone'.tr),
+              buildTextFormField(controller: adresController, label: 'address'.tr),
               buildTextFormField(
-                  controller: dogumTarihiController, label: 'Birth Date'),
+                  controller: dogumTarihiController, label: 'birth_date'.tr),
               buildTextFormField(
-                  controller: dogumYeriController, label: 'Birth Place'),
+                  controller: dogumYeriController, label: 'birth_place'.tr),
               buildTextFormField(
-                  controller: egitimController, label: 'Education'),
+                  controller: egitimController, label: 'education'.tr),
               buildTextFormField(
-                  controller: kanGrubuController, label: 'Blood Type'),
+                  controller: kanGrubuController, label: 'blood_type'.tr),
               buildTextFormField(
-                  controller: medeniDurumController, label: 'Marital Status'),
-              buildTextFormField(controller: isController, label: 'Jobs'),
+                  controller: medeniDurumController, label: 'marital_status'.tr),
+              buildTextFormField(controller: isController, label: 'job'.tr),
               if (profilResmiUrl != null) Image.network(profilResmiUrl!),
               ElevatedButton(
                 onPressed: _profilResmiSec,
-                child: const Text('Profil Resmi Seç'),
+                child:  Text('profil_picture_selected'.tr),
               ),
               ElevatedButton(
                 onPressed: _kaydet,
-                child: const Text('Kaydet'),
+                child:  Text('save'.tr),
               ),
             ],
           ),
@@ -147,7 +149,7 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
       decoration: InputDecoration(labelText: label),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Lütfen $label alanını doldurun';
+          return 'Please $label fill in all fields all';
         }
         return null;
       },

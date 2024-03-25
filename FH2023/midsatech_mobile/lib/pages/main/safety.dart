@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/pages/main/work/corrective_actions/correvtive_list.dart';
 import 'package:midsatech_mobile/pages/main/work/equitment_control_form/equitment_control.dart';
 import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/field_surveillance.dart';
@@ -16,42 +17,42 @@ class SafetyPage extends StatefulWidget {
 class _SafetyPageState extends State<SafetyPage> {
   final List<CardInfo> cards = [
     CardInfo(
-      name: 'Work Accident Form',
+      name: 'work_accident_form'.tr,
       icon: Icons.personal_injury_outlined,
       colors: [Colors.blue.shade500, Colors.blue.shade700],
       iconColor: Colors.white,
       destination: IsKazasiListesi(),
     ),
     CardInfo(
-      name: 'Corrective Preventive Actions',
+      name: 'corrective_preventive_actions'.tr,
       icon: Icons.assignment_turned_in_outlined,
       colors: [Colors.green.shade600, Colors.lightGreen.shade500],
       iconColor: Colors.white,
-      destination: CorrectiveActionsPage(),
+      destination: CorrectiveActionsListPage(),
     ),
     CardInfo(
-      name: 'Near Miss Form',
+      name: 'near_miss_form'.tr,
       icon: Icons.warning_amber_outlined,
       colors: [Colors.orange.shade700, Colors.amber.shade600],
       iconColor: Colors.white,
       destination: NearMissPage(),
     ),
     CardInfo(
-      name: 'Work Permit Form',
+      name: 'work_permit_form'.tr,
       icon: Icons.home_work_outlined,
       colors: [Colors.purple.shade500, Colors.purple.shade700],
       iconColor: Colors.white,
       destination: WorkPermitPage(),
     ),
     CardInfo(
-      name: 'Field Surveillance Form',
+      name: 'field_surveillance_form'.tr,
       icon: Icons.search_outlined,
       colors: [Colors.red.shade600, Colors.red.shade800],
       iconColor: Colors.white,
       destination: FieldSurveillancePage(),
     ),
     CardInfo(
-      name: 'Equipment Control Form',
+      name: 'equitment_control_form'.tr,
       icon: Icons.build_circle_outlined,
       colors: [Colors.teal.shade500, Colors.tealAccent.shade700],
       iconColor: Colors.white,

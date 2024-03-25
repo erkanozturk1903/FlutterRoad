@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/pages/main/human/human_details.dart';
 import 'package:midsatech_mobile/pages/main/human/model/human_model.dart';
 import 'package:midsatech_mobile/pages/main/human/new_human.dart';
@@ -17,7 +18,7 @@ class _HumanPageState extends State<HumanPage> {
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('midsatech')
         .doc('customers')
-        .collection('users')
+        .collection('administrator')
         .get();
 
     final List<Human> fetchedHumans = [];
@@ -34,7 +35,7 @@ class _HumanPageState extends State<HumanPage> {
       });
     } else {
       // Veritabanından herhangi bir belge yoksa veya belgeler boşsa
-      print('Veritabanında personel bulunamadı.');
+      print('.no_personnel_registered_in_the_database'.tr);
       // Burada isterseniz bir hata mesajı gösterebilir veya başka bir işlem yapabilirsiniz.
     }
 
@@ -68,15 +69,15 @@ class _HumanPageState extends State<HumanPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Human Resource'),
+        title: Text('human_resource'.tr),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          columns: const [
-            DataColumn(label: Text('Name')),
-            DataColumn(label: Text('Surname')),
-            DataColumn(label: Text('Details')), // Detay butonu için sütun
+          columns:  [
+            DataColumn(label: Text('name'.tr)),
+            DataColumn(label: Text('surname'.tr)),
+            DataColumn(label: Text('details'.tr)), // Detay butonu için sütun
           ],
           rows: humans
               .map(
@@ -97,7 +98,7 @@ class _HumanPageState extends State<HumanPage> {
                             ),
                           );
                         },
-                        child: const Text('Details'),
+                        child: Text('details'.tr),
                       ),
                     )),
                   ],
@@ -109,7 +110,7 @@ class _HumanPageState extends State<HumanPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepOrangeAccent,
         onPressed: _yeniPersonelEkle,
-        tooltip: 'Personel Ekle',
+        tooltip: 'add_employee'.tr,
         child: const Icon(
           Icons.add,
           color: Colors.white,

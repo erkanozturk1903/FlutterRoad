@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/common/widget/app_bar.dart';
 import 'package:midsatech_mobile/common/widget/button_widget.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
@@ -30,7 +31,7 @@ class SignUpPage extends StatelessWidget {
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Passwords do not match'),
+          content: Text('passwords_do_not_match'.tr),
         ),
       );
       return;
@@ -46,7 +47,7 @@ class SignUpPage extends StatelessWidget {
       await _firestore
           .collection('midsatech')
           .doc('customers')
-          .collection('users')
+          .collection('administrator')
           .doc(_uid)
           .set({
         'username': username,
@@ -73,7 +74,7 @@ class SignUpPage extends StatelessWidget {
       // Hata durumunda kullanıcıya bilgi ver
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('An error occurred during registration: $e'),
+          content: Text('an_error_occurred_during_registration: $e'.tr),
         ),
       );
     }
@@ -92,36 +93,36 @@ class SignUpPage extends StatelessWidget {
             //TODO: More Login options
             Center(
               child: text14Normal(
-                  text: "Enter your details to below & free sign up"),
+                  text: "enter_your_details_to_below_free_sign_up".tr),
             ),
             const SizedBox(height: 15),
             appTextField(
-              text: "Username",
+              text: "username".tr,
               iconName: "assets/icons/user.png",
-              hintText: "Enter your username",
+              hintText: "enter_your_username".tr,
               controller: _usernameController,
             ),
             const SizedBox(height: 20),
             //TODO: Email fields
             appTextField(
-              text: "Email",
+              text: "email".tr,
               iconName: "assets/icons/user.png",
-              hintText: "Enter your email",
+              hintText: "enter_your_email".tr,
               controller: _emailController,
             ),
             const SizedBox(height: 20),
             //TODO: Password fields
             appTextField(
-                text: "Password",
+                text: "password".tr,
                 iconName: "assets/icons/lock.png",
-                hintText: "Enter your password",
+                hintText: "enter_your_password".tr,
                 controller: _passwordController,
                 obscureText: true),
             const SizedBox(height: 10),
             appTextField(
-                text: "Confirm Password",
+                text: "confirm_password".tr,
                 iconName: "assets/icons/lock.png",
-                hintText: "Enter your confirm password",
+                hintText: "enter_your_confirm_password".tr,
                 controller: _confirmPasswordController,
                 obscureText: true),
 
@@ -129,7 +130,7 @@ class SignUpPage extends StatelessWidget {
             //TODO: Register button
             Center(
               child: appButton(
-                buttonName: "Register",
+                buttonName: "register".tr,
                 context: context,
                 isLogin: true,
                 onTap: () {

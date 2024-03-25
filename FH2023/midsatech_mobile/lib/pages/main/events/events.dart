@@ -111,66 +111,69 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("Events Management"),
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2010, 10, 16),
-            lastDay: DateTime.utc(2030, 3, 14),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _focusedDay = focusedDay;
-              });
-              _showAddOrUpdateDialog();
-            },
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _allGorevler.length,
-              itemBuilder: (context, index) {
-                final gorev = _allGorevler[index];
-                return Dismissible(
-                  key: Key(gorev.taskName!),
-                  background: Container(
-                      color: Colors.green,
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Icon(Icons.edit, color: Colors.white))),
-                  secondaryBackground: Container(
-                      color: Colors.red,
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Icon(Icons.delete, color: Colors.white))),
-                  confirmDismiss: (direction) async {
-                    if (direction == DismissDirection.endToStart) {
-                      _deleteGorev(gorev);
-                      return true;
-                    } else {
-                      _showAddOrUpdateDialog(existingGorev: gorev);
-                      return false;
-                    }
-                  },
-                  child: ListTile(
-                    title: Text(gorev.taskName!),
-                    subtitle: Text(
-                        "${gorev.taskDate!.day}/${gorev.taskDate!.month}/${gorev.taskDate!.year} - ${gorev.taskLocation}"),
-                  ),
-                );
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text("Events Management"),
+        ),
+        body: Column(
+          children: [
+            TableCalendar(
+              firstDay: DateTime.utc(2010, 10, 16),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: _focusedDay,
+              calendarFormat: _calendarFormat,
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _focusedDay = focusedDay;
+                });
+                _showAddOrUpdateDialog();
+              },
+              onFormatChanged: (format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
               },
             ),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              child: ListView.builder(
+                itemCount: _allGorevler.length,
+                itemBuilder: (context, index) {
+                  final gorev = _allGorevler[index];
+                  return Dismissible(
+                    key: Key(gorev.taskName!),
+                    background: Container(
+                        color: Colors.green,
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(Icons.edit, color: Colors.white))),
+                    secondaryBackground: Container(
+                        color: Colors.red,
+                        child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(Icons.delete, color: Colors.white))),
+                    confirmDismiss: (direction) async {
+                      if (direction == DismissDirection.endToStart) {
+                        _deleteGorev(gorev);
+                        return true;
+                      } else {
+                        _showAddOrUpdateDialog(existingGorev: gorev);
+                        return false;
+                      }
+                    },
+                    child: ListTile(
+                      title: Text(gorev.taskName!),
+                      subtitle: Text(
+                          "${gorev.taskDate.day}/${gorev.taskDate.month}/${gorev.taskDate.year} - ${gorev.taskLocation}"),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showAddOrUpdateDialog(),
+          child: Icon(Icons.add),
+        ));
   }
 }

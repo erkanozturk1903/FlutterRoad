@@ -2,10 +2,13 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:midsatech_mobile/pages/main/work/work_permit_form/models/work_permit_model.dart';
 
 class WorkPermitFormPage extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class WorkPermitFormPage extends StatefulWidget {
 }
 
 class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
 
   final ImagePicker _picker = ImagePicker();
@@ -54,11 +57,41 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
     );
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+  void _submitForm() async {
+    if (_formKey.currentState!.saveAndValidate()) {
+      final formData = _formKey.currentState!.value;
+      final workPermitData = WorkPermitFormData(
+        descriptionOfWorkToBeDone:
+            formData['description_of_work_to_be_done'] ?? '',
+        location: formData['location'] ?? '',
+        date: formData['date'] ?? DateTime.now(),
+        workingType: List<String>.from(formData['working_type'] ?? []),
+        workToDo: formData['work_to_do'] ?? '',
+        danger: formData['danger'] ?? '',
+        precautionsToTake: formData['precautions_to_take'] ?? '',
+        ppeToBeUsed: List<String>.from(formData['ppe_to_be_used'] ?? []),
+        nameSurnameOfGrantor: formData['name_surname'] ?? '',
+        dateOfGrantor: formData['date_of_grantor'] ?? DateTime.now(),
+      );
 
-      _formKey.currentState!.reset();
+      try {
+        await FirebaseFirestore.instance.collection('work_permits').add(
+              workPermitData.toMap(),
+            );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Form submitted successfully!'),
+          ),
+        );
+        Navigator.of(context).pop();
+      } catch (e) {
+        print('Error submitting form: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occurred, please try again later.'),
+          ),
+        );
+      }
     }
   }
 
@@ -100,8 +133,8 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                                   ? setState(() => _currentStep += 1)
                                   : null;
                             },
-                            child: const Text(
-                              'Next',
+                            child: Text(
+                              'next'.tr,
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -123,8 +156,8 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                                   ? setState(() => _currentStep -= 1)
                                   : null;
                             },
-                            child: const Text(
-                              'Back',
+                            child: Text(
+                              'back'.tr,
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -135,23 +168,23 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
               },
               steps: <Step>[
                 Step(
-                  title: Text('Description of the Work to be Done'),
+                  title: Text('description_of_work_to_be_done_one'.tr),
                   content: Column(
                     children: <Widget>[
                       FormBuilderTextField(
                         name: 'description_of_work_to_be_done',
                         decoration: InputDecoration(
-                            labelText: 'Description of the Work to be Done'),
+                            labelText: 'description_of_work_to_be_done_one'.tr),
                       ),
                       FormBuilderTextField(
                         name: 'location',
-                        decoration: InputDecoration(labelText: 'Location'),
+                        decoration: InputDecoration(labelText: 'location'.tr),
                       ),
                       FormBuilderDateTimePicker(
                         name: 'date',
                         inputType: InputType.date,
                         format: DateFormat('yyyy-MM-dd'),
-                        decoration: InputDecoration(labelText: 'Date'),
+                        decoration: InputDecoration(labelText: 'date'.tr),
                       ),
                     ],
                   ),
@@ -161,7 +194,7 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                       : StepState.disabled,
                 ),
                 Step(
-                  title: Text('Select Working Type'),
+                  title: Text('working_type_selected'.tr),
                   content: Column(
                     children: <Widget>[
                       FormBuilderCheckboxGroup(
@@ -169,35 +202,35 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                           checkColor: Colors.white,
                           activeColor: Colors.deepOrange,
                           name: 'working_type',
-                          options: const [
-                            FormBuilderFieldOption(value: 'Working at Height'),
+                          options: [
+                            FormBuilderFieldOption(value: 'working_at_height'.tr),
                             FormBuilderFieldOption(
-                                value: 'Excavation/Earthworks'),
+                                value: 'excavation_earthworks'.tr),
                             FormBuilderFieldOption(
-                                value: 'Electrical Works/Working Under Energy'),
+                                value: 'electrical_works_working_under_energy'.tr),
                             FormBuilderFieldOption(
-                                value: 'Flame Cutting/Welding'),
-                            FormBuilderFieldOption(
-                                value:
-                                    'Hot Works - Welding, Cutting, Grinding'),
+                                value: 'flame_cutting_welding'.tr),
                             FormBuilderFieldOption(
                                 value:
-                                    'Machine Maintenance/Repair/Working with Moving Machines'),
+                                    'hot_works_welding_cutting_grinding'.tr),
                             FormBuilderFieldOption(
                                 value:
-                                    'Steam, Compressed Air and Gas Installation Works'),
-                            FormBuilderFieldOption(
-                                value: 'Working with Lifting Equipment'),
-                            FormBuilderFieldOption(
-                                value: 'Working in Confined Spaces'),
+                                    'machine_maintenance_repair_working_with_moving'.tr),
                             FormBuilderFieldOption(
                                 value:
-                                    'Disabling Fire Detection / Extinguishing Systems'),
+                                    'steam_compressed_air_and_gas_installation'.tr),
                             FormBuilderFieldOption(
-                                value: 'Working with Chemicals'),
+                                value: 'working_with_lifting_equipment'.tr),
+                            FormBuilderFieldOption(
+                                value: 'working_in_confined_spaces'.tr),
                             FormBuilderFieldOption(
                                 value:
-                                    ' Other (Steel Construction Disassembly/Installation.)'),
+                                    'disabling_fire_detection_extinguishing_system'.tr),
+                            FormBuilderFieldOption(
+                                value: 'working_with_chemicals'.tr),
+                            FormBuilderFieldOption(
+                                value:
+                                    'other_one'.tr),
                           ])
                     ],
                   ),
@@ -207,7 +240,7 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                       : StepState.disabled,
                 ),
                 Step(
-                  title: Text('Risk Assessment'),
+                  title: Text('risk_assessment'),
                   content: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
@@ -215,20 +248,20 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                           maxLength: 100,
                           maxLines: 1,
                           name: 'work_to_do',
-                          decoration: InputDecoration(labelText: 'Work to do'),
+                          decoration: InputDecoration(labelText: 'work_to_do'),
                         ),
                         FormBuilderTextField(
                           maxLength: 1000,
                           maxLines: 4,
                           name: 'danger',
-                          decoration: InputDecoration(labelText: 'Dangers'),
+                          decoration: InputDecoration(labelText: 'dangers'.tr),
                         ),
                         FormBuilderTextField(
                           maxLength: 1500,
                           maxLines: 4,
                           name: 'precautions_to_take',
                           decoration:
-                              InputDecoration(labelText: 'Precautions to take'),
+                              InputDecoration(labelText: 'precautions_to_take'.tr),
                         ),
                         const SizedBox(
                           height: 10,
@@ -242,7 +275,7 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                       : StepState.disabled,
                 ),
                 Step(
-                  title: Text('Personal Protective Equipment to be Used'),
+                  title: Text('ppe_to_be_used_one'.tr),
                   content: Column(
                     children: <Widget>[
                       FormBuilderCheckboxGroup(
@@ -250,20 +283,20 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                           checkColor: Colors.white,
                           activeColor: Colors.deepOrange,
                           name: 'ppe_to_be_used',
-                          options: const [
-                            FormBuilderFieldOption(value: 'Work clothest'),
-                            FormBuilderFieldOption(value: 'Work shoes'),
-                            FormBuilderFieldOption(value: 'Work gloves'),
-                            FormBuilderFieldOption(value: 'Welder mask'),
-                            FormBuilderFieldOption(value: 'Goggles'),
-                            FormBuilderFieldOption(value: 'Dust mask'),
-                            FormBuilderFieldOption(value: 'Safety belt'),
-                            FormBuilderFieldOption(value: 'Facial Wall'),
+                          options: [
+                            FormBuilderFieldOption(value: 'work_clothes'.tr),
+                            FormBuilderFieldOption(value: 'work_shoes'.tr),
+                            FormBuilderFieldOption(value: 'work_gloves'.tr),
+                            FormBuilderFieldOption(value: 'welder_mask'.tr),
+                            FormBuilderFieldOption(value: 'goggles'.tr),
+                            FormBuilderFieldOption(value: 'dust_mask'.tr),
+                            FormBuilderFieldOption(value: 'safety_belt'.tr),
+                            FormBuilderFieldOption(value: 'facial_wall'.tr),
                             FormBuilderFieldOption(
-                                value: 'Headphone protector'),
-                            FormBuilderFieldOption(value: 'Fire extinguisher'),
-                            FormBuilderFieldOption(value: 'Hard hat'),
-                            FormBuilderFieldOption(value: 'Other'),
+                                value: 'headphone_protector'.tr),
+                            FormBuilderFieldOption(value: 'fire_extinguisher'.tr),
+                            FormBuilderFieldOption(value: 'hard_hat'.tr),
+                            FormBuilderFieldOption(value: 'other'.tr),
                           ])
                     ],
                   ),
@@ -273,18 +306,26 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                       : StepState.disabled,
                 ),
                 Step(
-                  title: Text('Information of the Work Permit Grantor'),
+                  title: Text('information_of_the_work_permit_grantor'.tr),
                   content: Column(
                     children: <Widget>[
                       FormBuilderTextField(
                         name: 'name_surname',
-                        decoration: InputDecoration(labelText: 'Name Surname'),
+                        decoration: InputDecoration(labelText: 'name_and_surname'.tr),
                       ),
                       FormBuilderDateTimePicker(
-                        name: 'date',
+                        name: 'date_of_grantor',
                         inputType: InputType.date,
                         format: DateFormat('yyyy-MM-dd'),
-                        decoration: InputDecoration(labelText: 'Date'),
+                        decoration: InputDecoration(labelText: 'date'.tr),
+                        onChanged: (value) {
+                          // Eğer değer null ise, null'a eşit olan bir DateTime nesnesi atayabilirsiniz.
+                          // Bu şekilde hatayı önlemiş olursunuz.
+                          if (value == null) {
+                            // Örneğin:
+                            value = DateTime.now();
+                          }
+                        },
                       ),
                     ],
                   ),

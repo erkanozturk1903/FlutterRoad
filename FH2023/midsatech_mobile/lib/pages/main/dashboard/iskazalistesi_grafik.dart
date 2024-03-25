@@ -2,13 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:midsatech_mobile/pages/main/work/work_accident/is_kazasi.dart';
 
 class IsKazasiListesiGrafik extends StatelessWidget {
-  final List<IsKazasi> isKazasiListesi;
+  //final List<IsKazasi> isKazasiListesi;
 
   // ignore: use_key_in_widget_constructors
-  IsKazasiListesiGrafik({required this.isKazasiListesi});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +23,10 @@ class IsKazasiListesiGrafik extends StatelessWidget {
     Map<String, int> kazalarinNedenleri = {};
 
     // Kazaların nedenlerini say
-    for (var kaza in isKazasiListesi) {
+    /*   for (var kaza in isKazasiListesi) {
       kazalarinNedenleri[kaza.yaralanmaTuru] =
           (kazalarinNedenleri[kaza.yaralanmaTuru] ?? 0) + 1;
-    }
+    } */
 
     // Toplam dilim sayısını hesapla
     int totalSections = kazalarinNedenleri.length;
@@ -44,11 +42,11 @@ class IsKazasiListesiGrafik extends StatelessWidget {
       const double textSize = 18;
 
       // Her dilimin yüzdesini hesapla
-      double value = sayi.toDouble() / isKazasiListesi.length * 100;
+      //double value = sayi.toDouble() / isKazasiListesi.length * 100;
 
       sections.add(PieChartSectionData(
         color: _getRandomColor(index),
-        value: value,
+        //value: value,
         title: '$neden\n$sayi',
         radius: radius,
         titleStyle: TextStyle(
@@ -71,7 +69,7 @@ class IsKazasiListesiGrafik extends StatelessWidget {
             ],
           ),
           child: Text(
-            '$value%',
+            '%',
             style: TextStyle(
               fontSize: textSize,
               fontWeight: FontWeight.bold,

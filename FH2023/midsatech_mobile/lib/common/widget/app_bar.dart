@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:midsatech_mobile/common/utils/app_colors.dart';
 import 'package:midsatech_mobile/common/widget/text_widgets.dart';
 
@@ -14,6 +15,6 @@ AppBar buildAppbar() {
         height: 1,
       ),
     ),
-    title: text16Normal(text: 'Login', color: AppColors.primaryElementText),
+    title: text16Normal(text: 'login'.tr, color: AppColors.primaryElementText),
   );
 }
