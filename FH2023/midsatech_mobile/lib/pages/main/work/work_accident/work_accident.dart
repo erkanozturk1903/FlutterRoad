@@ -108,26 +108,6 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
             controlsBuilder: (context, details) {
               return Row(
                 children: [
-                  _currentStep == 14
-                      ? const SizedBox()
-                      : TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.deepOrange,
-                            ),
-                          ),
-                          onPressed: () {
-                            _currentStep < 14
-                                ? setState(() => _currentStep += 1)
-                                : null;
-                          },
-                          child: Text(
-                            'next'.tr,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                   _currentStep == 0
                       ? const SizedBox()
                       : TextButton(
@@ -148,6 +128,27 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                             ),
                           ),
                         ),
+                  const SizedBox(width: 10),
+                  _currentStep == 14
+                      ? const SizedBox()
+                      : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
+                          onPressed: () {
+                            _currentStep < 14
+                                ? setState(() => _currentStep += 1)
+                                : null;
+                          },
+                          child: Text(
+                            'next'.tr,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                 ],
               );
             },
@@ -158,7 +159,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                   children: [
                     FormBuilderCheckboxGroup(
                       name: 'employer_type',
-                      options:  [
+                      options: [
                         FormBuilderFieldOption(
                           value: 'principal_employer'.tr,
                         ),
@@ -173,7 +174,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     FormBuilderTextField(
                       name: 'business_name',
                       decoration:
-                      InputDecoration(labelText: 'business_name'.tr),
+                          InputDecoration(labelText: 'business_name'.tr),
                     ),
                   ],
                 ),
@@ -188,12 +189,12 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     FormBuilderTextField(
                       name: 'accident_number',
                       decoration:
-                      InputDecoration(labelText: 'accident_number'.tr),
+                          InputDecoration(labelText: 'accident_number'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'accident_location',
                       decoration:
-                      InputDecoration(labelText: 'accident_location'),
+                          InputDecoration(labelText: 'accident_location'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'accident_date',
@@ -205,7 +206,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                       name: 'accident_time',
                       inputType: InputType.time,
                       format: DateFormat('HH:mm'),
-                      decoration:  InputDecoration(labelText: 'time'.tr),
+                      decoration: InputDecoration(labelText: 'time'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'activity',
@@ -213,7 +214,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     ),
                     FormBuilderTextField(
                       name: 'shift',
-                      decoration:  InputDecoration(labelText: 'shift'.tr),
+                      decoration: InputDecoration(labelText: 'shift'.tr),
                     ),
                   ],
                 ),
@@ -228,7 +229,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     FormBuilderTextField(
                       name: 'name_surname',
                       decoration:
-                      InputDecoration(labelText: 'name_and_surname'.tr),
+                          InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'department_work_information',
@@ -244,15 +245,15 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                       name: 'start_date_of_work',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration: InputDecoration(
-                          labelText: 'start_date_of_work'.tr),
+                      decoration:
+                          InputDecoration(labelText: 'start_date_of_work'.tr),
                     ),
                     FormBuilderDateTimePicker(
                       name: 'date_of_birth',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
                       decoration:
-                      InputDecoration(labelText: 'date_of_birth'.tr),
+                          InputDecoration(labelText: 'date_of_birth'.tr),
                     ),
                   ],
                 ),
@@ -341,7 +342,8 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                         FormBuilderFieldOption(
                             value: 'operation_without_protection'.tr),
                         FormBuilderFieldOption(value: 'not_using_ppe'.tr),
-                        FormBuilderFieldOption(value: 'using_faulty_equipment'.tr),
+                        FormBuilderFieldOption(
+                            value: 'using_faulty_equipment'.tr),
                         FormBuilderFieldOption(
                             value: 'working_outside_of_duty'.tr),
                         FormBuilderFieldOption(value: 'other'.tr),
@@ -360,7 +362,8 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     FormBuilderCheckboxGroup(
                       name: 'accident_cause_equipment',
                       options: [
-                        FormBuilderFieldOption(value: 'unsuitable_equipment'.tr),
+                        FormBuilderFieldOption(
+                            value: 'unsuitable_equipment'.tr),
                         FormBuilderFieldOption(
                             value: 'lack_of_periodic_control'.tr),
                         FormBuilderFieldOption(
@@ -368,7 +371,8 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                         FormBuilderFieldOption(
                             value: 'missing_and_defective_protectors'.tr),
                         FormBuilderFieldOption(value: 'unsecured_equipment'.tr),
-                        FormBuilderFieldOption(value: 'ungrounded_equipment'.tr),
+                        FormBuilderFieldOption(
+                            value: 'ungrounded_equipment'.tr),
                         FormBuilderFieldOption(value: 'isolation_disorder'.tr),
                         FormBuilderFieldOption(
                             value: 'improper_equipment_placement'.tr),
@@ -391,8 +395,10 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                         FormBuilderFieldOption(
                             value: 'disorganized_working_environment'.tr),
                         FormBuilderFieldOption(value: 'lack_of_safety_sign'.tr),
-                        FormBuilderFieldOption(value: 'lack_of_instructions'.tr),
-                        FormBuilderFieldOption(value: 'insufficient_lighting'.tr),
+                        FormBuilderFieldOption(
+                            value: 'lack_of_instructions'.tr),
+                        FormBuilderFieldOption(
+                            value: 'insufficient_lighting'.tr),
                         FormBuilderFieldOption(
                             value: 'ergonomic_inconvenience'.tr),
                         FormBuilderFieldOption(value: 'unsafe_stacking'),
@@ -434,7 +440,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     FormBuilderTextField(
                       name: 'accident_result_report',
                       decoration:
-                           InputDecoration(labelText: 'accident_result'.tr),
+                          InputDecoration(labelText: 'accident_result'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'number_of_report_days',
@@ -444,7 +450,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     FormBuilderTextField(
                       name: 'hospital_name',
                       decoration:
-                      InputDecoration(labelText: 'hospital_name'.tr),
+                          InputDecoration(labelText: 'hospital_name'.tr),
                     ),
                   ],
                 ),
@@ -467,7 +473,8 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                         FormBuilderFieldOption(value: 'serious_injury'.tr),
                         FormBuilderFieldOption(value: 'loss_off_limb'.tr),
                         FormBuilderFieldOption(value: 'loss_of_life'.tr),
-                        FormBuilderFieldOption(value: 'no_treatment_required'.tr),
+                        FormBuilderFieldOption(
+                            value: 'no_treatment_required'.tr),
                         FormBuilderFieldOption(
                             value: 'occupational_medicine_treatment'.tr),
                         FormBuilderFieldOption(value: 'hospital'.tr),
@@ -488,8 +495,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                       maxLines: 5,
                       name: 'nonconformities_caused_accident',
                       decoration: InputDecoration(
-                          labelText:
-                              'nonconformities_caused_accident'.tr),
+                          labelText: 'nonconformities_caused_accident'.tr),
                     ),
                   ],
                 ),
@@ -522,7 +528,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                     FormBuilderTextField(
                       name: 'investing_name_surname',
                       decoration:
-                      InputDecoration(labelText: 'name_and_surname'.tr),
+                          InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'position',
@@ -532,7 +538,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                       name: 'date',
                       inputType: InputType.date,
                       format: DateFormat('yyyy-MM-dd'),
-                      decoration:  InputDecoration(labelText: 'date'.tr),
+                      decoration: InputDecoration(labelText: 'date'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'signature',
@@ -570,6 +576,7 @@ class _IsKazasiFormPageState extends State<IsKazasiFormPage> {
                 final data = _formKey.currentState!.value;
                 await submitForm(data, imageFileList);
               }
+
               Navigator.pop(context);
             },
             child: const Icon(Icons.save, color: Colors.white),

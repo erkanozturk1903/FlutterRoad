@@ -87,13 +87,14 @@ class SignUpPage extends StatelessWidget {
       backgroundColor: const Color(0xFF021734),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
             //TODO: More Login options
             Center(
               child: text14Normal(
-                  text: "enter_your_details_to_below_free_sign_up".tr),
+                text: "enter_your_details_to_below_free_sign_up".tr,
+              ),
             ),
             const SizedBox(height: 15),
             appTextField(
@@ -120,7 +121,7 @@ class SignUpPage extends StatelessWidget {
                 obscureText: true),
             const SizedBox(height: 10),
             appTextField(
-                text: "confirm_password".tr,
+                text: "confirm_passowrd".tr,
                 iconName: "assets/icons/lock.png",
                 hintText: "enter_your_confirm_password".tr,
                 controller: _confirmPasswordController,

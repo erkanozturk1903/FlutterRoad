@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:midsatech_mobile/common/language/controller/language_controller.dart';
 import 'package:midsatech_mobile/common/language/language_widget.dart';
 import 'package:midsatech_mobile/common/widget/button_widget.dart';
-import 'package:midsatech_mobile/pages/auth/login_screen.dart';
+import 'package:midsatech_mobile/pages/main/home.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({Key? key}) : super(key: key);
@@ -93,7 +93,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
+                              builder: (context) => const HomePage(),
                             ),
                           );
                         }),

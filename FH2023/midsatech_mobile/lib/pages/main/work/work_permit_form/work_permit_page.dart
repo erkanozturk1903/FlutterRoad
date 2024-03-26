@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +15,7 @@ class WorkPermitPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
+        foregroundColor: Colors.white,
         title: Text(
           'work_permits'.tr,
           style: TextStyle(color: Colors.white),
@@ -73,6 +76,7 @@ class WorkPermitPage extends StatelessWidget {
         },
         child: const Icon(Icons.add),
         backgroundColor: Colors.deepOrange,
+        foregroundColor: Colors.white,
       ),
     );
   }

@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 2000),
-        () => Get.offAllNamed(RouteHelper.getLanguageRoute()));
+        () => Get.offAllNamed(RouteHelper.getLoginRoute()));
   }
 
   @override

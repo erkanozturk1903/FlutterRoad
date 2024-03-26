@@ -3,12 +3,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:midsatech_mobile/common/utils/app_routes.dart';
 import 'package:midsatech_mobile/common/widget/button_widget.dart';
-import 'package:midsatech_mobile/common/widget/text_widgets.dart';
 import 'package:midsatech_mobile/pages/auth/register.dart';
 import 'package:midsatech_mobile/pages/auth/widgets/app_textfields.dart';
-import 'package:midsatech_mobile/pages/auth/widgets/sign_in_widgets.dart';
-import 'package:midsatech_mobile/pages/main/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -39,12 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Kullanıcı girişi
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       // Giriş başarılı, ana sayfaya yönlendir
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
+      Get.offAllNamed(RouteHelper.getLanguageRoute());
     } catch (e) {
       // Hata durumunda kullanıcıya bilgi ver
       ScaffoldMessenger.of(context).showSnackBar(
@@ -64,6 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(
+                height: 100,
+              ),
               Center(
                 child: SizedBox(
                   height: 120,
@@ -86,13 +82,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              thirdPartyLogin(),
+              //thirdPartyLogin(),
               const SizedBox(
                 height: 5,
               ),
-              Center(
-                child: text14Normal(text: 'our_user_your_email_account_to_login'.tr),
-              ),
+              /* Center(
+                child: text14Normal(
+                    text: 'our_user_your_email_account_to_login'.tr),
+              ), */
               const SizedBox(height: 15),
               appTextField(
                 controller: _emailController,

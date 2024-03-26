@@ -96,7 +96,9 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("add_new_staff".tr),
+        title: Text("add_new_staff".tr),
+        backgroundColor: const Color(0xFF021734),
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -106,15 +108,18 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
             children: [
               // Her alan için TextFormField widget'ları
               buildTextFormField(controller: adController, label: 'name'.tr),
-              buildTextFormField(controller: soyadController, label: 'surname'.tr),
+              buildTextFormField(
+                  controller: soyadController, label: 'surname'.tr),
               buildTextFormField(
                   controller: departmanController, label: 'department'.tr),
               buildTextFormField(
                   controller: cinsiyetController, label: 'gender'.tr),
-              buildTextFormField(controller: emailController, label: 'email'.tr),
+              buildTextFormField(
+                  controller: emailController, label: 'email'.tr),
               buildTextFormField(
                   controller: telefonNumarasiController, label: 'phone'.tr),
-              buildTextFormField(controller: adresController, label: 'address'.tr),
+              buildTextFormField(
+                  controller: adresController, label: 'address'.tr),
               buildTextFormField(
                   controller: dogumTarihiController, label: 'birth_date'.tr),
               buildTextFormField(
@@ -124,16 +129,17 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
               buildTextFormField(
                   controller: kanGrubuController, label: 'blood_type'.tr),
               buildTextFormField(
-                  controller: medeniDurumController, label: 'marital_status'.tr),
+                  controller: medeniDurumController,
+                  label: 'marital_status'.tr),
               buildTextFormField(controller: isController, label: 'job'.tr),
               if (profilResmiUrl != null) Image.network(profilResmiUrl!),
               ElevatedButton(
                 onPressed: _profilResmiSec,
-                child:  Text('profil_picture_selected'.tr),
+                child: Text('profil_picture_selected'.tr),
               ),
               ElevatedButton(
                 onPressed: _kaydet,
-                child:  Text('save'.tr),
+                child: Text('save'.tr),
               ),
             ],
           ),

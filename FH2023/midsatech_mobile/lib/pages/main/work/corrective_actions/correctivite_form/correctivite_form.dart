@@ -106,26 +106,6 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
             controlsBuilder: (context, details) {
               return Row(
                 children: [
-                  _currentStep == 5
-                      ? const SizedBox()
-                      : TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.deepOrange,
-                            ),
-                          ),
-                          onPressed: () {
-                            _currentStep < 5
-                                ? setState(() => _currentStep += 1)
-                                : null;
-                          },
-                          child: Text(
-                            'next'.tr,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                   _currentStep == 0
                       ? const SizedBox()
                       : TextButton(
@@ -146,17 +126,39 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
                             ),
                           ),
                         ),
+                  const SizedBox(width: 10),
+                  _currentStep == 5
+                      ? const SizedBox()
+                      : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
+                          onPressed: () {
+                            _currentStep < 5
+                                ? setState(() => _currentStep += 1)
+                                : null;
+                          },
+                          child: Text(
+                            'next'.tr,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                 ],
               );
             },
             steps: <Step>[
               Step(
-                title: Text('general_information'),
+                title: Text('general_information'.tr),
                 content: Column(
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'businessName',
-                      decoration: InputDecoration(labelText: 'business_name'.tr),
+                      decoration:
+                          InputDecoration(labelText: 'business_name'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'cpaNumber',
@@ -191,7 +193,8 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'nameSurname',
-                      decoration: InputDecoration(labelText: 'name_and_surname'.tr),
+                      decoration:
+                          InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'mission',
@@ -297,7 +300,8 @@ class _CorrectiviteFormPageState extends State<CorrectiviteFormPage> {
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'approvedName',
-                      decoration: InputDecoration(labelText: 'name_and_surname'.tr),
+                      decoration:
+                          InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                   ],
                 ),

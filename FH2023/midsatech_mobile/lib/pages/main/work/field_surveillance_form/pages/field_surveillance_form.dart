@@ -79,19 +79,19 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
     if (_formKey.currentState != null) {
       final formData = _formKey.currentState!.value;
       final formModel = FieldSurveillanceFormModel(
-        detecting: formData['detecting'],
-        preparedBy: formData['prepared_by'],
-        reportNumber: formData['report_number'],
-        date: formData['date'],
-        definitionOfNonconformity: formData['definition_nonconformity'],
-        reasonForNonconformity: formData['reason_nonconformity'],
-        addressOfUnit: formData['address_unit'],
-        responsibleUnit: formData['responsible_unit'],
+        detecting: formData['detecting'] ?? '',
+        preparedBy: formData['prepared_by'] ?? '',
+        reportNumber: formData['report_number'] ?? '',
+        date: formData['date'] ?? DateTime.now(),
+        definitionOfNonconformity: formData['definition_nonconformity'] ?? '',
+        reasonForNonconformity: formData['reason_nonconformity'] ?? '',
+        addressOfUnit: formData['address_unit'] ?? '',
+        responsibleUnit: formData['responsible_unit'] ?? '',
         imageUrls: imageFileList!.map((file) => file.path).toList(),
         selectedPossibility: _selectedOlasilik!,
         selectedViolence: _selectedSiddet!,
         riskAssessment: _sonuc!,
-        opinionOfTheUnitResponsible: formData['opinion_unit_responsible'],
+        opinionOfTheUnitResponsible: formData['opinion_unit_responsible'] ?? '',
       );
 
       addFormToFirestore(formModel);
@@ -154,7 +154,7 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
         title: Text(
-          'near_miss_form'.tr,
+          'field_surveillance_form'.tr,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -172,29 +172,6 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
             controlsBuilder: (context, details) {
               return Row(
                 children: [
-                  _currentStep == 4
-                      ? const SizedBox()
-                      : TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.deepOrange,
-                            ),
-                          ),
-                          onPressed: () {
-                            _currentStep < 4
-                                ? setState(() => _currentStep += 1)
-                                : null;
-                          },
-                          child: Text(
-                            'next'.tr,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                  SizedBox(
-                    width: 10,
-                  ),
                   _currentStep == 0
                       ? const SizedBox()
                       : TextButton(
@@ -210,6 +187,29 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
                           },
                           child: Text(
                             'back'.tr,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  _currentStep == 4
+                      ? const SizedBox()
+                      : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
+                          onPressed: () {
+                            _currentStep < 4
+                                ? setState(() => _currentStep += 1)
+                                : null;
+                          },
+                          child: Text(
+                            'next'.tr,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -269,7 +269,8 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
                     ),
                     FormBuilderTextField(
                       name: 'address_unit',
-                      decoration: InputDecoration(labelText: 'address_of_unit'.tr),
+                      decoration:
+                          InputDecoration(labelText: 'address_of_unit'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'responsible_unit',
@@ -320,9 +321,11 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
                       hint: Text('select_possibility'.tr),
                       value: _selectedOlasilik,
                       items: [
-                        DropdownMenuItem(value: 5, child: Text('five_very_high'.tr)),
+                        DropdownMenuItem(
+                            value: 5, child: Text('five_very_high'.tr)),
                         DropdownMenuItem(value: 4, child: Text('four_high'.tr)),
-                        DropdownMenuItem(value: 3, child: Text('three_middle'.tr)),
+                        DropdownMenuItem(
+                            value: 3, child: Text('three_middle'.tr)),
                         DropdownMenuItem(value: 2, child: Text('two_low'.tr)),
                         DropdownMenuItem(value: 1, child: Text('one_very_low')),
                       ],
@@ -337,11 +340,15 @@ class _FieldSurveillanceFormPageState extends State<FieldSurveillanceFormPage> {
                       hint: Text('violence_select'.tr),
                       value: _selectedSiddet,
                       items: [
-                        DropdownMenuItem(value: 5, child: Text('five_so_serious'.tr)),
-                        DropdownMenuItem(value: 4, child: Text('four_serious'.tr)),
-                        DropdownMenuItem(value: 3, child: Text('three_middle'.tr)),
+                        DropdownMenuItem(
+                            value: 5, child: Text('five_so_serious'.tr)),
+                        DropdownMenuItem(
+                            value: 4, child: Text('four_serious'.tr)),
+                        DropdownMenuItem(
+                            value: 3, child: Text('three_middle'.tr)),
                         DropdownMenuItem(value: 2, child: Text('two_light'.tr)),
-                        DropdownMenuItem(value: 1, child: Text('one_very_light'.tr)),
+                        DropdownMenuItem(
+                            value: 1, child: Text('one_very_light'.tr)),
                       ],
                       onChanged: (value) {
                         setState(() {

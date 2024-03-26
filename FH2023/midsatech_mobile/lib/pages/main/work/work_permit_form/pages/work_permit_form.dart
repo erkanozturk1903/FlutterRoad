@@ -120,6 +120,29 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
               controlsBuilder: (context, details) {
                 return Row(
                   children: [
+                    _currentStep == 0
+                        ? const SizedBox()
+                        : TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                Colors.deepOrange,
+                              ),
+                            ),
+                            onPressed: () {
+                              _currentStep > 0
+                                  ? setState(() => _currentStep -= 1)
+                                  : null;
+                            },
+                            child: Text(
+                              'back'.tr,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     _currentStep == 4
                         ? const SizedBox()
                         : TextButton(
@@ -143,26 +166,6 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                     SizedBox(
                       width: 10,
                     ),
-                    _currentStep == 0
-                        ? const SizedBox()
-                        : TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                Colors.deepOrange,
-                              ),
-                            ),
-                            onPressed: () {
-                              _currentStep > 0
-                                  ? setState(() => _currentStep -= 1)
-                                  : null;
-                            },
-                            child: Text(
-                              'back'.tr,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
                   ],
                 );
               },
@@ -203,34 +206,36 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                           activeColor: Colors.deepOrange,
                           name: 'working_type',
                           options: [
-                            FormBuilderFieldOption(value: 'working_at_height'.tr),
+                            FormBuilderFieldOption(
+                                value: 'working_at_height'.tr),
                             FormBuilderFieldOption(
                                 value: 'excavation_earthworks'.tr),
                             FormBuilderFieldOption(
-                                value: 'electrical_works_working_under_energy'.tr),
+                                value:
+                                    'electrical_works_working_under_energy'.tr),
                             FormBuilderFieldOption(
                                 value: 'flame_cutting_welding'.tr),
                             FormBuilderFieldOption(
-                                value:
-                                    'hot_works_welding_cutting_grinding'.tr),
+                                value: 'hot_works_welding_cutting_grinding'.tr),
                             FormBuilderFieldOption(
                                 value:
-                                    'machine_maintenance_repair_working_with_moving'.tr),
+                                    'machine_maintenance_repair_working_with_moving'
+                                        .tr),
                             FormBuilderFieldOption(
                                 value:
-                                    'steam_compressed_air_and_gas_installation'.tr),
+                                    'steam_compressed_air_and_gas_installation'
+                                        .tr),
                             FormBuilderFieldOption(
                                 value: 'working_with_lifting_equipment'.tr),
                             FormBuilderFieldOption(
                                 value: 'working_in_confined_spaces'.tr),
                             FormBuilderFieldOption(
                                 value:
-                                    'disabling_fire_detection_extinguishing_system'.tr),
+                                    'disabling_fire_detection_extinguishing_system'
+                                        .tr),
                             FormBuilderFieldOption(
                                 value: 'working_with_chemicals'.tr),
-                            FormBuilderFieldOption(
-                                value:
-                                    'other_one'.tr),
+                            FormBuilderFieldOption(value: 'other_one'.tr),
                           ])
                     ],
                   ),
@@ -240,7 +245,7 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                       : StepState.disabled,
                 ),
                 Step(
-                  title: Text('risk_assessment'),
+                  title: Text('risk_assessment'.tr),
                   content: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
@@ -248,7 +253,8 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                           maxLength: 100,
                           maxLines: 1,
                           name: 'work_to_do',
-                          decoration: InputDecoration(labelText: 'work_to_do'),
+                          decoration:
+                              InputDecoration(labelText: 'work_to_do'.tr),
                         ),
                         FormBuilderTextField(
                           maxLength: 1000,
@@ -260,8 +266,8 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                           maxLength: 1500,
                           maxLines: 4,
                           name: 'precautions_to_take',
-                          decoration:
-                              InputDecoration(labelText: 'precautions_to_take'.tr),
+                          decoration: InputDecoration(
+                              labelText: 'precautions_to_take'.tr),
                         ),
                         const SizedBox(
                           height: 10,
@@ -294,7 +300,8 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                             FormBuilderFieldOption(value: 'facial_wall'.tr),
                             FormBuilderFieldOption(
                                 value: 'headphone_protector'.tr),
-                            FormBuilderFieldOption(value: 'fire_extinguisher'.tr),
+                            FormBuilderFieldOption(
+                                value: 'fire_extinguisher'.tr),
                             FormBuilderFieldOption(value: 'hard_hat'.tr),
                             FormBuilderFieldOption(value: 'other'.tr),
                           ])
@@ -311,7 +318,8 @@ class _WorkPermitFormPageState extends State<WorkPermitFormPage> {
                     children: <Widget>[
                       FormBuilderTextField(
                         name: 'name_surname',
-                        decoration: InputDecoration(labelText: 'name_and_surname'.tr),
+                        decoration:
+                            InputDecoration(labelText: 'name_and_surname'.tr),
                       ),
                       FormBuilderDateTimePicker(
                         name: 'date_of_grantor',

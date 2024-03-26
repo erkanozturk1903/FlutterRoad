@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/models/field_surveiallance.dart';
 import 'package:midsatech_mobile/pages/main/work/field_surveillance_form/pages/field_surveillance_form.dart';
@@ -23,8 +24,8 @@ class _FieldSurveillancePageState extends State<FieldSurveillancePage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
         foregroundColor: Colors.white,
-        title: const Text(
-          'Field Surveillance Form',
+        title: Text(
+          'field_surveillance_form'.tr,
           style: TextStyle(
             color: Colors.white,
           ),

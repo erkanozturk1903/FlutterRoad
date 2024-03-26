@@ -61,7 +61,7 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
     if (_formKey.currentState!.saveAndValidate()) {
       final formData = _formKey.currentState!.value;
       final nearMissData = NearMissFormData(
-        businessName: formData['business_name'],
+        businessName: formData['business_name'] ?? '',
         location: formData['location'] ?? '',
         date: formData['date'] ?? DateTime.now(),
         adi: formData['adi'] ?? '',
@@ -123,6 +123,27 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
             controlsBuilder: (context, details) {
               return Row(
                 children: [
+                  _currentStep == 0
+                      ? const SizedBox()
+                      : TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrange,
+                            ),
+                          ),
+                          onPressed: () {
+                            _currentStep > 0
+                                ? setState(() => _currentStep -= 1)
+                                : null;
+                          },
+                          child: Text(
+                            'back'.tr,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                  const SizedBox(width: 10),
                   _currentStep == 4
                       ? const SizedBox()
                       : TextButton(
@@ -146,26 +167,6 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                   SizedBox(
                     width: 10,
                   ),
-                  _currentStep == 0
-                      ? const SizedBox()
-                      : TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.deepOrange,
-                            ),
-                          ),
-                          onPressed: () {
-                            _currentStep > 0
-                                ? setState(() => _currentStep -= 1)
-                                : null;
-                          },
-                          child: Text(
-                            'back'.tr,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                 ],
               );
             },
@@ -176,7 +177,8 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'business_name',
-                      decoration: InputDecoration(labelText: 'business_name'.tr),
+                      decoration:
+                          InputDecoration(labelText: 'business_name'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'location',
@@ -200,7 +202,8 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                   children: <Widget>[
                     FormBuilderTextField(
                       name: 'adi',
-                      decoration: InputDecoration(labelText: 'name_and_surname'.tr),
+                      decoration:
+                          InputDecoration(labelText: 'name_and_surname'.tr),
                     ),
                     FormBuilderTextField(
                       name: 'mission',
@@ -240,8 +243,8 @@ class _NearMissFormPageState extends State<NearMissFormPage> {
                         maxLength: 2000,
                         maxLines: 6,
                         name: 'solution',
-                        decoration:
-                            InputDecoration(labelText: 'what_is_the_solution'.tr),
+                        decoration: InputDecoration(
+                            labelText: 'what_is_the_solution'.tr),
                       ),
                       const SizedBox(
                         height: 20,
