@@ -265,5 +265,7 @@
   "information_of_the_work_permit_grantor": "Työlupamyöntäjän tiedot",
   "work_permits": "Työluvat",
   "no_work_permits_found": "Työlupia ei löydetty.",
-  "unknown": "Tuntematon"
+  "unknown": "Tuntematon",
+  "enter_your_name": "Syötä nimesi",
+  "enter_your_surname": "Syötä sukunimesi"
 }

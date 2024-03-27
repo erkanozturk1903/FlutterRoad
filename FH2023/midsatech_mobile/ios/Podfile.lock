@@ -889,10 +889,10 @@ PODS:
     - Flutter
     - FlutterMacOS
     - GoogleSignIn (~> 7.0)
-  - GoogleSignIn (7.0.0):
-    - AppAuth (~> 1.5)
-    - GTMAppAuth (< 3.0, >= 1.3)
-    - GTMSessionFetcher/Core (< 4.0, >= 1.1)
+  - GoogleSignIn (7.1.0):
+    - AppAuth (< 2.0, >= 1.7.3)
+    - GTMAppAuth (< 5.0, >= 4.1.1)
+    - GTMSessionFetcher/Core (~> 3.3)
   - GoogleUtilities/AppDelegateSwizzler (7.13.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -993,9 +993,9 @@ PODS:
     - gRPC-Core/Privacy (= 1.62.1)
   - gRPC-Core/Interface (1.62.1)
   - gRPC-Core/Privacy (1.62.1)
-  - GTMAppAuth (2.0.0):
-    - AppAuth/Core (~> 1.6)
-    - GTMSessionFetcher/Core (< 4.0, >= 1.5)
+  - GTMAppAuth (4.1.1):
+    - AppAuth/Core (~> 1.7)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
   - GTMSessionFetcher/Core (3.3.2)
   - image_picker_ios (0.0.1):
     - Flutter
@@ -1079,11 +1079,11 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: c92645b392db3c41a83a0aa967de16f8bad25568
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   google_sign_in_ios: 989eea5abe94af62050782714daf920be883d4a2
-  GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
+  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
   GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
   "gRPC-C++": 12f33a422dcab88dcd0c53e52cd549a929f0f244
   gRPC-Core: 6ec9002832e1e22c5bb8c54994b050b0ee4205c6
-  GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 0e876eea9782ec6462e91ab872711c357322c94f
   image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
   leveldb-library: 06a69cc7582d64b29424a63e085e683cc188230a

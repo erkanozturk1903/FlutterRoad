@@ -101,46 +101,68 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
         foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              // Her alan için TextFormField widget'ları
+              SizedBox(height: 16.0),
               buildTextFormField(controller: adController, label: 'name'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: soyadController, label: 'surname'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: departmanController, label: 'department'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: cinsiyetController, label: 'gender'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: emailController, label: 'email'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: telefonNumarasiController, label: 'phone'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: adresController, label: 'address'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: dogumTarihiController, label: 'birth_date'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: dogumYeriController, label: 'birth_place'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: egitimController, label: 'education'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: kanGrubuController, label: 'blood_type'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(
                   controller: medeniDurumController,
                   label: 'marital_status'.tr),
+              SizedBox(height: 16.0),
               buildTextFormField(controller: isController, label: 'job'.tr),
-              if (profilResmiUrl != null) Image.network(profilResmiUrl!),
-              ElevatedButton(
+              SizedBox(height: 16.0),
+              /*  ElevatedButton(
                 onPressed: _profilResmiSec,
-                child: Text('profil_picture_selected'.tr),
-              ),
+                child: Text('select_profile_picture'.tr),
+              ), */
+              SizedBox(height: 16.0),
+              if (profilResmiUrl != null)
+                Image.network(
+                  profilResmiUrl!,
+                  height: 200,
+                  width: 200,
+                  fit: BoxFit.cover,
+                ),
+              SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _kaydet,
                 child: Text('save'.tr),
               ),
+              SizedBox(height: 16.0),
             ],
           ),
         ),
@@ -152,7 +174,10 @@ class _PersonelEklemeFormuState extends State<PersonelEklemeFormu> {
       {required TextEditingController controller, required String label}) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+      ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please $label fill in all fields all';

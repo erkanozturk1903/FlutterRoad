@@ -30,9 +30,9 @@ class _HomePageState extends State<HomePage> {
       container = SafetyPage();
     } else if (currentPage == DrawerSections.event) {
       container = EventPage();
-    } else if (currentPage == DrawerSections.profile) {
+    } /*  else if (currentPage == DrawerSections.profile) {
       container = ProfilePage();
-    }
+    } */
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF021734),
@@ -99,8 +99,8 @@ class _HomePageState extends State<HomePage> {
               currentPage == DrawerSections.safety ? true : false),
           menuItem(4, "event".tr, Icons.calendar_month,
               currentPage == DrawerSections.event ? true : false),
-          menuItem(5, "profile".tr, Icons.feedback_outlined,
-              currentPage == DrawerSections.profile ? true : false),
+          /*  menuItem(5, "profile".tr, Icons.feedback_outlined,
+              currentPage == DrawerSections.profile ? true : false), */
         ],
       ),
     );

@@ -265,5 +265,7 @@
   "information_of_the_work_permit_grantor": "Information of the Work Permit Grantor",
   "work_permits": "Work Permits",
   "no_work_permits_found": "No work permits found.",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "enter_your_name": "Enter your name",
+  "enter_your_surname": "Enter your surname"
 }

@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, unnecessary_string_interpolations, unnecessary_string_interpolations
+// ignore_for_file: unused_local_variable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:midsatech_mobile/pages/main/human/model/human_model.dart';
 
 class HumanDetails extends StatefulWidget {
@@ -31,7 +30,6 @@ class _HumanDetailsState extends State<HumanDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _nameController = TextEditingController(text: widget.human.name);
     _surnameController = TextEditingController(text: widget.human.surname);
@@ -51,7 +49,6 @@ class _HumanDetailsState extends State<HumanDetails> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _nameController.dispose();
     _surnameController.dispose();
@@ -100,39 +97,40 @@ class _HumanDetailsState extends State<HumanDetails> {
       appBar: AppBar(
         title: Text(widget.human.name + " " + widget.human.surname),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("name".tr + ":" + "${widget.human.name}",
-                style: TextStyle(fontSize: 18)),
-            Text("surname".tr + ":" + "${widget.human.surname}",
-                style: TextStyle(fontSize: 18)),
-            Text("department".tr + ":" + "${widget.human.department}",
-                style: TextStyle(fontSize: 18)),
-            Text("gender".tr + ":" + "${widget.human.gender}",
-                style: TextStyle(fontSize: 18)),
-            Text("birth_date".tr + ":" + "${widget.human.birthDate}",
-                style: TextStyle(fontSize: 18)),
-            Text("email".tr + ":" + "${widget.human.email}",
-                style: TextStyle(fontSize: 18)),
-            Text("phone".tr + ":" + "${widget.human.birthPlace}",
-                style: TextStyle(fontSize: 18)),
-            Text("address".tr + ":" + "${widget.human.address}",
-                style: TextStyle(fontSize: 18)),
-            Text("blood_type".tr + ":" + "${widget.human.bloodType}",
-                style: TextStyle(fontSize: 18)),
-            Text("height".tr + ":" + "${widget.human.education}",
-                style: TextStyle(fontSize: 18)),
-            Text("education".tr + ":" + "${widget.human.maritalStatus}",
-                style: TextStyle(fontSize: 18)),
-            Text("job".tr + ":" + "${widget.human.jobs}",
-                style: TextStyle(fontSize: 18)),
-
-            // Buraya düzenleme için bir buton ekleyebilirsiniz.
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildInfoTile("Name", widget.human.name),
+              _buildInfoTile("Surname", widget.human.surname),
+              _buildInfoTile("Department", widget.human.department),
+              _buildInfoTile("Gender", widget.human.gender),
+              _buildInfoTile("Birth Date", widget.human.birthDate),
+              _buildInfoTile("Email", widget.human.email),
+              _buildInfoTile("Phone", widget.human.phoneNumber),
+              _buildInfoTile("Address", widget.human.address),
+              _buildInfoTile("Blood Type", widget.human.bloodType),
+              _buildInfoTile("Education", widget.human.education),
+              _buildInfoTile("Marital Status", widget.human.maritalStatus),
+              _buildInfoTile("Job", widget.human.jobs),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoTile(String title, String subtitle) {
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 18),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(fontSize: 18),
       ),
     );
   }

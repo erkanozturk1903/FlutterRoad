@@ -20,6 +20,8 @@ class SignUpPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
   late String _uid;
 
   void _register(BuildContext context) async {
@@ -27,6 +29,8 @@ class SignUpPage extends StatelessWidget {
     final String email = _emailController.text.trim();
     final String password = _passwordController.text;
     final String confirmPassword = _confirmPasswordController.text;
+    final String name = _nameController.text.trim();
+    final String surname = _surnameController.text.trim();
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -48,8 +52,9 @@ class SignUpPage extends StatelessWidget {
           .collection('midsatech')
           .doc('customers')
           .collection('administrator')
-          .doc(_uid)
-          .set({
+          .add({
+        'name': name,
+        'surname': surname,
         'username': username,
         'email': email,
         'password': password, // Şifreleri açık metin olarak saklamaktan kaçının
@@ -97,6 +102,18 @@ class SignUpPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
+            appTextField(
+              text: "name".tr,
+              iconName: "assets/icons/user.png",
+              hintText: "enter_your_name".tr,
+              controller: _nameController,
+            ),
+            appTextField(
+              text: "surname".tr,
+              iconName: "assets/icons/user.png",
+              hintText: "enter_your_surname".tr,
+              controller: _surnameController,
+            ),
             appTextField(
               text: "username".tr,
               iconName: "assets/icons/user.png",

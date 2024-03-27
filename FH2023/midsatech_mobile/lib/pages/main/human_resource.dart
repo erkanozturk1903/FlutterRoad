@@ -19,6 +19,8 @@ class _HumanPageState extends State<HumanPage> {
         .collection('midsatech')
         .doc('customers')
         .collection('administrator')
+        .doc('human')
+        .collection('personel')
         .get();
 
     final List<Human> fetchedHumans = [];
@@ -74,7 +76,7 @@ class _HumanPageState extends State<HumanPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          columns:  [
+          columns: [
             DataColumn(label: Text('name'.tr)),
             DataColumn(label: Text('surname'.tr)),
             DataColumn(label: Text('details'.tr)), // Detay butonu için sütun

@@ -265,5 +265,7 @@
   "information_of_the_work_permit_grantor": "İş İzni Verenin Bilgileri",
   "work_permits": "İş İzinleri",
   "no_work_permits_found": "Hiç iş izni bulunamadı.",
-  "unknown": "Bilinmeyen"
+  "unknown": "Bilinmeyen",
+  "enter_your_name": "Adınızı girin",
+  "enter_your_surname": "Soyadınızı girin"
 }
