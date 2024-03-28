@@ -24,9 +24,10 @@ class _HomePageState extends State<HomePage> {
     var container;
     if (currentPage == DrawerSections.dashboard) {
       container = DashboardPage();
-    } else if (currentPage == DrawerSections.human) {
+    } /* else if (currentPage == DrawerSections.human) {
       container = HumanPage();
-    } else if (currentPage == DrawerSections.safety) {
+    }  */
+    else if (currentPage == DrawerSections.safety) {
       container = SafetyPage();
     } else if (currentPage == DrawerSections.event) {
       container = EventPage();
@@ -93,8 +94,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           menuItem(1, "dashboard".tr, Icons.dashboard_outlined,
               currentPage == DrawerSections.dashboard ? true : false),
-          menuItem(2, "human_resource".tr, Icons.supervised_user_circle_rounded,
-              currentPage == DrawerSections.human ? true : false),
+          /*  menuItem(2, "human_resource".tr, Icons.supervised_user_circle_rounded,
+              currentPage == DrawerSections.human ? true : false), */
           menuItem(3, "work_safety".tr, Icons.workspaces_sharp,
               currentPage == DrawerSections.safety ? true : false),
           menuItem(4, "event".tr, Icons.calendar_month,
