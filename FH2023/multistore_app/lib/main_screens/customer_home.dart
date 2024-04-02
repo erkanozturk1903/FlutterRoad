@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:multistore_app/main_screens/category.dart';
 import 'package:multistore_app/main_screens/home.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   final List<Widget> _tabs = const [
     HomeScreen(),
-    Center(child: Text('Search Screen')),
+    CategoryScreen(),
     Center(child: Text('Store Screen')),
     Center(child: Text('Cart Screen')),
     Center(child: Text('Profile Screen')),
