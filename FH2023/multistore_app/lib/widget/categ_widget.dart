@@ -27,33 +27,22 @@ class SliderBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    ' << ',
-                    style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 10,
-                    ),
-                  ),
+                  maincategName == 'beauty'
+                      ? const Text('')
+                      : Text(
+                          ' << ',
+                          style: style,
+                        ),
                   Text(
                     maincategName.toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 10,
-                    ),
+                    style: style,
                   ),
-                  Text(
-                    ' >> ',
-                    style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 10,
-                    ),
-                  ),
+                  maincategName == 'men'
+                      ? const Text('')
+                      : Text(
+                          ' >> ',
+                          style: style,
+                        ),
                 ],
               ),
             )),
@@ -61,6 +50,13 @@ class SliderBar extends StatelessWidget {
     );
   }
 }
+
+const style = TextStyle(
+  color: Colors.brown,
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+  letterSpacing: 10,
+);
 
 class SubcategModel extends StatelessWidget {
   final String mainCategName;
@@ -98,7 +94,12 @@ class SubcategModel extends StatelessWidget {
               image: AssetImage(assetName),
             ),
           ),
-          Text(subcategLabel),
+          Text(
+            subcategLabel,
+            style: const TextStyle(
+              fontSize: 11,
+            ),
+          ),
         ],
       ),
     );

@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:multistore_app/categories/accessories_categ.dart';
+import 'package:multistore_app/categories/bags_categ.dart';
+import 'package:multistore_app/categories/beauty_categ.dart';
+import 'package:multistore_app/categories/electronics_categ.dart';
+import 'package:multistore_app/categories/homeandgargen_categ.dart';
+import 'package:multistore_app/categories/kids_categ.dart';
 import 'package:multistore_app/categories/men_categ.dart';
+import 'package:multistore_app/categories/shoes_categ.dart';
+import 'package:multistore_app/categories/women_categ.dart';
 import 'package:multistore_app/widget/fake_search.dart';
 
 List<ItemsData> items = [
@@ -116,30 +124,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
           scrollDirection: Axis.vertical,
           children: const [
             MenCategory(),
-            Center(
-              child: Text('women category'),
-            ),
-            Center(
-              child: Text('shoes category'),
-            ),
-            Center(
-              child: Text('bags category'),
-            ),
-            Center(
-              child: Text('electronics category'),
-            ),
-            Center(
-              child: Text('accessories category'),
-            ),
-            Center(
-              child: Text('home & garden category'),
-            ),
-            Center(
-              child: Text('kids category'),
-            ),
-            Center(
-              child: Text('beauty category'),
-            ),
+            WomenCategory(),
+            ShoesCategory(),
+            BagsCategory(),
+            ElectronicsCategory(),
+            AccessoriesCategory(),
+            HomeAndGardenCategory(),
+            KidsCategory(),
+            BeautyCategory(),
           ],
         ));
   }

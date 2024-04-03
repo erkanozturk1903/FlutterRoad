@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:multistore_app/utilities/categ_list.dart';
 import 'package:multistore_app/widget/categ_widget.dart';
 
-class MenCategory extends StatelessWidget {
-  const MenCategory({super.key});
+class BagsCategory extends StatelessWidget {
+  const BagsCategory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class MenCategory extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CategHeaderLabel(
-                    headerLabel: 'Men',
+                    headerLabel: 'Bags',
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.68,
@@ -31,12 +31,12 @@ class MenCategory extends StatelessWidget {
                       mainAxisSpacing: 70,
                       crossAxisSpacing: 15,
                       crossAxisCount: 3,
-                      children: List.generate(men.length, (index) {
+                      children: List.generate(bags.length, (index) {
                         return SubcategModel(
-                          mainCategName: 'Men',
-                          subCategName: men[index],
-                          assetName: 'images/men/men$index.jpg',
-                          subcategLabel: men[index],
+                          mainCategName: 'bags',
+                          subCategName: bags[index],
+                          assetName: 'images/bags/bags$index.jpg',
+                          subcategLabel: bags[index],
                         );
                       }),
                     ),
@@ -49,7 +49,7 @@ class MenCategory extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: SliderBar(
-              maincategName: 'men',
+              maincategName: 'bags',
             ),
           ),
         ],
