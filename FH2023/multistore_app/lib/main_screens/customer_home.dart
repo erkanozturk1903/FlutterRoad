@@ -1,8 +1,10 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:multistore_app/main_screens/cart.dart';
 import 'package:multistore_app/main_screens/category.dart';
 import 'package:multistore_app/main_screens/home.dart';
+import 'package:multistore_app/main_screens/profile.dart';
 import 'package:multistore_app/main_screens/stores.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -19,8 +21,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     HomeScreen(),
     CategoryScreen(),
     StoresScreen(),
-    Center(child: Text('Cart Screen')),
-    Center(child: Text('Profile Screen')),
+    CartScreen(),
+    ProfileScreen(),
   ];
 
   @override
