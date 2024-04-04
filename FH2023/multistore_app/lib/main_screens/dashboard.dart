@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:multistore_app/dashboard_components/edit_business.dart';
+import 'package:multistore_app/dashboard_components/manage_product.dart';
+import 'package:multistore_app/dashboard_components/my_store.dart';
+import 'package:multistore_app/dashboard_components/supp_balance.dart';
+import 'package:multistore_app/dashboard_components/supp_orders.dart';
+import 'package:multistore_app/dashboard_components/supp_statics.dart';
 import 'package:multistore_app/widget/appbar_widget.dart';
 
 List<String> label = [
@@ -19,6 +25,15 @@ List<IconData> icon = [
   Icons.bar_chart,
 ];
 
+List<Widget> pages = const [
+  MyStore(),
+  SupplierOrders(),
+  EditBusiness(),
+  ManageProduct(),
+  SuppliersBalance(),
+  SuppliersStatics()
+];
+
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
@@ -32,7 +47,12 @@ class DashboardScreen extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.logout),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/welcome_screen',
+                );
+              },
             ),
           ],
         ),
@@ -44,29 +64,39 @@ class DashboardScreen extends StatelessWidget {
             crossAxisCount: 2,
             children: List.generate(
               6,
-              (index) => Card(
-                elevation: 20,
-                shadowColor: Colors.purpleAccent.shade200,
-                color: Colors.blueGrey.withOpacity(0.7),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      icon[index],
-                      size: 50,
-                      color: Colors.yellowAccent,
+              (index) => InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => pages[index],
                     ),
-                    Text(
-                      label[index].toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 24,
+                  );
+                },
+                child: Card(
+                  elevation: 20,
+                  shadowColor: Colors.purpleAccent.shade200,
+                  color: Colors.blueGrey.withOpacity(0.7),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(
+                        icon[index],
+                        size: 50,
                         color: Colors.yellowAccent,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 2,
-                        fontFamily: 'Acme',
                       ),
-                    ),
-                  ],
+                      Text(
+                        label[index].toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.yellowAccent,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 2,
+                          fontFamily: 'Acme',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

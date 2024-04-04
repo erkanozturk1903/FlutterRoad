@@ -75,13 +75,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 isRepeatingAnimation: true,
                 repeatForever: true,
               ),
-              /* const Text(
-                "WELCOME",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                ),
-              ), */
               const SizedBox(
                 height: 120,
                 width: 200,
@@ -109,10 +102,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ),
               ),
-              /* const Text(
-                "SHOP",
-                style: TextStyle(color: Colors.white, fontSize: 30),
-              ), */
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -158,7 +147,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             AnimatedLogo(controller: _controller),
                             YellowButton(
                               label: "Log In",
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  '/supplier_home',
+                                );
+                              },
                               width: 0.25,
                             ),
                             Padding(
@@ -196,7 +190,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           padding: const EdgeInsets.only(left: 8.0),
                           child: YellowButton(
                             label: "Log In",
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/customer_home',
+                              );
+                            },
                             width: 0.25,
                           ),
                         ),
