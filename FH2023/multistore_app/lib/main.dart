@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multistore_app/main_screens/customer_home.dart';
+import 'package:multistore_app/categories/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CustomerHomeScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }

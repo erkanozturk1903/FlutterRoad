@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:multistore_app/main_screens/customer_home.dart';
 import 'package:multistore_app/widget/appbar_widget.dart';
+import 'package:multistore_app/widget/yellow_button.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -84,22 +87,10 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.45,
-              decoration: BoxDecoration(
-                color: Colors.yellow,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: MaterialButton(
-                onPressed: () {},
-                child: const Text(
-                  'Check Out',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
+            YellowButton(
+              label: 'CHECK OUT',
+              width: 0.45,
+              onPressed: () {},
             )
           ],
         ),
