@@ -116,7 +116,7 @@ class _SupplierLoginState extends State<SupplierLogin> {
                         onPressed: () {
                           Navigator.pushReplacementNamed(
                             context,
-                            '/supplier_signup',
+                            '/supplier_signup_screen',
                           );
                         },
                       ),

@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_print, unused_field, use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multistore_app/widget/auth_widgets.dart';
+import 'package:multistore_app/widget/snackbar.dart';
 
 class CustomerLogin extends StatefulWidget {
   const CustomerLogin({super.key});
@@ -23,11 +25,53 @@ class _CustomerLoginState extends State<CustomerLogin> {
   void navigate() {
     Navigator.pushReplacementNamed(
       context,
-      '/customer_screen',
+      '/customer_home',
     );
   }
 
-  void login() async {}
+  void login() async {
+    setState(() {
+      processing = true;
+    });
+    if (_formKey.currentState!.validate()) {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        _formKey.currentState!.reset();
+
+        navigate();
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          setState(() {
+            processing = false;
+          });
+          MyMessageHandler.showSnackBar(
+            _scaffoldKey,
+            'Bu e-mail kayıtlı değil.',
+          );
+        } else if (e.code == 'wrong-password') {
+          setState(() {
+            processing = false;
+          });
+          MyMessageHandler.showSnackBar(
+            _scaffoldKey,
+            'Kullanıcı ile şifre eşleşmiyor',
+          );
+        }
+      }
+    } else {
+      setState(() {
+        processing = false;
+      });
+      MyMessageHandler.showSnackBar(
+        _scaffoldKey,
+        'Lütfen Tüm Alanları Doldurun',
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

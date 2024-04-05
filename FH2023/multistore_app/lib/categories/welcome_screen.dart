@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multistore_app/widget/yellow_button.dart';
 
@@ -28,6 +31,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  bool processing = false;
 
   @override
   void initState() {
@@ -150,7 +154,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                               onPressed: () {
                                 Navigator.pushReplacementNamed(
                                   context,
-                                  '/supplier_home',
+                                  '/suppliers_login_screen',
                                 );
                               },
                               width: 0.25,
@@ -159,7 +163,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                               padding: const EdgeInsets.only(right: 8.0),
                               child: YellowButton(
                                 label: "Sign Up",
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    '/supplier_signup_screen',
+                                  );
+                                },
                                 width: 0.25,
                               ),
                             )
@@ -193,7 +202,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                 context,
-                                '/customer_home',
+                                '/customer_login_screen',
                               );
                             },
                             width: 0.25,
@@ -203,7 +212,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           padding: const EdgeInsets.only(right: 8.0),
                           child: YellowButton(
                             label: "Sign Up",
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/customer_signup_screen',
+                              );
+                            },
                             width: 0.25,
                           ),
                         ),
@@ -236,15 +250,26 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           image: AssetImage('images/inapp/facebook.jpg'),
                         ),
                       ),
-                      GoogleFacebookLogIn(
-                        label: "Guest",
-                        onPressed: () {},
-                        child: const Icon(
-                          Icons.person,
-                          size: 55,
-                          color: Colors.lightBlueAccent,
-                        ),
-                      ),
+                      processing == true
+                          ? const CircularProgressIndicator()
+                          : GoogleFacebookLogIn(
+                              label: "Guest",
+                              onPressed: () async {
+                                setState(() {
+                                  processing = true;
+                                });
+                                await FirebaseAuth.instance.signInAnonymously();
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  '/customer_home',
+                                );
+                              },
+                              child: const Icon(
+                                Icons.person,
+                                size: 55,
+                                color: Colors.lightBlueAccent,
+                              ),
+                            ),
                     ],
                   ),
                 ),

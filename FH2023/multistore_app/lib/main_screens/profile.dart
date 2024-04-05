@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously, sort_child_properties_last
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multistore_app/customer_screens/customer_orders.dart';
 import 'package:multistore_app/customer_screens/wishlist.dart';
 import 'package:multistore_app/main_screens/cart.dart';
+import 'package:multistore_app/widget/alert_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -264,10 +268,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   RepeatedListTile(
                                     title: "Log Out",
                                     icon: Icons.logout,
-                                    onPressed: () {
-                                      Navigator.pushReplacementNamed(
-                                        context,
-                                        '/welcome_screen',
+                                    onPressed: () async {
+                                      MyAlertDialog.showDialog(
+                                        context: context,
+                                        title: 'Log Out',
+                                        content:
+                                            'Are you sure you want to log out?',
+                                        onNo: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        onYes: () {
+                                          FirebaseAuth.instance.signOut();
+                                          Navigator.of(context).pop();
+                                          Navigator.pushReplacementNamed(
+                                            context,
+                                            '/welcome_screen',
+                                          );
+                                        },
                                       );
                                     },
                                   ),

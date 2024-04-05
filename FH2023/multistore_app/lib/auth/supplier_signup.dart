@@ -228,7 +228,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                         onPressed: () {
                           Navigator.pushReplacementNamed(
                             context,
-                            '/supplier_login',
+                            '/suppliers_login_screen',
                           );
                         },
                       ),
