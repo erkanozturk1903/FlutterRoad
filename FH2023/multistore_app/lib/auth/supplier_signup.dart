@@ -2,9 +2,13 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multistore_app/widget/auth_widgets.dart';
+import 'package:multistore_app/widget/snackbar.dart';
 
 class SupplierRegister extends StatefulWidget {
   const SupplierRegister({super.key});
@@ -30,6 +34,9 @@ class _SupplierRegisterState extends State<SupplierRegister> {
 
   XFile? _imageFile;
   dynamic _pickedImageError;
+
+  CollectionReference suppliers =
+      FirebaseFirestore.instance.collection('suppliers');
 
   void _pickImageFromCamera() async {
     try {
@@ -69,7 +76,83 @@ class _SupplierRegisterState extends State<SupplierRegister> {
     }
   }
 
-  void signUp() async {}
+  void signUp() async {
+    setState(() {
+      processing = true;
+    });
+    if (_formKey.currentState!.validate()) {
+      if (_imageFile != null) {
+        try {
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
+
+          firebase_storage.Reference ref = firebase_storage
+              .FirebaseStorage.instance
+              .ref('supp-images/$email.jpg');
+
+          await ref.putFile(File(_imageFile!.path));
+
+          storeLogo = await ref.getDownloadURL();
+
+          _uid = FirebaseAuth.instance.currentUser!.uid;
+
+          await suppliers.doc(_uid).set({
+            'storename': storeName,
+            'email': email,
+            'storelogo': storeLogo,
+            'phone': '',
+            'sid': _uid,
+            'coverimage': ''
+          });
+          _formKey.currentState!.reset();
+          setState(() {
+            _imageFile = null;
+          });
+
+          Navigator.pushReplacementNamed(
+            context,
+            '/supplier_signup_screen',
+          );
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'weak-password') {
+            setState(() {
+              processing = false;
+            });
+            MyMessageHandler.showSnackBar(
+              _scaffoldKey,
+              'Şifreniz çok kısa',
+            );
+          } else if (e.code == 'email-already-in-use') {
+            setState(() {
+              processing = false;
+            });
+            MyMessageHandler.showSnackBar(
+              _scaffoldKey,
+              'Hesap oluşturmak için geçerli email giriniz',
+            );
+          }
+        }
+      } else {
+        setState(() {
+          processing = false;
+        });
+        MyMessageHandler.showSnackBar(
+          _scaffoldKey,
+          'Bir resim seçim',
+        );
+      }
+    } else {
+      setState(() {
+        processing = false;
+      });
+      MyMessageHandler.showSnackBar(
+        _scaffoldKey,
+        'Lütfen Tüm Alanları Doldurun',
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

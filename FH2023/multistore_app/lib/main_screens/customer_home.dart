@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multistore_app/main_screens/cart.dart';
 import 'package:multistore_app/main_screens/category.dart';
@@ -17,12 +18,14 @@ class CustomerHomeScreen extends StatefulWidget {
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _tabs = const [
-    HomeScreen(),
-    CategoryScreen(),
-    StoresScreen(),
-    CartScreen(),
-    ProfileScreen(),
+  final List<Widget> _tabs = [
+    const HomeScreen(),
+    const CategoryScreen(),
+    const StoresScreen(),
+    const CartScreen(),
+    ProfileScreen(
+      documentId: FirebaseAuth.instance.currentUser!.uid,
+    ),
   ];
 
   @override
